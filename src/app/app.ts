@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { ChangeDetectorRef, Component, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { NavBar } from './pages/nav-bar/nav-bar';
 import { Footer } from './pages/footer/footer';
@@ -10,5 +10,20 @@ import { Footer } from './pages/footer/footer';
   styleUrl: './app.css',
 })
 export class App {
-  protected readonly title = signal('as2alny-askme');
+  constructor(private _changeDetectorRef: ChangeDetectorRef) {}
+
+  isLoading: boolean = true;
+  isFading: boolean = false;
+
+  ngOnInit() {
+    setTimeout(() => {
+      this._changeDetectorRef.detectChanges();
+      this.isFading = true;
+    }, 3000);
+
+    setTimeout(() => {
+      this._changeDetectorRef.detectChanges();
+      this.isLoading = false;
+    }, 3500);
+  }
 }

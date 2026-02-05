@@ -1,0 +1,32 @@
+.loading-screen {
+  position: fixed;
+  inset: 0; /* بدل top/left/width/height */
+
+  background-color: #ffffff;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  z-index: 9999;
+  opacity: 1;
+  transition: opacity 0.5s ease-out;
+}
+
+.loading-screen video {
+  max-width: 500px; /* responsive width */
+  max-height: 500px; /* responsive height */
+  width: 100%;
+  height: auto;
+}
+
+.fade-out {
+  opacity: 0;
+  pointer-events: none; /* عشان الموقع يشتغل بعد اللود */
+}
+@media (max-width: 600px) {
+  .loading-screen video {
+    max-width: 80vw;
+    max-height: 40vh;
+  }
+}

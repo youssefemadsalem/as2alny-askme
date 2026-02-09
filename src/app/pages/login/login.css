@@ -1,0 +1,19 @@
+.blur {
+  position: relative;
+}
+.blur::before {
+  content: '';
+  position: absolute;
+  left: 5%;
+  bottom: 15%;
+  width: 20%;
+  height: 20%;
+  border-radius: 50%;
+
+  background: var(--color-red-500);
+  background: -o-linear-gradient(190deg, var(--color-red-300) 0%, rgba(115, 67, 210, 0) 100%);
+  background: linear-gradient(260deg, var(--color-red-400) 0%, rgba(115, 67, 210, 0) 100%);
+  -webkit-filter: blur(150px);
+
+  filter: blur(150px);
+}

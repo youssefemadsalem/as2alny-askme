@@ -1,3 +1,9 @@
 /* You can add global styles to this file, and also import other style files */
-
-@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@200..1000&display=swap');
+@import 'tailwindcss';
+@theme {
+  --color-primary: #b29848;
+  --color-secondary: #1c3f61;
+  --color-accent: #3b9185;
+  --font-cairo: 'Cairo', ui-sans-serif, system-ui, sans-serif;
+}

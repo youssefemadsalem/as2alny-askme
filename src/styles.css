@@ -1,3 +1,14 @@
 /* You can add global styles to this file, and also import other style files */
 
+body {
+  font-family: 'Dosis', sans-serif;
+}
+.btn-primary {
+  @apply px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition;
+}
+
+.btn-ai {
+  @apply px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition;
+}
+
 @import "tailwindcss";

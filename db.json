@@ -1,0 +1,12 @@
+{
+  "services": [
+    { "id": 1, "name": "السجل المدني", "description": "استخراج بطاقات وشهادات", "image": "https://manassa.news/sites/default/files/styles/lead_image_small/public/photobank/13568-lanczos3_0.jpg.webp?itok=_t4iu9VK" },
+    { "id": 2, "name": "مكتب التموين", "description": "خدمات الدعم والبطاقات", "image": "https://www.almawq3.com/wp-content/uploads/2024/03/%D8%A7%D9%84%D9%85%D8%B5%D8%A7%D9%84%D8%AD-%D8%A7%D9%84%D8%AD%D9%83%D9%88%D9%85%D9%8A%D8%A9.webp" },
+    { "id": 3, "name": "المرور", "description": "تراخيص السيارات", "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQKzbUIuErNBGejUceChV6lcHLvbjLpaw-0LA&s" },
+    { "id": 4, "name": "التأمينات الاجتماعية", "description": "المعاشات والتأمين", "image": "https://via.placeholder.com/150" },
+    { "id": 5, "name": "السجل المدني", "description": "استخراج بطاقات وشهادات", "image": "https://via.placeholder.com/150" },
+    { "id": 6, "name": "مكتب التموين", "description": "خدمات الدعم والبطاقات", "image": "https://via.placeholder.com/150" },
+    { "id": 7, "name": "المرور", "description": "تراخيص السيارات", "image": "https://via.placeholder.com/150" },
+    { "id": 8, "name": "التأمينات الاجتماعية", "description": "المعاشات والتأمين", "image": "https://via.placeholder.com/150" }
+  ]
+}

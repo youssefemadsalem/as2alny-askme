@@ -1,4 +1,129 @@
+<!-- navbar -->
+<nav class="bg-white shadow-md px-6 py-4">
+  <div class="flex items-center justify-between">
+
+    <!-- اسم المنصة -->
+    <a
+      routerLink="/"
+      class="text-2xl font-bold text-blue-600 hover:text-blue-700 transition"
+    >
+      مصالح حكومية
+    </a>
+
+    <!-- اللينكات -->
+    <div class="flex gap-6 text-gray-700 font-medium">
+
+      <a
+        routerLink="/home"
+        routerLinkActive="text-blue-600 font-semibold"
+        class="hover:text-blue-600 transition"
+      >
+        الرئيسية
+      </a>
+
+      <a
+        routerLink="/login"
+        routerLinkActive="text-blue-600 font-semibold"
+        class="hover:text-blue-600 transition"
+      >
+        تسجيل الدخول
+      </a>
+
+      <a
+        routerLink="/register"
+        routerLinkActive="text-blue-600 font-semibold"
+        class="hover:text-blue-600 transition"
+      >
+        إنشاء حساب
+      </a>
+
+    </div>
+
+  </div>
+</nav>
 
 
-<p>home works!</p>
 
+
+<!-- Search bar -->
+<div class="flex justify-center mb-8 mt-8">
+  <div class="relative w-full max-w-md">
+
+    <!-- أيقونة البحث -->
+    <span class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400">
+      <i class="fa-solid fa-magnifying-glass"></i>
+    </span>
+
+    <!-- input -->
+    <input
+      type="text"
+      placeholder="ابحث عن خدمة عامة..."
+      class="w-full pl-12 pr-4 py-3 rounded-xl border border-gray-300
+             focus:ring-2 focus:ring-blue-400 outline-none text-center"
+      [(ngModel)]="searchTerm"
+      (input)="onSearch()"
+    />
+
+  </div>
+</div>
+
+
+<!-- الخدمات -->
+<div class="flex justify-center">
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+
+    @if (displayedServices.length > 0) {
+
+      @for (service of displayedServices; track service.id) {
+
+        <div class="bg-white p-5 rounded-2xl shadow hover:shadow-lg transition text-center">
+
+          <!-- Image -->
+<img
+  [src]="service.image"
+  class="w-full h-24 mx-auto mb-3 rounded-xl object-cover"
+  alt="service"
+/>
+
+          <!-- Name -->
+          <h3 class="font-semibold text-lg mb-4">
+            {{ service.name }}
+          </h3>
+          <p class="font-semibold text-lg mb-4">
+            {{ service.description }}
+          </p>
+
+          <!-- Buttons -->
+          <div class="flex justify-center gap-3">
+
+<button
+  [routerLink]="['/chatbot', service.id]"
+  class="btn-ai active:scale-95
+         transition-all duration-200
+         cursor-pointer shadow-md hover:shadow-lg">
+   AI
+</button>
+
+<button
+  [routerLink]="['/servicedetails', service.id]"
+  class="btn-primary active:scale-95
+         transition-all duration-200
+         cursor-pointer shadow-md hover:shadow-lg">
+  عرض التفاصيل
+</button>
+
+          </div>
+
+        </div>
+      }
+
+    } @else {
+
+      <div class="col-span-full text-center text-gray-500 py-10">
+        ❌ الخدمة غير موجودة
+      </div>
+
+    }
+
+  </div>
+</div>

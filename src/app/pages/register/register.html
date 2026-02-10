@@ -1,1 +1,168 @@
-<p>register works!</p>
+<style>
+  /* Consistency with Login Page Styles */
+  .min-h-screen {
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Background Blobs */
+  .min-h-screen::before,
+  .min-h-screen::after {
+    content: '';
+    position: absolute;
+    width: 450px;
+    height: 450px;
+    border-radius: 50%;
+    filter: blur(40px);
+    z-index: 0;
+    opacity: 0.35;
+  }
+
+  .min-h-screen::before {
+    background: radial-gradient(circle, var(--color-primary, #3b82f6), transparent);
+    top: -15%;
+    right: -10%; /* Swapped for variety in register page */
+  }
+
+  .min-h-screen::after {
+    background: radial-gradient(circle, var(--color-accent, #10b981), transparent);
+    bottom: -15%;
+    left: -10%;
+  }
+
+  /* Glow effects for the card */
+  .max-w-6xl::before,
+  .max-w-6xl::after {
+    content: '';
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    filter: blur(70px);
+    pointer-events: none;
+    z-index: -1;
+  }
+
+  .max-w-6xl::before {
+    background: var(--color-secondary, #1e293b);
+    top: -30px;
+    left: -30px;
+  }
+
+  .max-w-6xl::after {
+    background: var(--color-accent, #10b981);
+    bottom: -30px;
+    right: -30px;
+  }
+</style>
+
+<div
+  class="min-h-screen from-slate-50 via-primary/5 to-accent/5 flex items-center justify-center p-4 md:p-8 font-cairo"
+  dir="rtl"
+>
+  <div
+    class="relative w-full max-w-6xl bg-white/80 backdrop-blur-2xl rounded-[3.5rem] shadow-[0_25px_60px_rgba(0,0,0,0.12)] border border-white/50 flex flex-col md:flex-row overflow-hidden"
+  >
+    <div
+      class="flex flex-col justify-center items-center w-full md:w-5/12 p-8 bg-linear-to-br from-slate-50/50 to-transparent"
+    >
+      <img src="/images/logoo.png" class="object-contain h-48 md:h-64 w-64 mb-6" alt="Eyas AI" />
+      <div class="text-center space-y-2">
+        <h3 class="text-2xl font-bold text-secondary">أهلاً بك</h3>
+        <p class="text-slate-500 max-w-xs mx-auto">خطوات بسيطة وتكون جزء من التحول الرقمي المصري</p>
+      </div>
+    </div>
+
+    <div
+      class="hidden md:block w-px bg-linear-to-b from-transparent via-slate-200 to-transparent my-12"
+    ></div>
+
+    <div class="w-full md:w-7/12 p-8 md:p-14 flex flex-col justify-center">
+      <div class="mb-8 text-right">
+        <h2 class="text-4xl font-extrabold text-secondary mb-2">إنشاء حساب جديد</h2>
+        <p class="text-slate-500 font-medium">ابدأ رحلتك واستمتع بخدماتنا المتكاملة</p>
+      </div>
+
+      <form class="grid grid-cols-1 md:grid-cols-2 gap-5">
+        <div class="space-y-1.5 md:col-span-2">
+          <label class="block text-sm font-bold text-secondary pr-2">الاسم بالكامل</label>
+          <input
+            type="text"
+            placeholder="أدخل اسمك رباعي كما في البطاقة"
+            class="w-full px-5 py-3.5 rounded-2xl border border-slate-200 bg-white/50 focus:bg-white focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition-all placeholder:text-slate-300"
+          />
+        </div>
+
+        <div class="space-y-1.5">
+          <label class="block text-sm font-bold text-secondary pr-2">الرقم القومي</label>
+          <input
+            type="text"
+            maxlength="14"
+            placeholder="14 رقم"
+            class="w-full px-5 py-3.5 rounded-2xl border border-slate-200 bg-white/50 focus:bg-white focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition-all placeholder:text-slate-300"
+          />
+        </div>
+
+        <div class="space-y-1.5">
+          <label class="block text-sm font-bold text-secondary pr-2">رقم الهاتف</label>
+          <input
+            type="tel"
+            placeholder="01xxxxxxxxx"
+            class="w-full px-5 py-3.5 rounded-2xl border border-slate-200 bg-white/50 focus:bg-white focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition-all placeholder:text-slate-300"
+          />
+        </div>
+
+        <div class="space-y-1.5 md:col-span-2">
+          <label class="block text-sm font-bold text-secondary pr-2">البريد الإلكتروني</label>
+          <input
+            type="email"
+            placeholder="mail@example.com"
+            class="w-full px-5 py-3.5 rounded-2xl border border-slate-200 bg-white/50 focus:bg-white focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition-all placeholder:text-slate-300"
+          />
+        </div>
+
+        <div class="space-y-1.5">
+          <label class="block text-sm font-bold text-secondary pr-2">كلمة المرور</label>
+          <input
+            type="password"
+            placeholder="********"
+            class="w-full px-5 py-3.5 rounded-2xl border border-slate-200 bg-white/50 focus:bg-white focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition-all placeholder:text-slate-300"
+          />
+        </div>
+
+        <div class="space-y-1.5">
+          <label class="block text-sm font-bold text-secondary pr-2">تأكيد كلمة المرور</label>
+          <input
+            type="password"
+            placeholder="********"
+            class="w-full px-5 py-3.5 rounded-2xl border border-slate-200 bg-white/50 focus:bg-white focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition-all placeholder:text-slate-300"
+          />
+        </div>
+
+        <div class="md:col-span-2 pt-4">
+          <button
+            type="submit"
+            class="w-full py-4 bg-linear-to-l from-secondary via-accent to-primary text-white font-bold text-lg rounded-2xl shadow-xl hover:shadow-primary/30 hover:scale-[1.01] active:scale-[0.98] transition-all cursor-pointer"
+          >
+            إنشاء الحساب
+          </button>
+        </div>
+      </form>
+
+      <div class="mt-8 text-center">
+        <p class="text-slate-600 font-medium">
+          لديك حساب بالفعل؟
+          <a routerLink="/login" class="text-primary font-bold hover:underline mr-1 cursor-pointer"
+            >تسجيل الدخول</a
+          >
+        </p>
+      </div>
+
+      <div class="mt-8 text-center border-t border-slate-100 pt-6">
+        <p class="text-slate-400 text-xs font-medium italic">
+          بإنشاء حسابك، أنت توافق على شروط الاستخدام وسياسة الخصوصية
+        </p>
+      </div>
+    </div>
+  </div>
+</div>

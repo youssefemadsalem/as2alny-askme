@@ -1,9 +1,8 @@
 <style>
   /* We target the main wrapper and the inner container using their existing classes */
-
   .min-h-screen {
     position: relative;
-    overflow: hidden; /* Keeps the blobs from causing scrollbars */
+    overflow: hidden;
   }
 
   /* Background Blobs */
@@ -20,18 +19,18 @@
   }
 
   .min-h-screen::before {
-    background: radial-gradient(circle, var(--color-primary), transparent); /* Primary color glow */
+    background: radial-gradient(circle, var(--color-primary, #3b82f6), transparent);
     top: -10%;
     left: -10%;
   }
 
   .min-h-screen::after {
-    background: radial-gradient(circle, var(--color-accent), transparent); /* Accent color glow */
+    background: radial-gradient(circle, var(--color-accent, #10b981), transparent);
     bottom: -10%;
     right: -10%;
   }
 
-  /* Corner Tips Glow (on the card itself) */
+  /* Corner Tips Glow */
   .max-w-5xl::before,
   .max-w-5xl::after {
     content: '';
@@ -40,20 +39,18 @@
     height: 150px;
     border-radius: 50%;
     filter: blur(60px);
-    pointer-events: none; /* Allows clicking through to the form */
+    pointer-events: none;
     z-index: -1;
   }
 
-  /* Top Right Tip */
   .max-w-5xl::before {
-    background: var(--color-secondary);
+    background: var(--color-secondary, #1e293b);
     top: -20px;
     right: -20px;
   }
 
-  /* Bottom Left Tip */
   .max-w-5xl::after {
-    background: var(--color-primary);
+    background: var(--color-primary, #3b82f6);
     bottom: -20px;
     left: -20px;
   }
@@ -61,6 +58,7 @@
 
 <div
   class="min-h-screen from-slate-50 via-accent/5 to-primary/5 flex items-center justify-center p-6 font-cairo"
+  dir="rtl"
 >
   <div
     class="relative w-full max-w-5xl bg-white/80 backdrop-blur-xl rounded-[3rem] shadow-[0_20px_50px_rgba(0,0,0,0.1)] border border-white flex flex-col md:flex-row-reverse overflow-hidden"
@@ -69,45 +67,63 @@
       <img src="/images/logoo.png" class="object-contain h-64 md:h-80 w-80" alt="Eyas AI" />
     </div>
 
-    <div class="hidden md:block w-px from-transparent via-slate-200 to-transparent my-16"></div>
+    <div
+      class="hidden md:block w-px bg-linear-to-b from-transparent via-slate-200 to-transparent my-16"
+    ></div>
 
     <div class="w-full md:w-1/2 p-10 md:p-16 flex flex-col justify-center">
       <div class="mb-10 text-right">
-        <h2 class="text-4xl font-extrabold text-secondary mb-3">سجل الآن</h2>
+        <h2 class="text-4xl font-extrabold text-secondary mb-3">تسجيل الدخول</h2>
         <p class="text-slate-500 text-lg font-medium">كل الخدمات الحكومية المصرية تحت ايدك</p>
       </div>
 
       <form class="space-y-6">
         <div class="space-y-2">
-          <label class="block text-sm font-bold text-secondary pr-2">الاسم</label>
-          <input
-            type="text"
-            name="name"
-            class="w-full px-5 py-4 rounded-2xl border border-slate-200 bg-white/50 focus:bg-white focus:ring-4 focus:ring-accent/10 focus:border-accent outline-none transition-all placeholder:text-slate-300"
-            placeholder="أدخل اسمك الكامل"
-          />
-        </div>
-
-        <div class="space-y-2">
           <label class="block text-sm font-bold text-secondary pr-2">البريد الالكتروني</label>
           <input
             type="email"
             name="email"
-            class="w-full px-5 py-4 rounded-2xl border border-slate-200 bg-white/50 focus:bg-white focus:ring-4 focus:ring-accent/10 focus:border-accent outline-none transition-all placeholder:text-slate-300"
+            class="w-full px-5 py-4 rounded-2xl border border-slate-200 bg-white/50 focus:bg-white focus:ring-4 focus:ring-accent/10 focus:border-accent outline-none transition-all placeholder:text-slate-300 text-right"
             placeholder="mail@example.com"
+          />
+        </div>
+
+        <div class="space-y-2">
+          <div class="flex justify-between items-center px-2">
+            <label class="block text-sm font-bold text-secondary">كلمة المرور</label>
+            <a
+              routerLink="/forgetpassword"
+              class="text-xs font-bold text-accent hover:text-primary transition-colors"
+              >نسيت كلمة المرور؟</a
+            >
+          </div>
+          <input
+            type="password"
+            name="password"
+            class="w-full px-5 py-4 rounded-2xl border border-slate-200 bg-white/50 focus:bg-white focus:ring-4 focus:ring-accent/10 focus:border-accent outline-none transition-all placeholder:text-slate-300 text-right"
+            placeholder="********"
           />
         </div>
 
         <button
           type="submit"
-          class="w-full py-4 mt-4 bg-gradient-to-l from-secondary via-accent to-primary text-white font-bold text-lg rounded-2xl shadow-xl hover:shadow-accent/30 hover:scale-[1.01] active:scale-[0.98] transition-all cursor-pointer"
+          class="w-full py-4 mt-4 bg-linear-to-l from-secondary via-accent to-primary text-white font-bold text-lg rounded-2xl shadow-xl hover:shadow-accent/30 hover:scale-[1.01] active:scale-[0.98] transition-all cursor-pointer"
         >
-          سجل الآن
+          دخول
         </button>
       </form>
 
-      <div class="mt-12 text-center">
-        <p class="text-slate-400 text-sm font-medium">
+      <div class="mt-8 text-center">
+        <p class="text-slate-600 font-medium">
+          أول مرة هنا؟
+          <a routerLink="/register" class="text-primary font-bold hover:underline mr-1"
+            >سجل حساب جديد الآن</a
+          >
+        </p>
+      </div>
+
+      <div class="mt-12 text-center border-slate-100 pt-8">
+        <p class="text-slate-400 text-sm font-medium italic">
           بلدك بين إيدك.. تكنولوجيا مصرية لخدمة المصريين
         </p>
       </div>

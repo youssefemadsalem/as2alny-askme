@@ -25,6 +25,17 @@ export const routes: Routes = [
         loadComponent: () => import('../app/pages/register/register').then((c) => c.Register),
         title: 'register',
       },
+      {
+        path: 'submitconfirmationcode',
+        loadComponent: () => import('../app/pages/otp/otp').then((c) => c.Otp),
+        title: 'submitcode',
+      },
+      {
+        path: 'resetpassword',
+        loadComponent: () =>
+          import('../app/pages/resetpassword/resetpassword').then((c) => c.Resetpassword),
+        title: 'resetpassword',
+      },
     ],
   },
 

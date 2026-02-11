@@ -1,1 +1,73 @@
-<p>request-service-form works!</p>
+<div class="container pt-4">
+  <div class="max-w-2xl mx-auto bg-white rounded-3xl shadow-md p-8 mt-12 mb-20">
+
+    <h2 class="text-2xl font-bold text-blue-950 mb-6 text-center">
+      طلب إضافة خدمة جديدة
+    </h2>
+
+    <!-- الفورم مربوط بالـ FormGroup -->
+    <form [formGroup]="form" class="space-y-5" (ngSubmit)="submit()">
+
+      <!-- الاسم بالكامل -->
+      <input
+        type="text"
+        formControlName="fullName"
+        placeholder="الاسم بالكامل"
+        class="w-full p-3 border rounded-xl border-gray-300
+               focus:outline-none focus:ring-2 focus:ring-teal-400 focus:border-teal-400"
+        required
+      />
+
+      <!-- الرقم القومي -->
+      <input
+        type="text"
+        formControlName="nationalId"
+        placeholder="الرقم القومي"
+        maxlength="14"
+        class="w-full p-3 border rounded-xl border-gray-300
+               focus:outline-none focus:ring-2 focus:ring-teal-400 focus:border-teal-400"
+        required
+      />
+
+      <!-- رسالة الخطأ -->
+      <p *ngIf="form.get('nationalId')?.invalid && form.get('nationalId')?.touched"
+         class="text-red-500 text-sm">
+        الرقم القومي يجب أن يكون 14 رقم
+      </p>
+
+      <!-- اسم الخدمة المطلوبة -->
+      <input
+        type="text"
+        formControlName="serviceName"
+        placeholder="اسم الخدمة المطلوبة"
+        class="w-full p-3 border rounded-xl border-gray-300
+               focus:outline-none focus:ring-2 focus:ring-teal-400 focus:border-teal-400"
+        required
+      />
+      <p *ngIf="form.get('serviceName')?.invalid && form.get('serviceName')?.touched"
+     class="text-red-500 text-sm">
+      الرجاء إدخال اسم الخدمة المطلوبة
+     </p>
+
+      <!-- وصف الخدمة -->
+      <textarea
+        formControlName="description"
+        rows="4"
+        placeholder="اكتب وصف مختصر للخدمة التي تبحث عنها"
+        class="w-full p-3 border rounded-xl border-gray-300
+               focus:outline-none focus:ring-2 focus:ring-teal-400 focus:border-teal-400"
+      ></textarea>
+
+      <!-- زر الإرسال -->
+      <button
+        type="submit"
+        [disabled]="form.invalid"
+        class="w-full bg-teal-600 hover:bg-teal-700 text-white py-3 rounded-xl transition lg:w-sm"
+      >
+        إرسال الطلب
+      </button>
+
+    </form>
+
+  </div>
+</div>

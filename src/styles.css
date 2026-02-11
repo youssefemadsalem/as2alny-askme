@@ -1,10 +1,25 @@
 /* You can add global styles to this file, and also import other style files */
 
 body {
-  font-family: 'Dosis', sans-serif;
+  font-family: 'Tajawal', sans-serif;
 }
 .btn-primary {
   @apply px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition;
+}
+
+/* .main-color{
+  @apply text-blue-600;
+}
+.secondary-color{
+  @apply text-gray-500;
+} */
+
+@theme{
+  --color-primary: #09c;
+}
+
+.gradent{
+  @apply bg-gradient-to-r from-[#23445a] via-[#2f6f85] to-[#6fa3a6] text-white;
 }
 
 .btn-ai {

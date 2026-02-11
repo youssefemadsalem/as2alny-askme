@@ -1,129 +1,138 @@
-<!-- navbar -->
-<nav class="bg-white shadow-md px-6 py-4">
-  <div class="flex items-center justify-between">
+<div class="relative min-h-screen overflow-hidden
+            bg-linear-to-br from-[#cae7fa] via-[#c6e7f3] to-[#a4cbcd]">
 
-    <!-- اسم المنصة -->
-    <a
-      routerLink="/"
-      class="text-2xl font-bold text-blue-600 hover:text-blue-700 transition"
-    >
-      مصالح حكومية
-    </a>
+  <!-- خلفيات البلور -->
+  <div class="absolute inset-0 -z-10 pointer-events-none">
 
-    <!-- اللينكات -->
-    <div class="flex gap-6 text-gray-700 font-medium">
+    <div class="absolute -top-40 -right-40 w-125 h-125
+                bg-[#c1dde9] rounded-full blur-[160px] opacity-70"></div>
 
-      <a
-        routerLink="/home"
-        routerLinkActive="text-blue-600 font-semibold"
-        class="hover:text-blue-600 transition"
-      >
-        الرئيسية
-      </a>
+    <div class="absolute -bottom-52 -left-52 w-125 h-125
+                bg-[#d4a643] rounded-full blur-[180px] opacity-70"></div>
 
-      <a
-        routerLink="/login"
-        routerLinkActive="text-blue-600 font-semibold"
-        class="hover:text-blue-600 transition"
-      >
-        تسجيل الدخول
-      </a>
+    <div class="absolute top-1/3 left-1/3 w-100 h-100
+                bg-[#eaf4f5] rounded-full blur-[150px] opacity-60"></div>
 
-      <a
-        routerLink="/register"
-        routerLinkActive="text-blue-600 font-semibold"
-        class="hover:text-blue-600 transition"
-      >
-        إنشاء حساب
-      </a>
+  </div>
 
+  <div class="relative min-h-screen">
+
+  <!-- الجزء العلوي: تدرج لوني 150px من اليمين للشمال -->
+  <div class="h-60.5 bg-linear-to-l from-[#23445a] via-[#4c8aa1] to-[#bbe3e5] absolute top-0 left-0 w-full z-0">
+
+    <!-- خلفيات البلور (اختياري) -->
+    <div class="absolute inset-0 -z-10 pointer-events-none">
+      <div class="absolute -top-10 -right-10 w-40 h-40 bg-[#23445a] rounded-full blur-[80px] opacity-70"></div>
+      <div class="absolute -bottom-10 -left-10 w-40 h-40 bg-[#bd8e2e] rounded-full blur-[100px] opacity-60"></div>
+    </div>
+  </div>
+
+  <!-- المحتوى: البحث والخدمات -->
+  <div class="relative z-10 pt-22 mb-40">
+
+    <!-- search -->
+    <div class="max-w-7xl mx-auto flex justify-center mb-6 px-4 md:px-8">
+      <div class="relative w-full max-w-xl group">
+
+        <span class="absolute left-5 md:left-6 top-1/2 -translate-y-1/2
+                     text-gray-400 group-focus-within:text-[#2da5a2]
+                     transition text-lg md:text-xl">
+          <i class="fa-solid fa-magnifying-glass"></i>
+        </span>
+
+<input
+  type="text"
+  placeholder="ابحث عن خدمة عامة..."
+  class="w-full pl-12 md:pl-14 pr-4 md:pr-6 py-2.5 md:py-3
+         rounded-full bg-white shadow-xl shadow-gray-200/40
+         focus:ring-2 focus:ring-[#2da5a2] outline-none
+         text-center text-base md:text-lg transition"
+  [(ngModel)]="searchTerm"
+  (input)="onSearch()"
+/>
+
+
+      </div>
     </div>
 
+    <!-- الخدمات -->
+    <div class="max-w-6xl mx-auto px-6 md:px-12 lg:px-16 pb-24">
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2">
+
+        @if (displayedServices.length > 0) {
+          @for (service of displayedServices; track service.id) {
+
+            <div class="bg-white p-2 rounded-xl border border-gray-100
+                        shadow-sm hover:shadow-2xl transition group flex flex-col">
+
+              <div class="overflow-hidden rounded-xl aspect-4/3 md:h-44">
+
+                <img
+                  [src]="service.image"
+                  class="w-full h-full object-cover
+                         group-hover:scale-105 transition duration-700"
+                  alt="service"
+                />
+
+              </div>
+
+              <div class="p-2 flex flex-col grow text-right">
+
+                <h3 class="text-xl md:text-2xl font-black text-[#1f4c6a] mb-1">
+                  {{ service.name }}
+                </h3>
+
+                <p class="text-gray-400 text-sm leading-relaxed grow mb-3">
+                  {{ service.description }}
+                </p>
+
+                <div class="flex gap-1 mt-auto">
+
+                  <button
+                    [routerLink]="['/chatbot', service.id]"
+                    class="flex-1 bg-[#3bcbc6] text-white py-2 rounded-xl font-bold
+                           hover:bg-[#248d8a] active:scale-95 transition shadow-md">
+                    اسألني
+                  </button>
+
+                  <button
+                    [routerLink]="['/servicedetails', service.id]"
+                    class="flex-1 bg-[#135784] text-white py-2 rounded-xl font-bold
+                           hover:bg-[#23445a] active:scale-95 transition shadow-md">
+                    المزيد
+                  </button>
+
+                </div>
+
+              </div>
+            </div>
+          }
+        } @else {
+
+<div class="col-span-full text-center py-18 px-14 bg-white/40 backdrop-blur-sm
+            rounded-2xl border border-dashed border-gray-200 max-w-md mx-auto">
+
+  <div class="text-xl font-bold text-gray-700 mb-2">
+    الخدمة غير موجودة
   </div>
-</nav>
 
+  <a
+    routerLink="/requestnewservice"
+    class="inline-block bg-[#112a2a] text-white px-6 py-2 rounded-full font-bold text-sm">
+    أضف الخدمة الآن
+  </a>
 
-
-
-<!-- Search bar -->
-<div class="flex justify-center mb-8 mt-8">
-  <div class="relative w-full max-w-md">
-
-    <!-- أيقونة البحث -->
-    <span class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400">
-      <i class="fa-solid fa-magnifying-glass"></i>
-    </span>
-
-    <!-- input -->
-    <input
-      type="text"
-      placeholder="ابحث عن خدمة عامة..."
-      class="w-full pl-12 pr-4 py-3 rounded-xl border border-gray-300
-             focus:ring-2 focus:ring-blue-400 outline-none text-center"
-      [(ngModel)]="searchTerm"
-      (input)="onSearch()"
-    />
-
-  </div>
 </div>
 
 
-<!-- الخدمات -->
-<div class="flex justify-center">
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        }
 
-    @if (displayedServices.length > 0) {
-
-      @for (service of displayedServices; track service.id) {
-
-        <div class="bg-white p-5 rounded-2xl shadow hover:shadow-lg transition text-center">
-
-          <!-- Image -->
-<img
-  [src]="service.image"
-  class="w-full h-24 mx-auto mb-3 rounded-xl object-cover"
-  alt="service"
-/>
-
-          <!-- Name -->
-          <h3 class="font-semibold text-lg mb-4">
-            {{ service.name }}
-          </h3>
-          <p class="font-semibold text-lg mb-4">
-            {{ service.description }}
-          </p>
-
-          <!-- Buttons -->
-          <div class="flex justify-center gap-3">
-
-<button
-  [routerLink]="['/chatbot', service.id]"
-  class="btn-ai active:scale-95
-         transition-all duration-200
-         cursor-pointer shadow-md hover:shadow-lg">
-   AI
-</button>
-
-<button
-  [routerLink]="['/servicedetails', service.id]"
-  class="btn-primary active:scale-95
-         transition-all duration-200
-         cursor-pointer shadow-md hover:shadow-lg">
-  عرض التفاصيل
-</button>
-
-          </div>
-
-        </div>
-      }
-
-    } @else {
-
-      <div class="col-span-full text-center text-gray-500 py-10">
-        ❌ الخدمة غير موجودة
       </div>
-
-    }
-
+    </div>
   </div>
+
+  <!-- خلفية موحدة أسفل المحتوى -->
+  <div class="absolute top-37.5 left-0 w-full bottom-0 bg-[#6fa3a6] -z-20"></div>
+
 </div>

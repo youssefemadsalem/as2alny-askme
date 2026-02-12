@@ -1,1 +1,139 @@
-<p>request-service-form works!</p>
+<style>
+  /* We target the main wrapper and the inner container using their existing classes */
+  .min-h-screen {
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Background Blobs */
+  .min-h-screen::before,
+  .min-h-screen::after {
+    content: '';
+    position: absolute;
+    width: 400px;
+    height: 400px;
+    border-radius: 50%;
+    filter: blur(30px);
+    z-index: 0;
+    opacity: 0.4;
+  }
+
+  .min-h-screen::before {
+    background: radial-gradient(circle, var(--color-primary, #3b82f6), transparent);
+    top: -10%;
+    left: -10%;
+  }
+
+  .min-h-screen::after {
+    background: radial-gradient(circle, var(--color-accent, #10b981), transparent);
+    bottom: -10%;
+    right: -10%;
+  }
+
+  /* Corner Tips Glow */
+  .max-w-5xl::before,
+  .max-w-5xl::after {
+    content: '';
+    position: absolute;
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    filter: blur(60px);
+    pointer-events: none;
+    z-index: -1;
+  }
+
+  .max-w-5xl::before {
+    background: var(--color-secondary, #1e293b);
+    top: -20px;
+    right: -20px;
+  }
+
+  .max-w-5xl::after {
+    background: var(--color-primary, #3b82f6);
+    bottom: -20px;
+    left: -20px;
+  }
+</style>
+
+<div
+  class="min-h-screen bg-slate-50 flex items-center justify-center px-6 pb-12 pt-28 md:pt-28 font-cairo"
+>
+  <div class="relative w-full max-w-2xl z-10">
+    <div
+      class="bg-white/80 backdrop-blur-xl rounded-[2.5rem] shadow-[0_20px_50px_rgba(0,0,0,0.1)] border border-white p-8 md:p-12"
+    >
+      <div class="text-center">
+        <h2 class="text-3xl md:text-4xl font-extrabold text-secondary mb-3">
+          طلب إضافة خدمة جديدة
+        </h2>
+        <p class="text-slate-500 font-medium">لم تجد ما تبحث عنه؟ املأ البيانات وسنقوم بإضافتها</p>
+      </div>
+
+      <form [formGroup]="form" (ngSubmit)="submit()" class="space-y-6">
+        <div class="space-y-2">
+          <label class="block text-sm font-bold text-secondary pr-2">الاسم بالكامل</label>
+          <div class="relative">
+            <input
+              type="text"
+              formControlName="fullName"
+              placeholder="اكتب اسمك هنا..."
+              class="w-full px-5 py-4 rounded-2xl border border-slate-200 bg-white/50 focus:bg-white focus:ring-4 focus:ring-accent/10 focus:border-accent outline-none transition-all placeholder:text-slate-300 text-secondary"
+            />
+          </div>
+        </div>
+
+        <div class="space-y-2">
+          <label class="block text-sm font-bold text-secondary pr-2">الرقم القومي</label>
+          <input
+            type="text"
+            formControlName="nationalId"
+            placeholder="14 رقم"
+            maxlength="14"
+            class="w-full px-5 py-4 rounded-2xl border border-slate-200 bg-white/50 focus:bg-white focus:ring-4 focus:ring-accent/10 focus:border-accent outline-none transition-all placeholder:text-slate-300 text-secondary"
+          />
+          @if (form.get('nationalId')?.invalid && form.get('nationalId')?.touched) {
+            <p class="text-rose-500 text-xs font-bold pr-2 flex items-center gap-1">
+              <i class="fa-solid fa-circle-exclamation"></i>
+              الرقم القومي يجب أن يكون 14 رقم
+            </p>
+          }
+        </div>
+
+        <div class="space-y-2">
+          <label class="block text-sm font-bold text-secondary pr-2">اسم الخدمة المطلوبة</label>
+          <input
+            type="text"
+            formControlName="serviceName"
+            placeholder="مثال: تجديد رخصة قيادة"
+            class="w-full px-5 py-4 rounded-2xl border border-slate-200 bg-white/50 focus:bg-white focus:ring-4 focus:ring-accent/10 focus:border-accent outline-none transition-all placeholder:text-slate-300 text-secondary"
+          />
+          @if (form.get('serviceName')?.invalid && form.get('serviceName')?.touched) {
+            <p class="text-rose-500 text-xs font-bold pr-2 flex items-center gap-1">
+              <i class="fa-solid fa-circle-exclamation"></i>
+              الرجاء إدخال اسم الخدمة المطلوبة
+            </p>
+          }
+        </div>
+
+        <div class="space-y-2">
+          <label class="block text-sm font-bold text-secondary pr-2">وصف الخدمة</label>
+          <textarea
+            formControlName="description"
+            rows="4"
+            placeholder="اشرح لنا تفاصيل أكثر عن الخدمة التي تحتاجها..."
+            class="w-full px-5 py-4 rounded-2xl border border-slate-200 bg-white/50 focus:bg-white focus:ring-4 focus:ring-accent/10 focus:border-accent outline-none transition-all placeholder:text-slate-300 text-secondary resize-none"
+          ></textarea>
+        </div>
+
+        <button
+          type="submit"
+          [disabled]="form.invalid"
+          class="w-full py-4 mt-6 bg-linear-to-l from-secondary via-accent to-primary text-white font-bold text-lg rounded-2xl shadow-xl hover:shadow-accent/30 hover:scale-[1.01] active:scale-[0.98] transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 disabled:shadow-none"
+        >
+          إرسال الطلب
+        </button>
+      </form>
+    </div>
+  </div>
+</div>

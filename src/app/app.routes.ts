@@ -49,7 +49,7 @@ export const routes: Routes = [
         title: 'Home',
       },
       {
-        path: 'chatbot',
+        path: 'chatbot/:id',
         loadComponent: () => import('../app/pages/chat-bot/chat-bot').then((c) => c.ChatBot),
         title: 'chatbot',
       },

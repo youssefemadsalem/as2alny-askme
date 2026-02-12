@@ -19,7 +19,7 @@ body {
 }
 
 .gradent{
-  @apply bg-gradient-to-r from-[#23445a] via-[#2f6f85] to-[#6fa3a6] text-white;
+  @apply bg-linear-to-r from-[#23445a] via-[#2f6f85] to-[#6fa3a6] text-white;
 }
 
 .btn-ai {

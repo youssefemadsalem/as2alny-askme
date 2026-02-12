@@ -14,15 +14,15 @@
 }
 
 .loading-screen video {
-  max-width: 500px; /* responsive width */
-  max-height: 500px; /* responsive height */
+  max-width: 500px;
+  max-height: 500px;
   width: 100%;
   height: auto;
 }
 
 .fade-out {
   opacity: 0;
-  pointer-events: none; /* عشان الموقع يشتغل بعد اللود */
+  pointer-events: none;
 }
 @media (max-width: 600px) {
   .loading-screen video {

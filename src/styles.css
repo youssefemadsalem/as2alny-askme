@@ -19,3 +19,19 @@
 .btn-ai {
   @apply px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition;
 }
+
+@layer utilities {
+  @keyframes gradient-x {
+    0% {
+      background-position: 0% 50%;
+    }
+    100% {
+      background-position: 100% 50%;
+    }
+  }
+
+  .animate-gradient-x {
+    background-size: 200% 200%;
+    animation: gradient-x 3s ease infinite;
+  }
+}

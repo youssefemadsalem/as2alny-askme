@@ -90,8 +90,22 @@
           @if (loginform.get('email')?.invalid && loginform.get('email')?.touched) {
             <p class="text-rose-500 text-xs font-bold pr-2 flex items-center gap-1">
               <i class="fa-solid fa-circle-exclamation"></i>
-              الايمل غير صحيح
+              الايميل غير صحيح
             </p>
+            <ul class="mt-1.5 list-disc list-inside">
+              @if (loginform.get('email')?.getError('required')) {
+                <p class="text-rose-500 text-xs font-bold pr-2 flex items-center gap-1">
+                  <i class="fa-solid"></i>
+                  عليك انت تكتب الايميل
+                </p>
+              }
+              @if (loginform.get('email')?.getError('email')) {
+                <p class="text-rose-500 text-xs font-bold pr-2 flex items-center gap-1">
+                  <i class="fa-solid"></i>
+                  الايمل عليه ان يكون هكذا :Example@gmail.com
+                </p>
+              }
+            </ul>
           }
         </div>
 
@@ -135,9 +149,9 @@
 
         <button
           (click)="login()"
-          [disabled]="isLoading()"
+          [disabled]="loginform.invalid"
           [class.animate-gradient-x]="isLoading()"
-          class="w-full py-4 mt-4 text-white font-bold text-lg rounded-2xl shadow-xl bg-linear-to-l from-secondary via-accent to-primary hover:shadow-accent/30 hover:scale-[1.01] active:scale-[0.98] transition-all cursor-pointer"
+          class="w-full py-4 mt-4 text-white font-bold text-lg rounded-2xl shadow-xl bg-linear-to-l from-secondary via-accent to-primary hover:shadow-accent/30 hover:scale-[1.01] active:scale-[0.98] transition-all cursor-pointer disabled:grayscale-75 disabled:pointer-events-none"
         >
           @if (isLoading()) {
             جاري التحميل...

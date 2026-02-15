@@ -20,4 +20,8 @@ export class Auth {
   sighin(data: object): Observable<any> {
     return this._HttpClient.post(`https://isalny-backend.vercel.app/api/v1/auth/login`, data);
   }
+
+  sighup(data: object): Observable<any> {
+    return this._HttpClient.post(`https://isalny-backend.vercel.app/api/v1/auth/register`, data);
+  }
 }

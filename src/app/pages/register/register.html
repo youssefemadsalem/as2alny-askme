@@ -83,24 +83,70 @@
         <p class="text-slate-500 font-medium">ابدأ رحلتك واستمتع بخدماتنا المتكاملة</p>
       </div>
 
-      <form class="grid grid-cols-1 md:grid-cols-2 gap-5">
+      <form
+        class="grid grid-cols-1 md:grid-cols-2 gap-5"
+        [formGroup]="registerForm"
+        (ngSubmit)="register()"
+      >
         <div class="space-y-1.5 md:col-span-2">
           <label class="block text-sm font-bold text-secondary pr-2">الاسم بالكامل</label>
           <input
+            formControlName="name"
             type="text"
             placeholder="أدخل اسمك رباعي كما في البطاقة"
             class="w-full px-5 py-3.5 rounded-2xl border border-slate-200 bg-white/50 focus:bg-white focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition-all placeholder:text-slate-300"
           />
+          @if (registerForm.get('name')?.invalid && registerForm.get('name')?.touched) {
+            <p class="text-rose-500 text-xs font-bold pr-2 flex items-center gap-1">
+              <i class="fa-solid fa-circle-exclamation"></i>
+              الاسم غير صحيح
+            </p>
+            <ul class="mt-1.5 list-disc list-inside">
+              @if (registerForm.get('name')?.getError('required')) {
+                <p class="text-rose-500 text-xs font-bold pr-2 flex items-center gap-1">
+                  <i class="fa-solid"></i>
+                  عليك انت تكتب الاسم
+                </p>
+              }
+              @if (registerForm.get('name')?.getError('pattern')) {
+                <p class="text-rose-500 text-xs font-bold pr-2 flex items-center gap-1">
+                  <i class="fa-solid"></i>
+                  عليك ان تكتب الاسم كامل رباعي كما في البطاقه
+                </p>
+              }
+            </ul>
+          }
         </div>
 
         <div class="space-y-1.5">
           <label class="block text-sm font-bold text-secondary pr-2">الرقم القومي</label>
           <input
+            formControlName="nationalId"
             type="text"
             maxlength="14"
             placeholder="14 رقم"
             class="w-full px-5 py-3.5 rounded-2xl border border-slate-200 bg-white/50 focus:bg-white focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition-all placeholder:text-slate-300"
           />
+          @if (registerForm.get('nationalId')?.invalid && registerForm.get('nationalId')?.touched) {
+            <p class="text-rose-500 text-xs font-bold pr-2 flex items-center gap-1">
+              <i class="fa-solid fa-circle-exclamation"></i>
+              رقم البطاقة غير صحيح
+            </p>
+            <ul class="mt-1.5 list-disc list-inside">
+              @if (registerForm.get('nationalId')?.getError('required')) {
+                <p class="text-rose-500 text-xs font-bold pr-2 flex items-center gap-1">
+                  <i class="fa-solid"></i>
+                  عليك انت تكتب 14 رقم الذي يوجد في بطاقه
+                </p>
+              }
+              @if (registerForm.get('nationalId')?.getError('pattern')) {
+                <p class="text-rose-500 text-xs font-bold pr-2 flex items-center gap-1">
+                  <i class="fa-solid"></i>
+                  عليك انت تكتب 14 رقم الذي يوجد في بطاقه
+                </p>
+              }
+            </ul>
+          }
         </div>
 
         <div class="space-y-1.5">
@@ -108,44 +154,129 @@
           <input
             type="tel"
             placeholder="01xxxxxxxxx"
+            formControlName="phoneNumber"
             class="w-full px-5 py-3.5 rounded-2xl border border-slate-200 bg-white/50 focus:bg-white focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition-all placeholder:text-slate-300"
           />
+          @if (
+            registerForm.get('phoneNumber')?.invalid && registerForm.get('phoneNumber')?.touched
+          ) {
+            <p class="text-rose-500 text-xs font-bold pr-2 flex items-center gap-1">
+              <i class="fa-solid fa-circle-exclamation"></i>
+              رقم التليفون خطأ
+            </p>
+            <ul class="mt-1.5 list-disc list-inside">
+              @if (registerForm.get('phoneNumber')?.getError('required')) {
+                <p class="text-rose-500 text-xs font-bold pr-2 flex items-center gap-1">
+                  <i class="fa-solid"></i>
+                  عليك انت تكتب 11 رقم خاص بهاتفك
+                </p>
+              }
+              @if (registerForm.get('phoneNumber')?.getError('pattern')) {
+                <p class="text-rose-500 text-xs font-bold pr-2 flex items-center gap-1">
+                  <i class="fa-solid"></i>
+                  يجب علي رقم ان يبدا بي 010 او 011 او012 او015 و يكون 11 رقم
+                </p>
+              }
+            </ul>
+          }
         </div>
 
         <div class="space-y-1.5 md:col-span-2">
           <label class="block text-sm font-bold text-secondary pr-2">البريد الإلكتروني</label>
           <input
             type="email"
+            formControlName="email"
             placeholder="mail@example.com"
             class="w-full px-5 py-3.5 rounded-2xl border border-slate-200 bg-white/50 focus:bg-white focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition-all placeholder:text-slate-300"
           />
+          @if (registerForm.get('email')?.invalid && registerForm.get('email')?.touched) {
+            <p class="text-rose-500 text-xs font-bold pr-2 flex items-center gap-1">
+              <i class="fa-solid fa-circle-exclamation"></i>
+              الايميل غير صحيح
+            </p>
+            <ul class="mt-1.5 list-disc list-inside">
+              @if (registerForm.get('email')?.getError('required')) {
+                <p class="text-rose-500 text-xs font-bold pr-2 flex items-center gap-1">
+                  <i class="fa-solid"></i>
+                  عليك انت تكتب الايميل
+                </p>
+              }
+              @if (registerForm.get('email')?.getError('email')) {
+                <p class="text-rose-500 text-xs font-bold pr-2 flex items-center gap-1">
+                  <i class="fa-solid"></i>
+                  الايمل عليه ان يكون هكذا :Example@gmail.com
+                </p>
+              }
+            </ul>
+          }
         </div>
 
         <div class="space-y-1.5">
           <label class="block text-sm font-bold text-secondary pr-2">كلمة المرور</label>
           <input
             type="password"
+            formControlName="password"
             placeholder="********"
             class="w-full px-5 py-3.5 rounded-2xl border border-slate-200 bg-white/50 focus:bg-white focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition-all placeholder:text-slate-300"
           />
+          @if (registerForm.get('password')?.invalid && registerForm.get('password')?.touched) {
+            <p class="text-rose-500 text-xs font-bold pr-2 flex items-center gap-1">
+              <i class="fa-solid fa-circle-exclamation"></i>
+              باسورد غير صحيح
+            </p>
+            <ul class="mt-1.5 list-disc list-inside">
+              @if (registerForm.get('password')?.getError('required')) {
+                <p class="text-rose-500 text-xs font-bold pr-2 flex items-center gap-1">
+                  <i class="fa-solid"></i>
+                  عليك انت تكتب الباسورد
+                </p>
+              }
+              @if (registerForm.get('password')?.getError('pattern')) {
+                <p class="text-rose-500 text-xs font-bold pr-2 flex items-center gap-1">
+                  <i class="fa-solid"></i>
+                  باسورد عليه ان يكون اكثر من 6 حروف
+                </p>
+              }
+            </ul>
+          }
         </div>
 
         <div class="space-y-1.5">
           <label class="block text-sm font-bold text-secondary pr-2">تأكيد كلمة المرور</label>
           <input
             type="password"
+            formControlName="confirmPassword"
             placeholder="********"
             class="w-full px-5 py-3.5 rounded-2xl border border-slate-200 bg-white/50 focus:bg-white focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition-all placeholder:text-slate-300"
           />
+          @if (registerForm.errors && registerForm.get('confirmPassword')?.touched) {
+            <p class="text-rose-500 text-xs font-bold pr-2 flex items-center gap-1">
+              <i class="fa-solid fa-circle-exclamation"></i>
+              كلمة المرور غير متطابقة
+            </p>
+          }
         </div>
 
         <div class="md:col-span-2 pt-4">
           <button
-            type="submit"
-            class="w-full py-4 bg-linear-to-l from-secondary via-accent to-primary text-white font-bold text-lg rounded-2xl shadow-xl hover:shadow-primary/30 hover:scale-[1.01] active:scale-[0.98] transition-all cursor-pointer"
+            [disabled]="registerForm.invalid"
+            [class.animate-gradient-x]="isLoading()"
+            (click)="(registerForm)"
+            class="w-full py-4 mt-4 text-white font-bold text-lg rounded-2xl shadow-xl bg-linear-to-l from-secondary via-accent to-primary hover:shadow-accent/30 hover:scale-[1.01] active:scale-[0.98] transition-all cursor-pointer disabled:grayscale-75 disabled:pointer-events-none"
           >
-            إنشاء الحساب
+            @if (isLoading()) {
+              جاري التحميل...
+            } @else {
+              دخول
+            }
           </button>
+          @if (alreadyexist) {
+            <div class="flex justify-center items-center">
+              <p class="text-rose-500 text-s font-bold pr-2 flex items-center gap-1 mt-5">
+                الايمل موجود بالفعل
+              </p>
+            </div>
+          }
         </div>
       </form>
 

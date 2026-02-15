@@ -14,6 +14,7 @@ export class Login {
   private readonly _Router = inject(Router);
   alreadyexist!: string;
   isLoading = signal(false);
+  isavail = signal(false);
 
   loginform: FormGroup = new FormGroup({
     email: new FormControl(null, [Validators.required, Validators.email]),
@@ -26,7 +27,7 @@ export class Login {
 
       return;
     }
-
+    this.isavail.set(true);
     this.isLoading.set(true);
 
     this._Auth.sighin(this.loginform.value).subscribe({

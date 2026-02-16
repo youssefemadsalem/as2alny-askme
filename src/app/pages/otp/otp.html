@@ -55,83 +55,127 @@
     left: -20px;
   }
 
-  /* OTP Input Specific Styling */
+  /* OTP Input Specific Styling - RESPONSIVE UPDATE */
   .otp-input {
-    width: 4rem;
-    height: 4rem;
+    /* Mobile Default: Smaller size to fit 6 inputs in a row */
+    width: 2.5rem;
+    height: 3rem;
     text-align: center;
-    font-size: 1.5rem;
+    font-size: 1.25rem;
     font-weight: bold;
-    border-radius: 1rem;
+    border-radius: 0.75rem;
+  }
+
+  /* Desktop: Original Size */
+  @media (min-width: 768px) {
+    .otp-input {
+      width: 4rem;
+      height: 4rem;
+      font-size: 1.5rem;
+      border-radius: 1rem;
+    }
   }
 </style>
-
 <div
-  class="min-h-screen from-slate-50 via-accent/5 to-primary/5 flex items-center justify-center p-6 font-cairo"
+  class="min-h-screen from-slate-50 via-accent/5 to-primary/5 flex items-center justify-center p-4 md:p-6 font-cairo"
   dir="rtl"
 >
   <div
-    class="relative w-full max-w-5xl bg-white/80 backdrop-blur-xl rounded-[3rem] shadow-[0_20px_50px_rgba(0,0,0,0.1)] border border-white flex flex-col md:flex-row-reverse overflow-hidden"
+    class="relative w-full max-w-5xl bg-white/80 backdrop-blur-xl rounded-4xl md:rounded-[3rem] shadow-[0_20px_50px_rgba(0,0,0,0.1)] border border-white flex flex-col md:flex-row-reverse overflow-hidden"
   >
     <div
-      class="flex justify-center items-center w-full md:w-1/2 p-8 bg-linear-to-br from-slate-50/30 to-transparent"
+      class="flex justify-center items-center w-full md:w-1/2 p-6 md:p-8 bg-linear-to-br from-slate-50/30 to-transparent"
     >
-      <img src="/images/logoo.png" class="object-contain h-64 md:h-80 w-80" alt="Eyas AI" />
+      <img
+        src="/images/logoo.png"
+        class="object-contain h-32 md:h-80 w-auto md:w-80"
+        alt="Eyas AI"
+      />
     </div>
 
     <div
       class="hidden md:block w-px bg-linear-to-b from-transparent via-slate-200 to-transparent my-16"
     ></div>
 
-    <div class="w-full md:w-1/2 p-10 md:p-16 flex flex-col justify-center items-center">
-      <div class="mb-10 text-right">
+    <div class="w-full md:w-1/2 p-6 md:p-16 flex flex-col justify-center items-center">
+      <div class="mb-8 md:mb-10 text-right w-full">
         <a
           routerLink="/forgetpassword"
-          class="inline-flex items-center text-sm font-bold text-accent hover:text-primary mb-6 transition-colors group cursor-pointer"
+          class="inline-flex items-center text-sm font-bold text-accent hover:text-primary mb-4 md:mb-6 transition-colors group cursor-pointer"
         >
           <span class="ml-2 group-hover:translate-x-1 transition-transform">→</span>
           العودة لتغيير البريد
         </a>
 
-        <h2 class="text-4xl font-extrabold text-secondary mb-3">تحقق من الرمز</h2>
-        <p class="text-slate-500 text-lg font-medium leading-relaxed">
-          أدخل الرمز المكون من 4 أرقام الذي أرسلناه إلى بريدك الإلكتروني.
+        <h2 class="text-2xl md:text-4xl font-extrabold text-secondary mb-3">تحقق من الرمز</h2>
+        <p class="text-slate-500 text-base md:text-lg font-medium leading-relaxed">
+          أدخل الرمز المكون من 6 أرقام الذي أرسلناه إلى بريدك الإلكتروني.
         </p>
       </div>
 
-      <!-- <form class="space-y-8"> -->
-      <div class="flex justify-between gap-2" dir="ltr">
-        <input
-          type="text"
-          maxlength="1"
-          class="otp-input w-full border border-slate-200 bg-white/50 focus:bg-white focus:ring-4 focus:ring-accent/10 focus:border-accent outline-none transition-all text-secondary"
-        />
-        <input
-          type="text"
-          maxlength="1"
-          class="otp-input w-full border border-slate-200 bg-white/50 focus:bg-white focus:ring-4 focus:ring-accent/10 focus:border-accent outline-none transition-all text-secondary"
-        />
-        <input
-          type="text"
-          maxlength="1"
-          class="otp-input w-full border border-slate-200 bg-white/50 focus:bg-white focus:ring-4 focus:ring-accent/10 focus:border-accent outline-none transition-all text-secondary"
-        />
-        <input
-          type="text"
-          maxlength="1"
-          class="otp-input w-full border border-slate-200 bg-white/50 focus:bg-white focus:ring-4 focus:ring-accent/10 focus:border-accent outline-none transition-all text-secondary"
-        />
-      </div>
+      <form [formGroup]="otpForm" (ngSubmit)="onSubmit()" class="w-full max-w-md">
+        <div formArrayName="otp" class="flex justify-center gap-2 mb-6" dir="ltr">
+          @for (control of otpControls; track $index) {
+            <input
+              #otpInput
+              [formControlName]="$index"
+              type="text"
+              inputmode="numeric"
+              maxlength="1"
+              (input)="handleInput($index, $event)"
+              (keydown)="handleKeyDown($index, $event)"
+              (paste)="handlePaste($event)"
+              class="w-10 h-12 md:w-16 md:h-16 text-center text-xl md:text-3xl font-bold rounded-2xl border-2 border-slate-200 bg-slate-50/50 text-slate-800 shadow-sm backdrop-blur-sm transition-all duration-300 ease-out outline-none focus:border-accent focus:bg-white focus:ring-4 focus:ring-accent/20 focus:scale-110 focus:-translate-y-1 focus:shadow-lg focus:shadow-accent/50 selection:bg-accent selection:text-white"
+            />
+          }
+        </div>
 
-      <button
-        routerLink="/resetpassword"
-        class="w-full py-4 bg-linear-to-l from-secondary via-accent to-primary text-white font-bold text-lg rounded-2xl shadow-xl hover:shadow-accent/30 hover:scale-[1.01] active:scale-[0.98] transition-all cursor-pointer mt-4"
-      >
-        تأكيد الرمز
-      </button>
-      <!-- </form> -->
+        @if (alreadyexist()) {}
 
-      <div class="mt-12 text-center">
+        <button
+          type="submit"
+          [disabled]="otpForm.invalid"
+          [class.animate-gradient-x]="isLoading()"
+          class="w-full py-4 mt-4 text-white font-bold text-lg rounded-2xl shadow-xl bg-linear-to-l from-secondary via-accent to-primary hover:shadow-accent/30 hover:scale-[1.01] active:scale-[0.98] transition-all cursor-pointer disabled:grayscale-75 disabled:pointer-events-none"
+        >
+          @if (isLoading()) {
+            <span class="flex items-center justify-center gap-2">
+              <svg
+                class="animate-spin h-5 w-5 text-white"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <circle
+                  class="opacity-25"
+                  cx="12"
+                  cy="12"
+                  r="10"
+                  stroke="currentColor"
+                  stroke-width="4"
+                ></circle>
+                <path
+                  class="opacity-75"
+                  fill="currentColor"
+                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                ></path>
+              </svg>
+              جاري التحقق...
+            </span>
+          } @else {
+            <span>تحقق من الرمز</span>
+          }
+        </button>
+        @if (alreadyexist()) {
+          <div class="flex justify-center items-center">
+            <p class="text-rose-500 text-s font-bold pr-2 flex items-center gap-1 mt-5">
+              رمز التحقق غير صحيح
+            </p>
+          </div>
+        }
+      </form>
+
+      <div class="mt-8 md:mt-12 text-center">
         <p class="text-slate-500 text-sm font-medium">
           لم يصلك الرمز؟
           <button
@@ -143,8 +187,10 @@
         <p class="mt-2 text-xs text-slate-400">يمكنك طلب رمز جديد خلال 00:59 ثانية</p>
       </div>
 
-      <div class="mt-8 text-center border-t border-slate-100 pt-8">
-        <p class="text-slate-400 text-sm font-medium italic">أمان بياناتك هو أولويتنا القصوى</p>
+      <div class="mt-8 text-center border-t border-slate-100 pt-6 md:pt-8 w-full">
+        <p class="text-slate-400 text-xs md:text-sm font-medium italic">
+          أمان بياناتك هو أولويتنا القصوى
+        </p>
       </div>
     </div>
   </div>

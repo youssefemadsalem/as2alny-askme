@@ -31,4 +31,11 @@ export class Auth {
       data,
     );
   }
+
+  validateotp(data: object): Observable<any> {
+    return this._HttpClient.post(
+      `https://isalny-backend.vercel.app/api/v1/auth/validate-otp`,
+      data,
+    );
+  }
 }

@@ -1,11 +1,9 @@
 <style>
-  /* Consistency with Login Page Styles */
   .min-h-screen {
     position: relative;
     overflow: hidden;
   }
 
-  /* Background Blobs */
   .min-h-screen::before,
   .min-h-screen::after {
     content: '';
@@ -21,7 +19,7 @@
   .min-h-screen::before {
     background: radial-gradient(circle, var(--color-primary, #3b82f6), transparent);
     top: -15%;
-    right: -10%; /* Swapped for variety in register page */
+    right: -10%;
   }
 
   .min-h-screen::after {
@@ -30,7 +28,6 @@
     left: -10%;
   }
 
-  /* Glow effects for the card */
   .max-w-6xl::before,
   .max-w-6xl::after {
     content: '';

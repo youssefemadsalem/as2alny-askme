@@ -1,3 +1,4 @@
+import { Resetpassword } from './../../../pages/resetpassword/resetpassword';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
@@ -7,6 +8,8 @@ import { jwtDecode } from 'jwt-decode';
   providedIn: 'root',
 })
 export class Auth {
+  otpCode: string = '';
+
   x!: any;
   decode() {
     if (sessionStorage.getItem('token')) {
@@ -35,6 +38,13 @@ export class Auth {
   validateotp(data: object): Observable<any> {
     return this._HttpClient.post(
       `https://isalny-backend.vercel.app/api/v1/auth/validate-otp`,
+      data,
+    );
+  }
+
+  Resetpassword(data: object): Observable<any> {
+    return this._HttpClient.post(
+      `https://isalny-backend.vercel.app/api/v1/auth/reset-password`,
       data,
     );
   }

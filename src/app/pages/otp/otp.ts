@@ -56,7 +56,7 @@ export class Otp {
       next: (res: any) => {
         this.isLoading.set(false);
         console.log('Server Response:', res); // Debugging
-
+        this._Auth.otpCode = this.otpForm.value.otp.join(''); // Save OTP in service for later use
         // 1. Save Token (Handle various response structures)
         const token = res.token || res.accessToken || res.data?.accessToken || res.data?.token;
 

@@ -25,28 +25,22 @@ export class Register {
 
   registerForm: FormGroup = new FormGroup(
     {
-      // 1. Name: Quadruple Name (At least 4 words)
       name: new FormControl(null, [
         Validators.required,
         Validators.pattern(/^([\u0600-\u06FF]+\s){3}[\u0600-\u06FF]+.*$/),
       ]),
 
-      // 2. ID: Exactly 14 numbers
       nationalId: new FormControl(null, [Validators.required, Validators.pattern(/^[0-9]{14}$/)]),
 
-      // 3. Phone: Egyptian Format (Starts with 010, 011, 012, or 015 + 8 digits)
       phoneNumber: new FormControl(null, [
         Validators.required,
         Validators.pattern(/^01[0125][0-9]{8}$/),
       ]),
 
-      // 4. Email
       email: new FormControl(null, [Validators.required, Validators.email]),
 
-      // 5. Password
       password: new FormControl(null, [Validators.required, Validators.pattern(/^\w{6,}$/)]),
 
-      // 6. RePassword
       confirmPassword: new FormControl(null),
     },
     this.compare,
@@ -56,9 +50,8 @@ export class Register {
     if (this.registerForm.invalid) {
       this.registerForm.markAllAsTouched();
     } else {
-      // 1. Reset error and start loading
       this.alreadyexist = '';
-      this.isLoading.set(true); // You forgot to set this to true!
+      this.isLoading.set(true);
 
       this._Auth.sighup(this.registerForm.value).subscribe({
         next: (res) => {

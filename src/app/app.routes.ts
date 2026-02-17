@@ -1,14 +1,14 @@
+import { Routes } from '@angular/router';
 import { Auth } from './layouts/auth/auth';
 import { Main } from './layouts/main/main';
-import { Home } from './pages/home/home';
-import { Routes } from '@angular/router';
+import { authGuard } from './core/guard/auth-guard';
 
 export const routes: Routes = [
+  // --- Public Routes (No Guard needed here) ---
   {
     path: '',
     component: Auth,
     children: [
-      { path: '', redirectTo: 'login', pathMatch: 'full' },
       {
         path: 'login',
         loadComponent: () => import('../app/pages/login/login').then((c) => c.Login),
@@ -39,10 +39,13 @@ export const routes: Routes = [
     ],
   },
 
+  // --- Protected Routes (Guard Applied Here) ---
   {
     path: '',
     component: Main,
+
     children: [
+      { path: '', redirectTo: 'home', pathMatch: 'full' },
       {
         path: 'home',
         loadComponent: () => import('../app/pages/home/home').then((c) => c.Home),
@@ -52,6 +55,7 @@ export const routes: Routes = [
         path: 'chatbot/:id',
         loadComponent: () => import('../app/pages/chat-bot/chat-bot').then((c) => c.ChatBot),
         title: 'chatbot',
+        canActivate: [authGuard],
       },
       {
         path: 'rateus',
@@ -72,6 +76,7 @@ export const routes: Routes = [
             (c) => c.RequestServiceForm,
           ),
         title: 'requestnewservices',
+        canActivate: [authGuard],
       },
       {
         path: '**',

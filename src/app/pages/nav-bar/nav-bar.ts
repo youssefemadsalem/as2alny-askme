@@ -9,12 +9,22 @@ import { Auth } from '../../core/services/auth/auth';
   styleUrl: './nav-bar.css',
 })
 export class NavBar {
-  private readonly _router = inject(Router);
-  private readonly _auth = inject(Auth);
+  readonly _auth = inject(Auth);
+
+  // Variable to track login status
+  isLogin: boolean = false;
+
+  ngOnInit(): void {
+    // Subscribe to the Auth service to detect changes automatically
+    this._auth.userData.subscribe({
+      next: (res) => {
+        // If 'res' has data, user is logged in. If null, they are out.
+        this.isLogin = res !== null;
+      },
+    });
+  }
 
   logout() {
-    localStorage.removeItem('token');
-    this._router.navigate(['/login']);
-    this._auth.x = null;
+    this._auth.logOut();
   }
 }

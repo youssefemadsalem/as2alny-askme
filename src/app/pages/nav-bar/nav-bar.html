@@ -21,27 +21,30 @@
         الرئيسية
       </a>
 
-      <a
-        routerLink="/login"
-        routerLinkActive="gradent text-white"
-        class="text-[#112a2a] font-bold text-sm hover:text-[#2da5a2] transition-colors"
-      >
-        تسجيل الدخول
-      </a>
+      @if (!isLogin) {
+        <a
+          routerLink="/login"
+          routerLinkActive="gradent text-white"
+          class="text-[#112a2a] font-bold text-sm hover:text-[#2da5a2] transition-colors cursor-pointer"
+        >
+          تسجيل الدخول
+        </a>
 
-      <a
-        routerLink="/register"
-        class="gradent px-3 py-1.5 rounded-md font-bold text-sm hover:opacity-90 transition-opacity shadow-sm hidden sm:block"
-      >
-        إنشاء حساب
-      </a>
+        <a
+          routerLink="/register"
+          class="gradent px-3 py-1.5 rounded-md font-bold text-sm hover:opacity-90 transition-opacity shadow-sm hidden sm:block cursor-pointer"
+        >
+          إنشاء حساب
+        </a>
 
-      <a
-        (click)="logout()"
-        class="gradent px-3 py-1.5 rounded-md font-bold text-sm hover:opacity-90 transition-opacity shadow-sm hidden sm:block"
-      >
-        الخروج
-      </a>
+      } @else {
+        <span
+          (click)="logout()"
+          class="gradent px-3 py-1.5 rounded-md font-bold text-sm hover:opacity-90 transition-opacity shadow-sm hidden sm:block cursor-pointer"
+        >
+          الخروج
+        </span>
+      }
     </div>
   </nav>
 </div>

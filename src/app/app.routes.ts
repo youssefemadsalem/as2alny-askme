@@ -4,7 +4,7 @@ import { Main } from './layouts/main/main';
 import { authGuard } from './core/guard/auth-guard';
 
 export const routes: Routes = [
-  // --- Public Routes (No Guard needed here) ---
+  { path: '', redirectTo: 'home', pathMatch: 'full' },
   {
     path: '',
     component: Auth,

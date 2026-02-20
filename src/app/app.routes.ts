@@ -78,6 +78,11 @@ export const routes: Routes = [
         canActivate: [authGuard],
       },
       {
+        path: 'profile',
+        loadComponent: () => import('../app/pages/profile/profile').then((c) => c.Profile),
+        title: 'profile',
+      },
+      {
         path: '**',
         loadComponent: () => import('../app/pages/wild/wild').then((c) => c.Wild),
         title: 'wild',

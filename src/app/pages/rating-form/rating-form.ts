@@ -12,13 +12,12 @@ interface Rating {
 }
 @Component({
   selector: 'app-rating-form',
-  imports: [NgFor , CommonModule , HttpClientModule , FormsModule , BrowserModule],
+  imports: [NgFor, CommonModule, HttpClientModule, FormsModule, BrowserModule],
   templateUrl: './rating-form.html',
   styleUrl: './rating-form.css',
 })
-export class RatingForm  implements OnInit{
-
-  services: string[] = []; // هتملى من API
+export class RatingForm implements OnInit {
+  services: string[] = [];
   stars = [1, 2, 3, 4, 5];
 
   selectedService = '';
@@ -31,8 +30,7 @@ export class RatingForm  implements OnInit{
 
   ngOnInit() {
     this.api.getServices().subscribe((data) => {
-      // لو كل service فيها اسم
-      this.services = data.map(s => s.name);
+      this.services = data.map((s) => s.name);
     });
   }
 
@@ -49,7 +47,7 @@ export class RatingForm  implements OnInit{
     this.ratings.unshift({
       service: this.selectedService,
       stars: this.rating,
-      comment: this.comment
+      comment: this.comment,
     });
 
     this.selectedService = '';

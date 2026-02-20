@@ -39,7 +39,6 @@ export const routes: Routes = [
     ],
   },
 
-  // --- Protected Routes (Guard Applied Here) ---
   {
     path: '',
     component: Main,

@@ -42,12 +42,9 @@ export class Home implements OnInit {
   }
 
   handleProtectedNavigate(path: string, id: any) {
-    // Check if user is logged in (using the behavior subject we created)
     if (this._auth.userData.getValue() !== null) {
-      // User IS logged in -> Go to the destination
       this._router.navigate([path, id]);
     } else {
-      // User is NOT logged in -> Go to Login
       this._router.navigate(['/login']);
     }
   }

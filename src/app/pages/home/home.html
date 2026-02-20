@@ -4,7 +4,6 @@
     overflow-x: hidden;
   }
 
-  /* Background Blobs */
   .min-h-screen::before,
   .min-h-screen::after {
     content: '';
@@ -18,14 +17,12 @@
     pointer-events: none;
   }
 
-  /* Top Left Blob (Blue) */
   .min-h-screen::before {
     background: radial-gradient(circle, var(--color-primary, #3b82f6), transparent);
     top: -15%;
     left: -10%;
   }
 
-  /* Bottom Right Blob (Emerald/Green) */
   .min-h-screen::after {
     background: radial-gradient(circle, var(--color-accent, #10b981), transparent);
     bottom: -15%;

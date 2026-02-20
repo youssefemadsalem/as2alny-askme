@@ -10,33 +10,28 @@ import { Router } from '@angular/router';
 })
 export class Auth {
   otpCode: string = '';
-userData = new BehaviorSubject<any>(null);
+  userData = new BehaviorSubject<any>(null);
   x!: any;
-   private readonly _router = inject(Router);
+  private readonly _router = inject(Router);
 
   decode() {
-  
-  const token = sessionStorage.getItem('token'); 
+    const token = sessionStorage.getItem('token');
     if (token) {
       try {
         const decoded = jwtDecode(token);
-        this.userData.next(decoded); // Set user as Logged In
+        this.userData.next(decoded);
       } catch (e) {
         this.userData.next(null);
       }
     } else {
-      this.userData.next(null); // Set user as Logged Out
+      this.userData.next(null);
     }
-  
-  
   }
 
   constructor(private _HttpClient: HttpClient) {
-
-if (typeof sessionStorage !== 'undefined') {
-      this.decode(); 
+    if (typeof sessionStorage !== 'undefined') {
+      this.decode();
     }
-
   }
 
   sighin(data: object): Observable<any> {
@@ -68,11 +63,9 @@ if (typeof sessionStorage !== 'undefined') {
     );
   }
 
-
-  // 3. Centralized Logout
   logOut() {
-    sessionStorage.removeItem('token'); // Remove from Session Storage
-    this.userData.next(null); // Update the state
+    sessionStorage.removeItem('token');
+    this.userData.next(null);
     this._router.navigate(['/home']);
   }
 }

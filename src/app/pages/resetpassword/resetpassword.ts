@@ -16,24 +16,23 @@ export class Resetpassword {
   isLoading = signal(false);
   alreadyexist: string = '';
 
-  // 1. Form structure matches the input fields
   resetForm = this.fb.group(
     {
       newPassword: ['', [Validators.required, Validators.pattern(/^\w{6,}$/)]],
       confirmPassword: ['', [Validators.required]],
     },
-    { validators: this.compare }, // Custom validator for matching passwords
+    { validators: this.compare },
   );
 
   resetSubmit() {
     if (this.resetForm.invalid) return;
     this.isLoading.set(true);
     this.alreadyexist = '';
-    // 2. Construct the API payload exactly as requested
+
     const apiData = {
       newPassword: this.resetForm.value.newPassword,
       confirmPassword: this.resetForm.value.confirmPassword,
-      otp: this._Auth.otpCode, // Retrieves the OTP saved in the service
+      otp: this._Auth.otpCode,
     };
 
     console.log('Sending API Data:', apiData);
@@ -52,21 +51,16 @@ export class Resetpassword {
     });
   }
 
-  // inside Resetpassword class
-
   compare(group: AbstractControl) {
     const password = group.get('newPassword')?.value;
     const confirmControl = group.get('confirmPassword');
 
-    // If the confirm field is empty, let the [Validators.required] handle it
     if (!confirmControl?.value) return null;
 
     if (password !== confirmControl?.value) {
-      // Manually set the error on the control so the HTML can see it
       confirmControl.setErrors({ mismatch: true });
       return { mismatch: true };
     } else {
-      // If they match, remove the error
       if (confirmControl.hasError('mismatch')) {
         confirmControl.setErrors(null);
       }

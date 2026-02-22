@@ -50,7 +50,6 @@
           type="text"
           placeholder="ابحث عن خدمة عامة..."
           class="w-full pl-14 pr-8 py-5 rounded-full border border-white/60 bg-white/60 backdrop-blur-xl shadow-[0_10px_30px_rgba(0,0,0,0.05)] focus:bg-white focus:ring-4 focus:ring-accent/10 focus:border-accent outline-none transition-all placeholder:text-slate-400 text-secondary text-lg font-bold text-center"
-          [(ngModel)]="searchTerm"
         />
       </div>
     </div>
@@ -133,7 +132,7 @@
               <div class="text-xl font-bold text-secondary mb-2">الخدمة غير موجودة</div>
               <p class="text-slate-500 mb-6 text-sm">لم نتمكن من العثور على ما تبحث عنه</p>
               <a
-                routerLink="/requestnewservice"
+                (click)="handleProtectedNavigate('/requestnewservice')"
                 class="inline-block bg-accent/10 text-accent hover:bg-accent hover:text-white border border-accent/20 px-8 py-3 rounded-xl font-bold transition-all cursor-pointer"
               >
                 أضف الخدمة الآن

@@ -3,22 +3,23 @@ import { inject, Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { jwtDecode } from 'jwt-decode';
 import { Router } from '@angular/router';
-import { CookieService } from 'ngx-cookie-service'; // Import this
+import { CookieService } from 'ngx-cookie-service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class Auth {
-  otpCode: string = '';
-  userData = new BehaviorSubject<any>(null);
+  // 1. Core Dependencies
+  private readonly _HttpClient = inject(HttpClient);
   private readonly _router = inject(Router);
-
   private readonly _cookieService = inject(CookieService);
 
-  constructor(private _HttpClient: HttpClient) {
-    if (typeof document !== 'undefined') {
-      this.decode();
-    }
+  // 2. State Management
+  otpCode: string = '';
+  userData = new BehaviorSubject<any>(null);
+
+  constructor() {
+    this.decode();
   }
 
   saveToken(token: string) {
@@ -26,8 +27,16 @@ export class Auth {
     this.decode();
   }
 
+  get getToken(): string {
+    return this._cookieService.get('token');
+  }
+
+  get isAuthenticated(): boolean {
+    return this._cookieService.check('token');
+  }
+
   decode() {
-    const token = this._cookieService.get('token');
+    const token = this.getToken;
 
     if (token) {
       try {
@@ -35,10 +44,17 @@ export class Auth {
         this.userData.next(decoded);
       } catch (e) {
         this.userData.next(null);
+        this._cookieService.delete('token', '/');
       }
     } else {
       this.userData.next(null);
     }
+  }
+
+  logOut() {
+    this._cookieService.delete('token', '/');
+    this.userData.next(null);
+    this._router.navigate(['/home']);
   }
 
   sighin(data: object): Observable<any> {
@@ -68,11 +84,5 @@ export class Auth {
       `https://isalny-backend.vercel.app/api/v1/auth/reset-password`,
       data,
     );
-  }
-
-  logOut() {
-    this._cookieService.delete('token', '/');
-    this.userData.next(null);
-    this._router.navigate(['/home']);
   }
 }

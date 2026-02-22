@@ -1,3 +1,4 @@
+import { ProfileComponent } from './pages/profile/profile';
 import { Routes } from '@angular/router';
 import { Auth } from './layouts/auth/auth';
 import { Main } from './layouts/main/main';
@@ -79,7 +80,7 @@ export const routes: Routes = [
       },
       {
         path: 'profile',
-        loadComponent: () => import('../app/pages/profile/profile').then((c) => c.Profile),
+        loadComponent: () => import('../app/pages/profile/profile').then((c) => c.ProfileComponent),
         title: 'profile',
       },
       {

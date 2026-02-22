@@ -1,9 +1,9 @@
-import { Resetpassword } from './../../../pages/resetpassword/resetpassword';
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { jwtDecode } from 'jwt-decode';
 import { Router } from '@angular/router';
+import { CookieService } from 'ngx-cookie-service'; // Import this
 
 @Injectable({
   providedIn: 'root',
@@ -11,11 +11,24 @@ import { Router } from '@angular/router';
 export class Auth {
   otpCode: string = '';
   userData = new BehaviorSubject<any>(null);
-  x!: any;
   private readonly _router = inject(Router);
 
+  private readonly _cookieService = inject(CookieService);
+
+  constructor(private _HttpClient: HttpClient) {
+    if (typeof document !== 'undefined') {
+      this.decode();
+    }
+  }
+
+  saveToken(token: string) {
+    this._cookieService.set('token', token, 1, '/');
+    this.decode();
+  }
+
   decode() {
-    const token = sessionStorage.getItem('token');
+    const token = this._cookieService.get('token');
+
     if (token) {
       try {
         const decoded = jwtDecode(token);
@@ -25,12 +38,6 @@ export class Auth {
       }
     } else {
       this.userData.next(null);
-    }
-  }
-
-  constructor(private _HttpClient: HttpClient) {
-    if (typeof sessionStorage !== 'undefined') {
-      this.decode();
     }
   }
 
@@ -64,7 +71,7 @@ export class Auth {
   }
 
   logOut() {
-    sessionStorage.removeItem('token');
+    this._cookieService.delete('token', '/');
     this.userData.next(null);
     this._router.navigate(['/home']);
   }

@@ -14,7 +14,6 @@
   <div class="flex justify-center gap-2 mb-5">
     <button
       *ngFor="let star of stars"
-      (click)="setRating(star)"
       class="text-3xl transition"
       [class.text-yellow-400]="star <= rating"
       [class.text-gray-300]="star > rating"
@@ -30,10 +29,7 @@
     class="w-full border rounded-lg p-3 mb-5 focus:outline-none focus:ring focus:ring-green-200"
   ></textarea>
 
-  <button
-    (click)="submitRating()"
-    class="w-full bg-green-600 text-white py-3 rounded-lg hover:bg-green-700 transition"
-  >
+  <button class="w-full bg-green-600 text-white py-3 rounded-lg hover:bg-green-700 transition">
     إرسال التقييم
   </button>
 </div>

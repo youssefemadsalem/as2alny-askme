@@ -9,12 +9,10 @@ import { CookieService } from 'ngx-cookie-service';
   providedIn: 'root',
 })
 export class Auth {
-  // 1. Core Dependencies
   private readonly _HttpClient = inject(HttpClient);
   private readonly _router = inject(Router);
   private readonly _cookieService = inject(CookieService);
 
-  // 2. State Management
   otpCode: string = '';
   userData = new BehaviorSubject<any>(null);
 
@@ -22,8 +20,9 @@ export class Auth {
     this.decode();
   }
 
-  saveToken(token: string) {
+  saveToken(token: string   ,name: string) {
     this._cookieService.set('token', token, 1, '/');
+   this._cookieService.set('userName', name, 1, '/');
     this.decode();
   }
 

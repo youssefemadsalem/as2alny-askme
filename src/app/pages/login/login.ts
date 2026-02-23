@@ -35,7 +35,7 @@ export class Login {
         this.isLoading.set(false);
 
         if (res.data && res.data.accessToken) {
-          this._Auth.saveToken(res.data.accessToken);
+          this._Auth.saveToken(res.data.accessToken, res.data.user.name);
 
           this._Router.navigate(['/home']);
         }

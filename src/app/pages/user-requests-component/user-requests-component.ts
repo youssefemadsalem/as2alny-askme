@@ -32,7 +32,6 @@ export class UserRequestsComponent implements OnInit , OnDestroy {
       },
       error: (err) => {
         this.cdr.detectChanges();
-        
         console.log(err);
       },
       complete: () => {

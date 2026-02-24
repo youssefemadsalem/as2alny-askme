@@ -2,6 +2,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { Observable } from 'rxjs';
 import { isPlatformBrowser } from '@angular/common';
+import { CookieService } from 'ngx-cookie-service';
+
 
 // const httpOptions = {
 //   headers: new HttpHeaders({
@@ -17,16 +19,17 @@ export class UserRequests {
   constructor(
     private _httpClient: HttpClient,
     @Inject(PLATFORM_ID) private _PLATFORM_ID: any,
+    private _cookieService: CookieService
   ) {
     if (isPlatformBrowser(this._PLATFORM_ID)) {
-      this.userToken = { token: sessionStorage.getItem('token') };
+      this.userToken = { token: this._cookieService.get('token') };
     } else {
       this.userToken = {};
     }
   }
 
   getUserRequests(): Observable<any> {
-    console.log(this.userToken);
+    console.log(this.userToken.token);
     return this._httpClient.get('https://isalny-backend.vercel.app/api/v1/user/service-requests', {
       headers: new HttpHeaders({
         Authorization: `Bearer ${this.userToken.token}`,

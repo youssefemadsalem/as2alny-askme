@@ -1,3 +1,4 @@
+import { ProfileComponent } from './pages/profile/profile';
 import { Routes } from '@angular/router';
 import { Auth } from './layouts/auth/auth';
 import { Main } from './layouts/main/main';
@@ -79,8 +80,27 @@ export const routes: Routes = [
       },
       {
         path: 'profile',
-        loadComponent: () => import('../app/pages/profile/profile').then((c) => c.Profile),
+        loadComponent: () => import('../app/pages/profile/profile').then((c) => c.ProfileComponent),
         title: 'profile',
+        children: [
+          { path: '', redirectTo: 'user-details', pathMatch: 'full' },
+          {
+            path: 'user-requests',
+            loadComponent: () =>
+              import('../app/pages/user-requests-component/user-requests-component').then(
+                (c) => c.UserRequestsComponent,
+              ),
+            title: 'user-requests',
+          },
+          {
+            path: 'user-details',
+            loadComponent: () =>
+              import('../app/pages/user-details-component/user-details-component').then(
+                (c) => c.UserDetailsComponent,
+              ),
+            title: 'user-details',
+          }          
+        ],
       },
       {
         path: '**',

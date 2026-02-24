@@ -71,6 +71,29 @@
               formControlName="phoneNumber"
               class="w-[90%] px-4 py-2 my-2 rounded-2xl border border-slate-200 bg-white/50 focus:bg-white focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition-all"
             />
+            @if (
+            updateProfileForm.get('phoneNumber')?.invalid && updateProfileForm.get('phoneNumber')?.touched
+          ) {
+            <p class="text-rose-500 text-xs font-bold pr-2 flex items-center gap-1">
+              <i class="fa-solid fa-circle-exclamation"></i>
+              رقم التليفون خطأ
+            </p>
+            <ul class="mt-1.5 list-disc list-inside">
+              @if (updateProfileForm.get('phoneNumber')?.getError('required')) {
+                <p class="text-rose-500 text-xs font-bold pr-2 flex items-center gap-1">
+                  <i class="fa-solid"></i>
+                  عليك انت تكتب 11 رقم خاص بهاتفك
+                </p>
+              }
+              @if (updateProfileForm.get('phoneNumber')?.getError('pattern')) {
+                <p class="text-rose-500 text-xs font-bold pr-2 flex items-center gap-1">
+                  <i class="fa-solid"></i>
+                  يجب علي رقم ان يبدا بي 010 او 011 او012 او015 و يكون 11 رقم
+                </p>
+              }
+            </ul>
+          }
+            
           } @else {
             <p>{{ user.phoneNumber }}</p>
           }
@@ -84,6 +107,26 @@
               placeholder="mail@example.com"
               class="w-[90%] px-4 py-2 my-2 rounded-2xl border border-slate-200 bg-white/50 focus:bg-white focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition-all"
             />
+             @if (updateProfileForm.get('email')?.invalid && updateProfileForm.get('email')?.touched) {
+            <p class="text-rose-500 text-xs font-bold pr-2 flex items-center gap-1">
+              <i class="fa-solid fa-circle-exclamation"></i>
+              الايميل غير صحيح
+            </p>
+            <ul class="mt-1.5 list-disc list-inside">
+              @if (updateProfileForm.get('email')?.getError('required')) {
+                <p class="text-rose-500 text-xs font-bold pr-2 flex items-center gap-1">
+                  <i class="fa-solid"></i>
+                  عليك انت تكتب الايميل
+                </p>
+              }
+              @if (updateProfileForm.get('email')?.getError('email')) {
+                <p class="text-rose-500 text-xs font-bold pr-2 flex items-center gap-1">
+                  <i class="fa-solid"></i>
+                  الايمل عليه ان يكون هكذا :Example@gmail.com
+                </p>
+              }
+            </ul>
+          }
           } @else {
             <p>{{ user.email }}</p>
           }

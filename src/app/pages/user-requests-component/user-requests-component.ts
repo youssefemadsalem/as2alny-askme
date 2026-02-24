@@ -1,7 +1,8 @@
 import { UserRequests } from './../../core/services/user-requests';
-import { Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Request } from '../../core/interfaces/request';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-user-requests',
@@ -10,28 +11,38 @@ import { Request } from '../../core/interfaces/request';
   templateUrl: './user-requests-component.html',
   styleUrl: './user-requests-component.css',
 })
-export class UserRequestsComponent implements OnInit {
+export class UserRequestsComponent implements OnInit , OnDestroy {
   // Injections
   userRequests = inject(UserRequests);// userRequests Service
+  private readonly cdr = inject(ChangeDetectorRef);
 
 
   // Variables
   requestList:Request[] = []; // list of user requests of type request
+  userRequestID! : Subscription  ;
+
+
 
   // Class Functions
   ngOnInit(): void {
-    this.userRequests.getUserRequests().subscribe({
+    this.userRequestID = this.userRequests.getUserRequests().subscribe({
       next: (requests) => {
         console.log(requests.data);
         this.requestList = requests.data;
       },
       error: (err) => {
+        this.cdr.detectChanges();
+        
         console.log(err);
       },
       complete: () => {
         console.log('Mission Completed');
       },
     });
+  }
+
+  ngOnDestroy(): void {
+    this.userRequestID.unsubscribe();
   }
 
   getStatusClass(status: string): string {

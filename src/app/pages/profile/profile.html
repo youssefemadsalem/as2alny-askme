@@ -1,16 +1,16 @@
 
 
-<div class="w-full h-full mine ">
+<div class="w-full lg:h-screen flex items-center bg-acent pt-18 pb-3 ">
   <!-- Profile Section -->
   <div
-    class="flex flex-wrap w-[85%] mx-auto gap-x-10 bg-slate-50 min-h-screen font-cairo items-center"
+    class=" bg-slate-50 w-[95%] md:w-[80%] lg:w-[85%] mx-auto grid grid-cols-1 lg:grid-cols-7 items-start justify-center gap-x-10 gap-y-3 min-h-scren font-cairo "
   >
     <!-- Side Bar -->
-    <aside class="w-[95%] lg:w-[30%] mb-5 lg:m-0 h-fit shadow-lg rounded-2xl bg-white p-3">
+    <aside class="lg:col-span-2 mb-5 lg:m-0 h-fit shadow-lg rounded-2xl bg-white p-3">
       <!-- Navigation Container -->
       <div id="profile-navigation" class="">
         <!-- Navigation Header -->
-        <div class="nav-header flex flex-wrap justify-center p-1">
+        <!-- <div class="nav-header flex flex-wrap justify-center p-1">
           <div class="header-img size-24 border-4 border-primary rounded-full overflow-hidden">
             <img src="./images/logo.png" class="size-full" alt="User profile picture" />
           </div>
@@ -20,7 +20,7 @@
             </p>
             <span class="user-email text-slate-500 text-sm font-light">{{ user.email }}</span>
           </div>
-        </div>
+        </div> -->
 
         <!-- Navigation Content -->
         <div class="nav-content p-1 text-secondary font-medium">
@@ -30,7 +30,7 @@
                 <span><i class="fa-solid fa-user text-primary ml-2"></i> الملف الشخصي</span></a
               >
             </li>
-            <li class="cursor-pointer hover:bg-slate-200  mt-2">
+            <li class="cursor-pointer hover:bg-slate-200  rounded-lg mt-2">
               <a routerLink="user-requests" routerLinkActive="bg-slate-200 w-full text-secondary"  class="block rounded-lg py-3 px-3">
                 <span> <i class="fa-solid fa-rectangle-list text-primary ml-2"></i> طلباتي</span>
               </a>
@@ -48,10 +48,14 @@
     </aside>
 
     <!------------------------------- User Requests ------------------------------->
-    <div class="bg-white rounded-2xl shadow-lg p-8 w-[95%] lg:w-[65%] h-fit">
+    <div class="bg-white rounded-2xl shadow-lg p-8 lg:col-span-5 h-fit">
       <router-outlet></router-outlet>
     </div>
   </div>
 
   <!-- class="flex flex-col gap-6 w-full max-w-229.5 mx-auto font-cairo mt-30 bg-slate-100" -->
 </div>
+
+
+
+<!-- flex flex-wrap w-[85%] items-center mx-auto gap-x-10 -->

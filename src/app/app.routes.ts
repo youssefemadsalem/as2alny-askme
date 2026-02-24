@@ -83,7 +83,7 @@ export const routes: Routes = [
         loadComponent: () => import('../app/pages/profile/profile').then((c) => c.ProfileComponent),
         title: 'profile',
         children: [
-          { path: '', redirectTo: 'user-requests', pathMatch: 'full' },
+          { path: '', redirectTo: 'user-details', pathMatch: 'full' },
           {
             path: 'user-requests',
             loadComponent: () =>

@@ -20,11 +20,11 @@ export class Login {
     email: new FormControl(null, [Validators.required, Validators.email]),
     password: new FormControl(null, [Validators.required, Validators.pattern(/^\w{6,}$/)]),
   });
+
   login() {
     this.alreadyexist = '';
     if (this.loginform.invalid) {
       this.loginform.markAllAsTouched();
-
       return;
     }
     this.isavail.set(true);
@@ -35,8 +35,8 @@ export class Login {
         this.isLoading.set(false);
 
         if (res.data && res.data.accessToken) {
-          sessionStorage.setItem('token', res.data.accessToken);
-          this._Auth.decode();
+          this._Auth.saveToken(res.data.accessToken, res.data.user.name);
+
           this._Router.navigate(['/home']);
         }
       },

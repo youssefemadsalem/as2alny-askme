@@ -1,37 +1,59 @@
-import { Resetpassword } from './../../../pages/resetpassword/resetpassword';
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { jwtDecode } from 'jwt-decode';
 import { Router } from '@angular/router';
+import { CookieService } from 'ngx-cookie-service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class Auth {
+  private readonly _HttpClient = inject(HttpClient);
+  private readonly _router = inject(Router);
+  private readonly _cookieService = inject(CookieService);
+
   otpCode: string = '';
   userData = new BehaviorSubject<any>(null);
-  x!: any;
-  private readonly _router = inject(Router);
+
+  constructor() {
+    this.decode();
+  }
+
+  saveToken(token: string   ,name: string) {
+    this._cookieService.set('token', token, 1, '/');
+   this._cookieService.set('userName', name, 1, '/');
+    this.decode();
+  }
+
+  get getToken(): string {
+    return this._cookieService.get('token');
+  }
+
+  get isAuthenticated(): boolean {
+    return this._cookieService.check('token');
+  }
 
   decode() {
-    const token = sessionStorage.getItem('token');
+    const token = this.getToken;
+
     if (token) {
       try {
         const decoded = jwtDecode(token);
         this.userData.next(decoded);
       } catch (e) {
         this.userData.next(null);
+        this._cookieService.delete('token', '/');
       }
     } else {
       this.userData.next(null);
     }
   }
 
-  constructor(private _HttpClient: HttpClient) {
-    if (typeof sessionStorage !== 'undefined') {
-      this.decode();
-    }
+  logOut() {
+    this._cookieService.delete('token', '/');
+    this.userData.next(null);
+    this._router.navigate(['/home']);
   }
 
   sighin(data: object): Observable<any> {
@@ -61,11 +83,5 @@ export class Auth {
       `https://isalny-backend.vercel.app/api/v1/auth/reset-password`,
       data,
     );
-  }
-
-  logOut() {
-    sessionStorage.removeItem('token');
-    this.userData.next(null);
-    this._router.navigate(['/home']);
   }
 }

@@ -6,11 +6,9 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class ServiceApi {
-  private apiUrl = 'http://localhost:3000/services';
+  constructor(private _HttpClient: HttpClient) {}
 
-  constructor(private http: HttpClient){}
-
-  getServices(): Observable<any[]>{
-    return this.http.get<any[]>(this.apiUrl)
+  getAllSerivces(): Observable<any> {
+    return this._HttpClient.get('https://isalny-backend.vercel.app/api/v1/services');
   }
 }

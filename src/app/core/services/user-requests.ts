@@ -4,7 +4,6 @@ import { Observable } from 'rxjs';
 import { isPlatformBrowser } from '@angular/common';
 import { CookieService } from 'ngx-cookie-service';
 
-
 // const httpOptions = {
 //   headers: new HttpHeaders({
 //     Authorization: `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSIsInVzZXJJZCI6IjY5OTZhMDcyYTFkYTQ1YTI2NzQ1ZDJmZiIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzcxNzcxMzgwLCJleHAiOjE3NzE3NzQ5ODB9.ONZg6AuN6UXI_JQGwoLSB6fVuxTWrZGZFuC_oXajF38`, // Replace with your actual token
@@ -15,11 +14,11 @@ import { CookieService } from 'ngx-cookie-service';
   providedIn: 'root',
 })
 export class UserRequests {
-  userToken: any ;
+  userToken: any;
   constructor(
     private _httpClient: HttpClient,
     @Inject(PLATFORM_ID) private _PLATFORM_ID: any,
-    private _cookieService: CookieService
+    private _cookieService: CookieService,
   ) {
     if (isPlatformBrowser(this._PLATFORM_ID)) {
       this.userToken = { token: this._cookieService.get('token') };

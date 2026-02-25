@@ -1,14 +1,12 @@
 <div class="">
-  <!-- Requests Title -->
   <div class="mb-6 pr-2">
     <h3 class="text-2xl font-bold text-secondary">طلباتي :</h3>
   </div>
 
-  <!-- Table -->
   <div class="w-full">
     <table class="w-full text-right border-separate border-spacing-y-1.5 border-spacing-x-0">
       <thead>
-        <tr class="bordr-b border-gray-200 gradent">
+        <tr class="border-b border-gray-200">
           <th class="py-4 px-2 pr-3 border-r border-transparent rounded-r-lg text-sm font-semibold">
             اسم الطلب
           </th>
@@ -20,52 +18,76 @@
         </tr>
       </thead>
       <tbody>
-        @for (req of requestList; track req._id; let i = $index) {
-          <tr class="border-b border-gray-100 text-gray-700 hover:bg-gray-200 group">
-            <!-- Request Name -->
-            <td
-              class="py-4 px-2 pr-2 border-2 border-transparent rounded-r-lg"
-              [ngClass]="{ 'bg-gray-100 group-hover:bg-gray-200': i % 2 === 1 }"
+        @if (isLoading()) {
+          @for (item of skeletonRows; track $index) {
+            <tr class="animate-pulse">
+              <td class="py-4 px-2 pr-2 rounded-r-lg bg-gray-50/50">
+                <div class="h-4 bg-gray-200 rounded w-3/4 mx-auto lg:mx-0 lg:mr-0"></div>
+              </td>
+              <td class="py-4 px-2 bg-gray-50/50">
+                <div class="h-4 bg-gray-200 rounded w-20"></div>
+              </td>
+              <td class="py-4 px-2 bg-gray-50/50">
+                <div class="h-4 bg-gray-200 rounded w-24"></div>
+              </td>
+              <td class="py-4 px-2 rounded-l-lg bg-gray-50/50">
+                <div class="h-7 bg-gray-200 rounded-full w-20"></div>
+              </td>
+            </tr>
+          }
+
+        } @else {
+          @for (req of requestList(); track req._id; let i = $index) {
+            <tr
+              class="border-b border-gray-100 text-gray-700 hover:bg-gray-200 group transition-colors duration-200"
             >
-              <p class="text-base font-medium text-center lg:text-right">
-                {{ req.serviceName }}
-              </p>
-            </td>
-            <!-- Request ID -->
-            <td
-              class="py-4 px-2  text-sm"
-              [ngClass]="{ 'bg-gray-100 group-hover:bg-gray-200': i % 2 === 1 }"
-              dir="ltr"
-            >
-              {{ req._id.substring(0, 8) }}
-            </td>
-            <!-- Request Date -->
-            <td
-              class="py-4 px-2 text-sm"
-              [ngClass]="{ 'bg-gray-100 group-hover:bg-gray-200  ': i % 2 === 1 }"
-            >
-              {{ req.createdAt.substring(0, 10) }}
-            </td>
-            <!-- Request Status Badge -->
-            <td
-              class="py-4 px-2 border-4 border-transparent rounded-l-lg"
-              [ngClass]="{ 'bg-gray-100 group-hover:bg-gray-200 ': i % 2 === 1 }"
-            >
-              <!-- get Status from the list and edit it's style according to the return of getStatusClass function    -->
-              <span
-                class="inline-flex items-center text-center lg:text-right px-3 py-1.5 rounded-full text-xs font-bold"
-                [ngClass]="getStatusClass(req.status)"
+              <td
+                class="py-4 px-2 pr-2 border-2 border-transparent rounded-r-lg"
+                [ngClass]="{ 'bg-gray-100 group-hover:bg-gray-200': i % 2 === 1 }"
               >
-                {{ getStatusLabel(req.status) }}
-              </span>
-            </td>
-          </tr>
-        } @empty {
-          <tr>
-            <td colspan="4" class="text-center py-4 text-secondary">
-              ليس لديك أي طلبات حتى الان !
-            </td>
-          </tr>
+                <p class="text-base font-medium text-center lg:text-right">
+                  {{ req.serviceName }}
+                </p>
+              </td>
+              <td
+                class="py-4 px-2 text-sm"
+                [ngClass]="{ 'bg-gray-100 group-hover:bg-gray-200': i % 2 === 1 }"
+                dir="ltr"
+              >
+                {{ req._id.substring(0, 8) }}
+              </td>
+              <td
+                class="py-4 px-2 text-sm"
+                [ngClass]="{ 'bg-gray-100 group-hover:bg-gray-200': i % 2 === 1 }"
+              >
+                {{ req.createdAt.substring(0, 10) }}
+              </td>
+              <td
+                class="py-4 px-2 border-4 border-transparent rounded-l-lg"
+                [ngClass]="{ 'bg-gray-100 group-hover:bg-gray-200': i % 2 === 1 }"
+              >
+                <span
+                  class="inline-flex items-center text-center lg:text-right px-3 py-1.5 rounded-full text-xs font-bold"
+                  [ngClass]="getStatusClass(req.status)"
+                >
+                  {{ getStatusLabel(req.status) }}
+                </span>
+              </td>
+            </tr>
+          } @empty {
+            <tr>
+              <td colspan="4" class="text-center py-12">
+                <div class="flex flex-col items-center justify-center space-y-3">
+                  <div
+                    class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center text-gray-400 text-2xl"
+                  >
+                    <i class="fa-regular fa-folder-open"></i>
+                  </div>
+                  <span class="text-secondary font-medium">ليس لديك أي طلبات حتى الان !</span>
+                </div>
+              </td>
+            </tr>
+          }
         }
       </tbody>
     </table>

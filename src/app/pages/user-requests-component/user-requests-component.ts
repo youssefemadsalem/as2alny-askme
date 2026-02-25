@@ -1,8 +1,7 @@
-import { UserRequests } from './../../core/services/user-requests';
-import { ChangeDetectorRef, Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { UserRequests } from './../../core/services/user-requests';
 import { Request } from '../../core/interfaces/request';
-import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-user-requests',
@@ -11,62 +10,51 @@ import { Subscription } from 'rxjs';
   templateUrl: './user-requests-component.html',
   styleUrl: './user-requests-component.css',
 })
-export class UserRequestsComponent implements OnInit , OnDestroy {
+export class UserRequestsComponent implements OnInit {
   // Injections
-  userRequests = inject(UserRequests);// userRequests Service
-  private readonly cdr = inject(ChangeDetectorRef);
+  private readonly _userRequests = inject(UserRequests);
 
+  // Signals
+  requestList = signal<Request[]>([]);
+  isLoading = signal<boolean>(true);
 
-  // Variables
-  requestList:Request[] = []; // list of user requests of type request
-  userRequestID! : Subscription  ;
+  // Skeleton config (5 dummy rows)
+  skeletonRows = Array(5).fill(0);
 
-
-
-  // Class Functions
   ngOnInit(): void {
-    this.userRequestID = this.userRequests.getUserRequests().subscribe({
-      next: (requests) => {
-        console.log(requests.data);
-        this.requestList = requests.data;
+    this.isLoading.set(true);
+
+    this._userRequests.getUserRequests().subscribe({
+      next: (res) => {
+        // Optional: Artificial delay to see the skeleton
+        // setTimeout(() => {
+        this.requestList.set(res.data);
+        this.isLoading.set(false);
+        // }, 1000);
       },
       error: (err) => {
-        this.cdr.detectChanges();
-        console.log(err);
-      },
-      complete: () => {
-        console.log('Mission Completed');
+        console.error(err);
+        this.isLoading.set(false);
       },
     });
   }
 
-  ngOnDestroy(): void {
-    this.userRequestID.unsubscribe();
-  }
-
+  // Helper functions (kept as is, just slightly cleaner)
   getStatusClass(status: string): string {
-    switch (status) {
-      case 'completed':
-        return 'bg-green-100 border border-green-200 text-green-700';
-      case 'pending':
-        return 'bg-yellow-100 border border-yellow-200 text-yellow-700';
-      case 'rejected':
-        return 'bg-red-100 border border-red-200 text-red-700';
-      default:
-        return '';
-    }
+    const classes: Record<string, string> = {
+      completed: 'bg-green-100 border border-green-200 text-green-700',
+      pending: 'bg-yellow-100 border border-yellow-200 text-yellow-700',
+      rejected: 'bg-red-100 border border-red-200 text-red-700',
+    };
+    return classes[status] || '';
   }
 
   getStatusLabel(status: string): string {
-    switch (status) {
-      case 'completed':
-        return 'مكتمل';
-      case 'pending':
-        return 'قيد المراجعة';
-      case 'rejected':
-        return 'مرفوض';
-      default:
-        return '';
-    }
+    const labels: Record<string, string> = {
+      completed: 'مكتمل',
+      pending: 'قيد المراجعة',
+      rejected: 'مرفوض',
+    };
+    return labels[status] || '';
   }
 }

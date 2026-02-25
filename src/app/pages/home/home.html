@@ -35,7 +35,7 @@
     <div
       class="max-w-4xl mx-auto flex flex-col items-center justify-center mb-12 px-4 space-y-4 text-center my-7"
     >
-      <h1 class="text-4xl md:text-5xl font-extrabold text-secondary">اهلا {{ userName }}</h1>
+      <h1 class="text-4xl md:text-5xl font-extrabold text-secondary">اهلا {{ userName() }}</h1>
       <p class="text-slate-500 text-lg font-medium max-w-lg">
         جميع الخدمات الحكومية المصرية الان بين ايدك
       </p>
@@ -56,8 +56,33 @@
 
     <div class="max-w-7xl mx-auto px-6 md:px-8 pb-20">
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-        @if (servicedata.length > 0) {
-          @for (service of servicedata; track service._id) {
+        @if (isLoading()) {
+          @for (item of skeletonItems; track $index) {
+            <div
+              class="bg-white/70 backdrop-blur-lg p-3 rounded-4xl border border-white shadow-sm flex flex-col relative overflow-hidden h-full animate-pulse"
+            >
+              <div class="rounded-3xl aspect-video w-full bg-slate-200/80 relative overflow-hidden">
+                <div class="absolute top-3 right-3 h-6 w-20 bg-white/50 rounded-full"></div>
+              </div>
+
+              <div class="p-4 flex flex-col grow text-right space-y-3">
+                <div class="h-6 bg-slate-200/80 rounded-lg w-3/4 mb-2"></div>
+
+                <div class="space-y-2 mb-5 grow">
+                  <div class="h-3 bg-slate-200/60 rounded-full w-full"></div>
+                  <div class="h-3 bg-slate-200/60 rounded-full w-2/3"></div>
+                </div>
+
+                <div class="flex gap-2 mt-auto pt-4">
+                  <div class="flex-1 h-10 bg-slate-200/80 rounded-xl"></div>
+                  <div class="flex-1 h-10 bg-slate-200/60 rounded-xl"></div>
+                </div>
+              </div>
+            </div>
+          }
+
+        } @else if (servicedata().length > 0) {
+          @for (service of servicedata(); track service._id) {
             <div
               class="group bg-white/70 backdrop-blur-lg p-3 rounded-4xl border border-white shadow-sm hover:shadow-[0_20px_40px_rgba(0,0,0,0.08)] hover:-translate-y-1 transition-all duration-300 flex flex-col relative overflow-hidden"
             >
@@ -110,14 +135,14 @@
 
                 <div class="flex gap-2 mt-auto">
                   <button
-                    (click)="handleProtectedNavigate('/chatbot/:id')"
-                    class="flex-1 bg-linear-to-bl from-secondary to-[#2c3e50] text-white py-2.5 rounded-xl font-bold hover:shadow-lg hover:shadow-secondary/20 active:scale-95 transition-all text-sm"
+                    (click)="handleProtectedNavigate('/chatbot/:id', service._id)"
+                    class="flex-1 bg-linear-to-bl from-secondary to-[#2c3e50] text-white py-2.5 rounded-xl font-bold hover:shadow-lg hover:shadow-secondary/20 active:scale-95 transition-all text-sm cursor-pointer"
                   >
                     اسألني
                   </button>
                   <button
-                    (click)="handleProtectedNavigate('/servicedetails/:id')"
-                    class="flex-1 bg-white text-secondary border border-slate-200 py-2.5 rounded-xl font-bold hover:bg-slate-50 hover:border-slate-300 active:scale-95 transition-all text-sm"
+                    (click)="handleProtectedNavigate('/servicedetails/:id', service._id)"
+                    class="flex-1 bg-white text-secondary border border-slate-200 py-2.5 rounded-xl font-bold hover:bg-slate-50 hover:border-slate-300 active:scale-95 transition-all text-sm cursor-pointer"
                   >
                     المزيد
                   </button>
@@ -125,6 +150,7 @@
               </div>
             </div>
           }
+
         } @else {
           <div class="col-span-full py-20 flex flex-col items-center justify-center text-center">
             <div

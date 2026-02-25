@@ -15,7 +15,7 @@ import { CookieService } from 'ngx-cookie-service';
   providedIn: 'root',
 })
 export class UserRequests {
-  userToken: any ;
+  userToken;
   constructor(
     private _httpClient: HttpClient,
     @Inject(PLATFORM_ID) private _PLATFORM_ID: any,

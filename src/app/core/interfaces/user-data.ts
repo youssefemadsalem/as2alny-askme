@@ -1,10 +1,10 @@
-export interface UserData {
+export interface UserDataInterface {
   _id?: string;
   name: string;
   email: string;
-  nationalId: number;
+  nationalId?: number;
   role?: string;
-  isActive?: OnBeforeUnloadEventHandlerNonNull;
+  isActive?: boolean;
   phoneNumber: string;
   createdAt?: string;
   updatedAt?: string;

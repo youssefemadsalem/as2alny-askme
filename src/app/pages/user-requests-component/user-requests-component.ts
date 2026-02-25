@@ -29,9 +29,9 @@ export class UserRequestsComponent implements OnInit , OnDestroy {
       next: (requests) => {
         console.log(requests.data);
         this.requestList = requests.data;
+        this.cdr.detectChanges();
       },
       error: (err) => {
-        this.cdr.detectChanges();
         console.log(err);
       },
       complete: () => {

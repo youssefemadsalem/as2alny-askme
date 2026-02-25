@@ -1,23 +1,23 @@
-<div class="gradent pt-6">
+<div class="gradent pt-15 rounded-2xl">
   <!-- <div class="user-details-continer bg-amber-300"> -->
-  <div class="update-details text-left">
+  <div class="update-details text-left px-7 relative top-23 left-10 z-10">
     @if (isEditing) {
       <button
-        (click)="register()"
-        class="bg-green-600 ml-2 px-4 py-2 text-white rounded-lg hover:bg-green-800 hover:cursor-pointer transition"
+        (click)="updateProfile()"
+        class="bg-emerald-600/80 ml-2 px-3 py-1.5 text-white rounded-2xl hover:bg-emerald-700/90 hover:cursor-pointer transition"
       >
-        <i class="fa-solid ml-1 fa-floppy-disk"></i> حفظ التغييرات
+        <i class="fa-solid fa-check"></i> حفظ التغييرات
       </button>
       <button
         (click)="cancelEdit()"
-        class="bg-red-600 px-4 py-2 text-white rounded-lg hover:bg-red-800 hover:cursor-pointer transition"
+        class="bg-rose-600/80 px-3 py-1.5 text-white rounded-2xl hover:bg-rose-700/90 hover:cursor-pointer transition"
       >
         <i class="fa-solid fa-xmark ml-1"></i> إلغاء
       </button>
     } @else {
       <button
         (click)="toggleFlagMode()"
-        class="bg-primary px-4 py-2 text-white rounded-lg hover:bg-[#ae8c24] hover:cursor-pointer transition"
+        class="bg-primary px-2.5 py-1.5 text-white rounded-lg hover:bg-[#ae8c24] hover:cursor-pointer transition"
         dir="rtl"
       >
         <i class="fa-solid fa-pen ml-1 text-sm"></i> تعديل الملف
@@ -25,19 +25,32 @@
     }
   </div>
 
-  <div class="user-details bg-white text-secondary flx flex-wrap justify-center p-1">
-    <div class="user-img size-24 border-4 border-primary rounded-full overflow-hidden">
+  <div class="user-details relative p-7 bg-white text-secondary flx flex-wrap justify-center">
+    <div
+      class="absolute top-0  translate-y-[-50%] right-7 user-img size-22 border-4 border-primary rounded-full overflow-hidden"
+    >
       <img src="./images/logo.png" class="size-full" alt="User profile picture" />
     </div>
-    <div class="user-data">
-      <form class="grid md:grid-cols-2 gap-5" [formGroup]="updateProfileForm" (ngSubmit)="register()">
+    <div class="header-content w-full text-right mt-7">
+      <p class="userName text-2xl text-secondary font-extrabold">
+        أهلاً {{ user.name.split(' ').splice(0, 1).join(' ') }}
+      </p>
+      <span class="user-email text-slate-500 text-sm font-light">{{ user.email }}</span>
+    </div>
+    <div class="user-data mt-5">
+      <form
+        class="grid md:grid-cols-2 gap-5 gap-y-8"
+        [formGroup]="updateProfileForm"
+        (ngSubmit)="updateProfile()"
+      >
         <div class="userName col-span-1">
-          <label for="userName" class="mb-10">الأسم الكامل</label>
+          <label for="userName" class="text-sm font-semibold text-slate-500">الأسم الكامل</label>
           @if (isEditing) {
-            <input #email
+            <input
+              #email
               formControlName="name"
               type="text"
-              class="w-[90%] px-4 py-2 my-2 rounded-2xl border border-slate-200 bg-white/50 focus:bg-white focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition-all"
+              class="w-[90%] mt-2 px-4 py-2 my-2 rounded-2xl border border-slate-200 bg-white/50 focus:bg-white focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition-all"
             />
             @if (updateProfileForm.get('name')?.invalid && updateProfileForm.get('name')?.touched) {
               <p class="text-rose-500 text-xs font-bold pr-2 flex items-center gap-1">
@@ -46,7 +59,7 @@
               </p>
               <ul class="mt-1.5 list-disc list-inside">
                 @if (updateProfileForm.get('name')?.getError('required')) {
-                  <p class="text-rose-500 text-xs font-bold pr-2 flex items-center gap-1">
+                  <p class="text-rose-500 mt-2 text-xs font-bold pr-2 flex items-center gap-1">
                     <i class="fa-solid"></i>
                     عليك انت تكتب الاسم
                   </p>
@@ -60,11 +73,11 @@
               </ul>
             }
           } @else {
-            <p>{{ user.name }}</p>
+            <p class="mt-1.5 font-bold">{{ user.name }}</p>
           }
         </div>
         <div class="userPhone col-span-1">
-          <label for="userPhone">رقم الهاتف</label>
+          <label for="userPhone" class="text-sm font-semibold text-slate-500">رقم الهاتف</label>
           @if (isEditing) {
             <input
               type="tel"
@@ -72,34 +85,36 @@
               class="w-[90%] px-4 py-2 my-2 rounded-2xl border border-slate-200 bg-white/50 focus:bg-white focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition-all"
             />
             @if (
-            updateProfileForm.get('phoneNumber')?.invalid && updateProfileForm.get('phoneNumber')?.touched
-          ) {
-            <p class="text-rose-500 text-xs font-bold pr-2 flex items-center gap-1">
-              <i class="fa-solid fa-circle-exclamation"></i>
-              رقم التليفون خطأ
-            </p>
-            <ul class="mt-1.5 list-disc list-inside">
-              @if (updateProfileForm.get('phoneNumber')?.getError('required')) {
-                <p class="text-rose-500 text-xs font-bold pr-2 flex items-center gap-1">
-                  <i class="fa-solid"></i>
-                  عليك انت تكتب 11 رقم خاص بهاتفك
-                </p>
-              }
-              @if (updateProfileForm.get('phoneNumber')?.getError('pattern')) {
-                <p class="text-rose-500 text-xs font-bold pr-2 flex items-center gap-1">
-                  <i class="fa-solid"></i>
-                  يجب علي رقم ان يبدا بي 010 او 011 او012 او015 و يكون 11 رقم
-                </p>
-              }
-            </ul>
-          }
-            
+              updateProfileForm.get('phoneNumber')?.invalid &&
+              updateProfileForm.get('phoneNumber')?.touched
+            ) {
+              <p class="text-rose-500 text-xs font-bold pr-2 flex items-center gap-1">
+                <i class="fa-solid fa-circle-exclamation"></i>
+                رقم التليفون خطأ
+              </p>
+              <ul class="mt-1.5 list-disc list-inside">
+                @if (updateProfileForm.get('phoneNumber')?.getError('required')) {
+                  <p class="text-rose-500 text-xs font-bold pr-2 flex items-center gap-1">
+                    <i class="fa-solid"></i>
+                    عليك انت تكتب 11 رقم خاص بهاتفك
+                  </p>
+                }
+                @if (updateProfileForm.get('phoneNumber')?.getError('pattern')) {
+                  <p class="text-rose-500 text-xs font-bold pr-2 flex items-center gap-1">
+                    <i class="fa-solid"></i>
+                    يجب علي رقم ان يبدا بي 010 او 011 او012 او015 و يكون 11 رقم
+                  </p>
+                }
+              </ul>
+            }
           } @else {
-            <p>{{ user.phoneNumber }}</p>
+            <p class="mt-1.5 font-bold">{{ user.phoneNumber }}</p>
           }
         </div>
         <div class="userEmail col-span-1">
-          <label for="userEmail">البريد الالكتروني</label>
+          <label for="userEmail" class="text-sm font-semibold text-slate-500"
+            >البريد الالكتروني</label
+          >
           @if (isEditing) {
             <input
               type="email"
@@ -107,41 +122,42 @@
               placeholder="mail@example.com"
               class="w-[90%] px-4 py-2 my-2 rounded-2xl border border-slate-200 bg-white/50 focus:bg-white focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition-all"
             />
-             @if (updateProfileForm.get('email')?.invalid && updateProfileForm.get('email')?.touched) {
-            <p class="text-rose-500 text-xs font-bold pr-2 flex items-center gap-1">
-              <i class="fa-solid fa-circle-exclamation"></i>
-              الايميل غير صحيح
-            </p>
-            <ul class="mt-1.5 list-disc list-inside">
-              @if (updateProfileForm.get('email')?.getError('required')) {
-                <p class="text-rose-500 text-xs font-bold pr-2 flex items-center gap-1">
-                  <i class="fa-solid"></i>
-                  عليك انت تكتب الايميل
-                </p>
-              }
-              @if (updateProfileForm.get('email')?.getError('email')) {
-                <p class="text-rose-500 text-xs font-bold pr-2 flex items-center gap-1">
-                  <i class="fa-solid"></i>
-                  الايمل عليه ان يكون هكذا :Example@gmail.com
-                </p>
-              }
-            </ul>
-          }
+            @if (
+              updateProfileForm.get('email')?.invalid && updateProfileForm.get('email')?.touched
+            ) {
+              <p class="text-rose-500 text-xs font-bold pr-2 flex items-center gap-1">
+                <i class="fa-solid fa-circle-exclamation"></i>
+                الايميل غير صحيح
+              </p>
+              <ul class="mt-1.5 list-disc list-inside">
+                @if (updateProfileForm.get('email')?.getError('required')) {
+                  <p class="text-rose-500 text-xs font-bold pr-2 flex items-center gap-1">
+                    <i class="fa-solid"></i>
+                    عليك انت تكتب الايميل
+                  </p>
+                }
+                @if (updateProfileForm.get('email')?.getError('email')) {
+                  <p class="text-rose-500 text-xs font-bold pr-2 flex items-center gap-1">
+                    <i class="fa-solid"></i>
+                    الايمل عليه ان يكون هكذا :Example@gmail.com
+                  </p>
+                }
+              </ul>
+            }
           } @else {
-            <p>{{ user.email }}</p>
+            <p class="mt-1.5 font-bold">{{ user.email }}</p>
           }
         </div>
         <div class="userID col-span-1">
-          <label for="userID">الرقم القومي</label>
+          <label for="userID" class="text-sm font-semibold text-slate-500">الرقم القومي</label>
           @if (isEditing) {
             <input
-              class="cursor-not-allowed opacity-80"
-              disabled
+              formControlName="nationalId"
               type="number"
-              class="w-[90%] px-4 py-2 my-2 cursor-not-allowed opacity-80 rounded-2xl border border-slate-200 bg-white/50"
+              class="w-[90%] px-4 py-2 my-2 cursor-not-allowed opacity-80 rounded-2xl border border-slate-200 bg-neutral-300"
             />
           } @else {
-            <p>{{ user.nationalId }}</p>
+            <p class="mt-1.5 font-bold">{{ user.nationalId }}</p>
           }
         </div>
       </form>

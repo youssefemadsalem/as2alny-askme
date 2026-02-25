@@ -1,9 +1,26 @@
-import { ChangeDetectorRef, Component, ElementRef, inject, OnInit, QueryList, signal, viewChildren } from '@angular/core';
-import { UserData } from '../../core/interfaces/user-data';
+import {
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  inject,
+  OnInit,
+  QueryList,
+  signal,
+  viewChildren,
+} from '@angular/core';
+import { UserDataInterface } from '../../core/interfaces/user-data';
 import { Auth } from '../../core/services/auth/auth';
-import { AbstractControl,  FormControl,  FormGroup,  ReactiveFormsModule,  Validators,} from '@angular/forms';
+import {
+  AbstractControl,
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { UserDataService } from '../../core/services/user-data';
+import { disabled } from '@angular/forms/signals';
 
 @Component({
   selector: 'app-user-details-component',
@@ -13,38 +30,50 @@ import { CommonModule } from '@angular/common';
   styleUrl: './user-details-component.css',
 })
 export class UserDetailsComponent implements OnInit {
-    ngOnInit(): void {}
+  _userDataService = inject(UserDataService);
 
-
+  ngOnInit(): void {
+    this._userDataService.getUserData().subscribe({
+      next: (res) => {
+        console.log(res.data);
+        this.user = res.data;
+        this.updateProfileForm.patchValue({
+          name: this.user.name,
+          email: this.user.email,
+          phoneNumber: this.user.phoneNumber,
+          nationalId: this.user.nationalId,
+        });
+      },
+      error: (err) => {
+        console.log(err);
+      },
+      complete: () => {
+        console.log('Mission Done , Data Loaded');
+      },
+    });
+  }
 
   // Variables
-    user: UserData = {
-    name: 'يوسف محمد أحمد',
-    email: 'yousef@example.com',
-    nationalId: 1234567890,
-    phoneNumber: '0123456789',
+  user: UserDataInterface = {
+    name: '',
+    email: '',
+    phoneNumber: '',
   };
 
+  updateProfileForm: FormGroup = new FormGroup({
+    name: new FormControl(null, [
+      Validators.required,
+      Validators.pattern(/^([\u0600-\u06FF]+\s){3}[\u0600-\u06FF]+.*$/),
+    ]),
 
+    phoneNumber: new FormControl(null, [
+      Validators.required,
+      Validators.pattern(/^01[0125][0-9]{8}$/),
+    ]),
+    nationalId: new FormControl({value:this.user.nationalId , disabled:true } , [Validators.required, Validators.pattern(/^[0-9]{14}$/)]),
 
-  updateProfileForm: FormGroup = new FormGroup(
-    {
-      name: new FormControl(this.user.name, [
-        Validators.required,
-        Validators.pattern(/^([\u0600-\u06FF]+\s){3}[\u0600-\u06FF]+.*$/),
-      ]),
-
-
-      phoneNumber: new FormControl(this.user.phoneNumber, [
-        Validators.required,
-        Validators.pattern(/^01[0125][0-9]{8}$/),
-      ]),
-      nationalId: new FormControl(this.user.nationalId, [Validators.required, Validators.pattern(/^[0-9]{14}$/)]),
-
-      email: new FormControl(this.user.email, [Validators.required, Validators.email]),
-    },
-  );
-
+    email: new FormControl(null, [Validators.required, Validators.email]),
+  });
 
   isEditing: boolean = false;
   constructor(private _Auth: Auth) {}
@@ -53,44 +82,38 @@ export class UserDetailsComponent implements OnInit {
   isLoading = signal(false);
   isavail = signal(false);
 
-
-  
-
-  register(): void {
-   this.toggleFlagMode();
+  updateProfile(): void {
     if (this.updateProfileForm.invalid) {
       this.updateProfileForm.markAllAsTouched();
     } else {
       this.alreadyexist = '';
       this.isLoading.set(true);
-      this._Auth.sighup(this.updateProfileForm.value).subscribe({
-        next: (res:any) => {
+      this._userDataService.updateUserData(this.updateProfileForm.value).subscribe({
+        next: (res) => {
           console.log(res);
           this.isLoading.set(false);
-        },
-        error: (err:any) => {
-          console.log(err);
-          // 2. Assign the value FIRST
-          // We use optional chaining (?.) just in case err.error is null
-          this.alreadyexist = err.error?.message || 'Error: Account might already exist';
-          // 3. Stop loading
-          this.isLoading.set(false);
-          // 4. Trigger change detection LAST (after data is updated)
+          this.user = { ...this.user, ...this.updateProfileForm.value };
+          this.toggleFlagMode();
           this.cdr.detectChanges();
+
+        },
+        error: (err: any) => {
+          console.log(err);
+          this.alreadyexist = err.error?.message || 'Error: Account might already exist';
+          this.isLoading.set(false);
         },
       });
     }
   }
 
-  cancelEdit(){
+  cancelEdit() {
     this.toggleFlagMode();
     this.updateProfileForm.get('name')?.setValue(this.user.name);
     this.updateProfileForm.get('email')?.setValue(this.user.email);
     this.updateProfileForm.get('phoneNumber')?.setValue(this.user.phoneNumber);
   }
 
-  toggleFlagMode(){
+  toggleFlagMode() {
     this.isEditing = !this.isEditing;
   }
-
 }

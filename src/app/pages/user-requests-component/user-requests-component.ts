@@ -1,6 +1,6 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { UserRequests } from './../../core/services/user-requests';
+import { UserRequests } from '../../core/services/user-api/user-requests';
 import { Request } from '../../core/interfaces/request';
 
 @Component({
@@ -11,14 +11,11 @@ import { Request } from '../../core/interfaces/request';
   styleUrl: './user-requests-component.css',
 })
 export class UserRequestsComponent implements OnInit {
-  // Injections
   private readonly _userRequests = inject(UserRequests);
 
-  // Signals
   requestList = signal<Request[]>([]);
   isLoading = signal<boolean>(true);
 
-  // Skeleton config (5 dummy rows)
   skeletonRows = Array(5).fill(0);
 
   ngOnInit(): void {
@@ -26,11 +23,8 @@ export class UserRequestsComponent implements OnInit {
 
     this._userRequests.getUserRequests().subscribe({
       next: (res) => {
-        // Optional: Artificial delay to see the skeleton
-        // setTimeout(() => {
         this.requestList.set(res.data);
         this.isLoading.set(false);
-        // }, 1000);
       },
       error: (err) => {
         console.error(err);
@@ -39,7 +33,6 @@ export class UserRequestsComponent implements OnInit {
     });
   }
 
-  // Helper functions (kept as is, just slightly cleaner)
   getStatusClass(status: string): string {
     const classes: Record<string, string> = {
       completed: 'bg-green-100 border border-green-200 text-green-700',

@@ -99,7 +99,7 @@ export const routes: Routes = [
                 (c) => c.UserDetailsComponent,
               ),
             title: 'user-details',
-          }          
+          },
         ],
       },
       {

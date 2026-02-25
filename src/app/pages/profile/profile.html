@@ -1,37 +1,65 @@
+<style>
+  .min-h-screen {
+    position: relative;
+    /* overflow: hidden is handled by tailwind class below, but kept here for safety */
+  }
 
+  /* The Blue Blob */
+  .min-h-screen::before {
+    content: '';
+    position: absolute;
+    width: 400px;
+    height: 400px;
+    border-radius: 50%;
+    filter: blur(80px); /* Increased blur slightly for smoother look */
+    z-index: 0;
+    opacity: 0.4;
+    background: radial-gradient(circle, var(--color-primary, #3b82f6), transparent);
+    top: -10%;
+    left: -10%;
+  }
 
-<div class="w-full lg:h-screen flex items-center bg-acent pt-18 pb-3 ">
-  <!-- Profile Section -->
+  /* The Green/Accent Blob */
+  .min-h-screen::after {
+    content: '';
+    position: absolute;
+    width: 400px;
+    height: 400px;
+    border-radius: 50%;
+    filter: blur(80px);
+    z-index: 0;
+    opacity: 0.4;
+    background: radial-gradient(circle, var(--color-accent, #10b981), transparent);
+    bottom: -10%;
+    right: -10%;
+  }
+</style>
+
+<div
+  class="min-h-screen relative overflow-hidden lg:h-screen flex items-center bg-slate-50 pt-18 pb-3 w-full lg:px-37.5 md:px-32.5"
+>
   <div
-    class=" bg-slate-50 w-[95%] md:w-[80%] lg:w-[85%] mx-auto grid grid-cols-1 lg:grid-cols-7 items-start justify-center gap-x-10 gap-y-3 min-h-scren font-cairo "
+    class="relative z-10 px-10 md:px-0 w-full mx-auto grid grid-cols-1 lg:grid-cols-7 items-start justify-center gap-x-10 gap-y-3 font-cairo"
   >
-    <!-- Side Bar -->
     <aside class="lg:col-span-2 mb-5 lg:m-0 h-fit shadow-lg rounded-2xl bg-white p-3">
-      <!-- Navigation Container -->
       <div id="profile-navigation" class="">
-        <!-- Navigation Header -->
-        <!-- <div class="nav-header flex flex-wrap justify-center p-1">
-          <div class="header-img size-24 border-4 border-primary rounded-full overflow-hidden">
-            <img src="./images/logo.png" class="size-full" alt="User profile picture" />
-          </div>
-          <div class="header-content w-full text-center mt-2">
-            <p class="userName text-2xl text-secondary font-bold">
-              أهلاً {{ user.name.split(' ').splice(0, 1).join(' ') }}
-            </p>
-            <span class="user-email text-slate-500 text-sm font-light">{{ user.email }}</span>
-          </div>
-        </div> -->
-
-        <!-- Navigation Content -->
         <div class="nav-content p-1 text-secondary font-medium">
           <ul>
             <li class="cursor-pointer hover:bg-slate-200 rounded-lg mt-2">
-              <a routerLink="user-details" routerLinkActive="bg-slate-200 w-full text-secondary" class="block rounded-lg py-3 px-3">
+              <a
+                routerLink="user-details"
+                routerLinkActive="bg-slate-200 w-full text-secondary"
+                class="block rounded-lg py-3 px-3"
+              >
                 <span><i class="fa-solid fa-user text-primary ml-2"></i> الملف الشخصي</span></a
               >
             </li>
-            <li class="cursor-pointer hover:bg-slate-200  rounded-lg mt-2">
-              <a routerLink="user-requests" routerLinkActive="bg-slate-200 w-full text-secondary"  class="block rounded-lg py-3 px-3">
+            <li class="cursor-pointer hover:bg-slate-200 rounded-lg mt-2">
+              <a
+                routerLink="user-requests"
+                routerLinkActive="bg-slate-200 w-full text-secondary"
+                class="block rounded-lg py-3 px-3"
+              >
                 <span> <i class="fa-solid fa-rectangle-list text-primary ml-2"></i> طلباتي</span>
               </a>
             </li>
@@ -47,15 +75,8 @@
       </div>
     </aside>
 
-    <!------------------------------- User Requests ------------------------------->
-    <div class="bg-white rounded-2xl shadow-lg p-8 lg:col-span-5 h-fit">
+    <div class="bg-white rounded-2xl shadow-lg overflow-hidden lg:col-span-5 h-fit">
       <router-outlet></router-outlet>
     </div>
   </div>
-
-  <!-- class="flex flex-col gap-6 w-full max-w-229.5 mx-auto font-cairo mt-30 bg-slate-100" -->
 </div>
-
-
-
-<!-- flex flex-wrap w-[85%] items-center mx-auto gap-x-10 -->

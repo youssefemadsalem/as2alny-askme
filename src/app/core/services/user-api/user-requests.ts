@@ -35,4 +35,16 @@ export class UserRequests {
       }),
     });
   }
+
+  createServiceRequest(data: any): Observable<any> {
+    return this._httpClient.post(
+      'https://isalny-backend.vercel.app/api/v1/user/service-requests',
+      data,
+      {
+        headers: new HttpHeaders({
+          Authorization: `Bearer ${this.userToken.token}`,
+        }),
+      },
+    );
+  }
 }

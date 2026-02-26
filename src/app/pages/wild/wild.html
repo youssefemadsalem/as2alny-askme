@@ -1,1 +1,102 @@
-<p>wild works!</p>
+<style>
+  .min-h-screen {
+    position: relative;
+    overflow-x: hidden;
+  }
+
+  /* Background Blobs - Exact copy from your code to maintain consistency */
+  .min-h-screen::before,
+  .min-h-screen::after {
+    content: '';
+    position: absolute;
+    width: 500px;
+    height: 500px;
+    border-radius: 50%;
+    filter: blur(80px);
+    z-index: 0;
+    opacity: 0.5;
+    pointer-events: none;
+  }
+
+  .min-h-screen::before {
+    background: radial-gradient(circle, var(--color-primary, #3b82f6), transparent);
+    top: -15%;
+    left: -10%;
+    animation: float 10s infinite ease-in-out;
+  }
+
+  .min-h-screen::after {
+    background: radial-gradient(circle, var(--color-accent, #10b981), transparent);
+    bottom: -15%;
+    right: -10%;
+    animation: float 12s infinite ease-in-out reverse;
+  }
+
+  @keyframes float {
+    0% {
+      transform: translate(0, 0);
+    }
+    50% {
+      transform: translate(30px, 30px);
+    }
+    100% {
+      transform: translate(0, 0);
+    }
+  }
+</style>
+
+<div class="min-h-screen bg-slate-50 flex items-center justify-center p-4 font-cairo" dir="rtl">
+  <div
+    class="relative z-10 w-full max-w-2xl bg-white/60 backdrop-blur-xl rounded-[3rem] border border-white/80 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.1)] p-8 md:p-12 text-center overflow-hidden"
+  >
+    <div class="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none opacity-30">
+      <div
+        class="absolute -top-[100px] -right-[100px] w-64 h-64 bg-yellow-100 rounded-full blur-3xl mix-blend-multiply"
+      ></div>
+      <div
+        class="absolute -bottom-[100px] -left-[100px] w-64 h-64 bg-blue-100 rounded-full blur-3xl mix-blend-multiply"
+      ></div>
+    </div>
+
+    <div class="relative z-20 flex flex-col items-center">
+      <div class="mb-6 relative">
+        <div
+          class="relative inline-flex items-center justify-center w-32 h-32 bg-white rounded-full shadow-lg border border-slate-100"
+        >
+          <i class="fa-solid fa-triangle-exclamation text-6xl text-yellow-400"></i>
+        </div>
+        <div class="absolute top-0 right-0 w-4 h-4 bg-emerald-400 rounded-full animate-ping"></div>
+        <div class="absolute bottom-2 left-2 w-3 h-3 bg-secondary rounded-full"></div>
+      </div>
+
+      <h1
+        class="text-[8rem] leading-none font-black text-transparent bg-clip-text bg-gradient-to-br from-[#2c3e50] to-[#3b82f6] drop-shadow-sm opacity-90 select-none"
+      >
+        404
+      </h1>
+
+      <h2 class="text-3xl md:text-4xl font-extrabold text-[#2c3e50] mb-4 mt-2">
+        عذراً، الصفحة غير موجودة
+      </h2>
+
+      <p class="text-slate-500 text-lg font-medium max-w-md mx-auto mb-10 leading-relaxed">
+        يبدو أن الرابط الذي تحاول الوصول إليه غير صحيح أو تم نقل الصفحة. لا تقلق، يمكنك العودة
+        للرئيسية.
+      </p>
+
+      <div class="flex flex-col sm:flex-row gap-4 w-full sm:w-auto justify-center">
+        <button
+          routerLink="/home"
+          class="group px-8 py-3.5 bg-gradient-to-bl from-[#2c3e50] to-[#1a252f] text-white rounded-2xl font-bold shadow-lg shadow-slate-300/50 hover:shadow-xl hover:-translate-y-1 hover:scale-105 transition-all duration-300 flex items-center justify-center gap-3 cursor-pointer"
+        >
+          <span>العودة للرئيسية</span>
+          <i class="fa-solid fa-house text-sm group-hover:animate-bounce"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="absolute bottom-6 text-slate-400 text-sm font-medium z-10">
+    إسألني © 2026 - جميع الحقوق محفوظة
+  </div>
+</div>

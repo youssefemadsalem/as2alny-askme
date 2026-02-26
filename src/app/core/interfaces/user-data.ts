@@ -6,6 +6,7 @@ export interface UserDataInterface {
   role?: string;
   isActive?: boolean;
   phoneNumber: string;
+  profilePicture?:string;
   createdAt?: string;
   updatedAt?: string;
   __v?: number;

@@ -4,6 +4,7 @@ import { Auth } from '../../core/services/auth/auth';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { UserDataService } from '../../core/services/user-api/user-data';
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-user-details-component',
@@ -14,7 +15,11 @@ import { UserDataService } from '../../core/services/user-api/user-data';
 })
 export class UserDetailsComponent implements OnInit {
   private _userDataService = inject(UserDataService);
-  private _Auth = inject(Auth);
+
+
+  constructor(private _cookieService: CookieService,){
+    this.userName = this._cookieService.get('userName')
+  }
 
   // Signals
   isLoadingData = signal<boolean>(true); // Loading state for initial data fetch
@@ -23,6 +28,7 @@ export class UserDetailsComponent implements OnInit {
   // Variables
   isEditing: boolean = false;
   alreadyexist: string = '';
+  userName!:string ;
 
   user: UserDataInterface = {
     name: '',
@@ -44,6 +50,7 @@ export class UserDetailsComponent implements OnInit {
       [Validators.required, Validators.pattern(/^[0-9]{14}$/)],
     ),
     email: new FormControl(null, [Validators.required, Validators.email]),
+    profilePicture: new FormControl(null)
   });
 
   ngOnInit(): void {
@@ -60,6 +67,7 @@ export class UserDetailsComponent implements OnInit {
           email: this.user.email,
           phoneNumber: this.user.phoneNumber,
           nationalId: this.user.nationalId,
+          profilePicture: this.user.profilePicture ,
         });
 
         // Stop loading
@@ -85,6 +93,7 @@ export class UserDetailsComponent implements OnInit {
           // Update local user object so UI reflects changes immediately
           this.user = { ...this.user, ...this.updateProfileForm.value };
           this.toggleFlagMode();
+          this._cookieService.set('userName' , this.updateProfileForm.get('name')?.value)
         },
         error: (err: any) => {
           console.error(err);
@@ -101,6 +110,7 @@ export class UserDetailsComponent implements OnInit {
     this.updateProfileForm.get('name')?.setValue(this.user.name);
     this.updateProfileForm.get('email')?.setValue(this.user.email);
     this.updateProfileForm.get('phoneNumber')?.setValue(this.user.phoneNumber);
+    this.updateProfileForm.get('profilePicture')?.setValue(this.user.profilePicture);
   }
 
   toggleFlagMode() {

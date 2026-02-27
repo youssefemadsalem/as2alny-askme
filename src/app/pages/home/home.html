@@ -36,7 +36,7 @@
       class="max-w-4xl mx-auto flex flex-col items-center justify-center mb-12 px-4 space-y-4 text-center my-7"
     >
       <h1 class="text-4xl md:text-5xl font-extrabold text-secondary mt-14">
-        اهلا {{ userName() }}
+        اهلا {{ userName().split(" ").splice(0 , 2).join(' ') }}
       </h1>
       <p class="text-slate-500 text-lg font-medium max-w-lg">
         جميع الخدمات الحكومية المصرية الان بين ايدك

@@ -4,12 +4,10 @@
       <div
         class="absolute top-0 translate-y-[-50%] right-7 size-22 border-4 border-slate-100 bg-slate-200 rounded-full"
       ></div>
-
       <div class="header-content w-full text-right mt-7 space-y-3">
         <div class="h-8 bg-slate-200 rounded-lg w-1/3 mb-2"></div>
         <div class="h-4 bg-slate-200 rounded-lg w-1/4"></div>
       </div>
-
       <div class="user-data mt-10 w-full">
         <div class="grid md:grid-cols-2 gap-5 gap-y-8">
           @for (item of [1, 2, 3, 4]; track $index) {
@@ -23,97 +21,125 @@
     </div>
   } @else {
     <div class="user-details relative p-7 bg-white text-secondary flx flex-wrap justify-center">
-      <!-- User Image -->
       <div
-        class="absolute top-0 translate-y-[-50%] right-7 group user-img size-22 border-4 border-primary rounded-full overflow-clip bg-slate-100"
+        class="absolute top-0 translate-y-[-50%] right-7 group user-img size-22 border-4 border-primary rounded-full bg-slate-100"
       >
-        @if (user.profilePicture) {
-          <img [src]="user.profilePicture" class="size-full object-cover absolute inset-0 z-10" />
+        @if (imagePreview) {
+          <div class="overflow-hidden size-20 relative rounded-full">
+            <img
+              #profileImage
+              [src]="imagePreview"
+              class="size-full object-cover absolute inset-0 z-10"
+            />
+          </div>
         } @else {
           <svg
-          class="text-secondary size-20 p-2 pb-0 rounded-full top-0 bottom-0 relative bg-slate-100"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        >
-          <circle cx="12" cy="7" r="4" fill="currentColor" fill-opacity="0.1" />
-          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
-        </svg>
+            class="text-secondary size-20 p-2 pb-0 rounded-full top-0 bottom-0 relative bg-slate-100"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <circle cx="12" cy="7" r="4" fill="currentColor" fill-opacity="0.1" />
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+          </svg>
         }
         @if (isEditing) {
-          <input
-            type="file"
-            hidden
-            class="profilePicture"
-            id="profilePicture"
-            formControlName="profilePicture"
-          />
-          <label for="profilePicture">
+          <div class="absolute -bottom-1.5 right-0 z-100">
+            <!-- Trigger button -->
             <div
-              class="absolute inset-0 z-20 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-80 transition-opacity duration-400 cursor-pointer"
+              (click)="showImageMenu = !showImageMenu"
+              class="rounded-full p-1.5 text-xs bg-secondary text-white flex items-center justify-center cursor-pointer"
             >
-              <img src="./images/camera-black-icon.png" class="size-10" alt="" />
+              <i class="fa-solid fa-pen"></i>
             </div>
-          </label>
+
+            <!-- Dropdown menu -->
+            @if (showImageMenu) {
+              <!-- Backdrop to close on outside click -->
+              <div class="fixed inset-0 z-90" (click)="showImageMenu = false"></div>
+
+              <div
+                class="absolute bottom-8 right-0 z-100 min-w-36 bg-white rounded-xl shadow-lg border border-slate-100 overflow-hidden text-sm text-secondary"
+              >
+                <label
+                  for="profilePicture"
+                  class="flex items-center gap-2 px-3 py-2 hover:bg-slate-50 cursor-pointer transition"
+               
+                >
+                  <i class="fa-solid fa-image text-primary"></i>
+                  تغيير الصورة
+                </label>
+                <button
+                  type="button"
+                  (click)="deleteImage()"
+                  class="w-full flex items-center gap-2 px-3 py-2 hover:bg-rose-50 text-rose-500 transition"
+                >
+                  <i class="fa-solid fa-trash"></i>
+                  حذف الصورة
+                </button>
+              </div>
+            }
+          </div>
         }
       </div>
 
       <div class="header-content flex justify-between mt-7">
         <div class="text-right">
           <p class="userName text-lg lg:text-2xl text-secondary font-extrabold">
-            أهلاً {{ user.name.split(' ').splice(0, 1).join(' ') }}
+            أهلاً {{ user().name.split(' ').splice(0, 1).join(' ') }}
           </p>
           <span class="user-email text-slate-500 text-xs lg:text-sm font-light">{{
-            user.email
+            user().email
           }}</span>
         </div>
-        <!-- Buttons -->
         <div class="update-details text-left px-7">
           @if (isEditing) {
-            <button
-              (click)="updateProfile()"
-              class="bg-emerald-600/80 ml-2 px-2.5 py-1.25 text-sm md:text-base text-white rounded-lg hover:bg-emerald-700/90 hover:cursor-pointer transition disabled:opacity-50 disabled:cursor-not-allowed"
-              [disabled]="isSaving()"
-            >
-              @if (isSaving()) {
-                <span class="flex items-center justify-center gap-2">
-                  <svg
-                    class="animate-spin h-3 w-3 text-white"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                  >
-                    <circle
-                      class="opacity-25"
-                      cx="12"
-                      cy="12"
-                      r="10"
-                      stroke="currentColor"
-                      stroke-width="4"
-                    ></circle>
-                    <path
-                      class="opacity-75"
-                      fill="currentColor"
-                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                    ></path>
-                  </svg>
+            <div class="flex flex-col items-start md:flex-row gap-2">
+              <button
+                (click)="updateProfile()"
+                class="bg-emerald-600/80 ml-2 px-2.5 py-1.25 text-sm md:text-base text-white rounded-lg hover:bg-emerald-700/90 hover:cursor-pointer transition disabled:opacity-50 disabled:cursor-not-allowed"
+                [disabled]="isSaving()"
+              >
+                @if (isSaving()) {
+                  <span class="flex items-center justify-center gap-2">
+                    <svg
+                      class="animate-spin h-3 w-3 text-white"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                    >
+                      <circle
+                        class="opacity-25"
+                        cx="12"
+                        cy="12"
+                        r="10"
+                        stroke="currentColor"
+                        stroke-width="4"
+                      ></circle>
+                      <path
+                        class="opacity-75"
+                        fill="currentColor"
+                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                      ></path>
+                    </svg>
+                    جاري الحفظ...
+                  </span>
+                } @else {
+                  <i class="fa-solid fa-check text-sm md:text-base"></i> حفظ التغييرات
+                }
+              </button>
 
-                  جاري الحفظ...
-                </span>
-              } @else {
-                <i class="fa-solid fa-check text-sm md:text-base"></i> حفظ التغييرات
-              }
-            </button>
-            <button
-              (click)="cancelEdit()"
-              class="bg-rose-600/80 px-2.5 py-1.25 text-sm md:text-base text-white rounded-lg hover:bg-rose-700/90 hover:cursor-pointer transition"
-              [disabled]="isSaving()"
-            >
-              <i class="fa-solid fa-xmark ml-1 text-sm md:text-base"></i> إلغاء
-            </button>
+              <button
+                (click)="cancelEdit()"
+                class="bg-rose-600/80 px-2.5 py-1.25 text-sm md:text-base text-white rounded-lg hover:bg-rose-700/90 hover:cursor-pointer transition"
+                [disabled]="isSaving()"
+              >
+                <i class="fa-solid fa-xmark ml-1 text-sm md:text-base"></i> إلغاء
+              </button>
+            </div>
           } @else {
             <button
               (click)="toggleFlagMode()"
@@ -125,14 +151,21 @@
           }
         </div>
       </div>
-      <!-- User Data -->
       <div class="user-data mt-10">
         <form
           class="grid md:grid-cols-2 gap-5 gap-y-7"
           [formGroup]="updateProfileForm"
           (ngSubmit)="updateProfile()"
         >
-          <!-- Name Field -->
+          <input
+            type="file"
+            hidden
+            class="profilePicture"
+            accept="image/*"
+            id="profilePicture"
+            (change)="onFileSelected($event)"
+          />
+
           <div class="userName col-span-1">
             <label for="userName" class="text-sm font-semibold text-slate-500">الأسم الكامل</label>
             @if (isEditing) {
@@ -158,23 +191,21 @@
                 <ul class="mt-1.5 list-disc list-inside">
                   @if (updateProfileForm.get('name')?.getError('required')) {
                     <p class="text-rose-500 mt-2 text-xs font-bold pr-2 flex items-center gap-1">
-                      <i class="fa-solid"></i>
                       عليك انت تكتب الاسم
                     </p>
                   }
                   @if (updateProfileForm.get('name')?.getError('pattern')) {
                     <p class="text-rose-500 text-xs font-bold pr-2 flex items-center gap-1">
-                      <i class="fa-solid"></i>
                       عليك ان تكتب الاسم كامل رباعي كما في البطاقه
                     </p>
                   }
                 </ul>
               }
             } @else {
-              <p class="mt-1.5 font-bold">{{ user.name }}</p>
+              <p class="mt-1.5 font-bold">{{ user().name }}</p>
             }
           </div>
-          <!-- Mobile Phone Field  -->
+
           <div class="userPhone col-span-1">
             <label for="userPhone" class="text-sm font-semibold text-slate-500">رقم الهاتف</label>
             @if (isEditing) {
@@ -202,23 +233,21 @@
                 <ul class="mt-1.5 list-disc list-inside">
                   @if (updateProfileForm.get('phoneNumber')?.getError('required')) {
                     <p class="text-rose-500 text-xs font-bold pr-2 flex items-center gap-1">
-                      <i class="fa-solid"></i>
                       عليك انت تكتب 11 رقم خاص بهاتفك
                     </p>
                   }
                   @if (updateProfileForm.get('phoneNumber')?.getError('pattern')) {
                     <p class="text-rose-500 text-xs font-bold pr-2 flex items-center gap-1">
-                      <i class="fa-solid"></i>
                       يجب علي رقم ان يبدا بي 010 او 011 او012 او015 و يكون 11 رقم
                     </p>
                   }
                 </ul>
               }
             } @else {
-              <p class="mt-1.5 font-bold">{{ user.phoneNumber }}</p>
+              <p class="mt-1.5 font-bold">{{ user().phoneNumber }}</p>
             }
           </div>
-          <!-- Email Field -->
+
           <div class="userEmail col-span-1">
             <label for="userEmail" class="text-sm font-semibold text-slate-500"
               >البريد الالكتروني</label
@@ -228,7 +257,6 @@
                 <div
                   class="inputIcon absolute right-.5 pointer-events-none p-2 text-slate-500 text-sm pr-3"
                 >
-                  <!-- <i class="fa-solid fa-at"></i> -->
                   <i class="fa-solid fa-envelope"></i>
                 </div>
                 <input
@@ -247,23 +275,21 @@
                 <ul class="mt-1.5 list-disc list-inside">
                   @if (updateProfileForm.get('email')?.getError('required')) {
                     <p class="text-rose-500 text-xs font-bold pr-2 flex items-center gap-1">
-                      <i class="fa-solid"></i>
                       عليك انت تكتب الايميل
                     </p>
                   }
                   @if (updateProfileForm.get('email')?.getError('email')) {
                     <p class="text-rose-500 text-xs font-bold pr-2 flex items-center gap-1">
-                      <i class="fa-solid"></i>
                       الايمل عليه ان يكون هكذا :Example@gmail.com
                     </p>
                   }
                 </ul>
               }
             } @else {
-              <p class="mt-1.5 font-bold">{{ user.email }}</p>
+              <p class="mt-1.5 font-bold">{{ user().email }}</p>
             }
           </div>
-          <!-- National ID Field -->
+
           <div class="userID col-span-1">
             <label for="userID" class="text-sm font-semibold text-slate-500">الرقم القومي</label>
             @if (isEditing) {
@@ -276,11 +302,11 @@
                 <input
                   formControlName="nationalId"
                   type="number"
-                  class="w-[90%] px-4 py-2 pr-9 cursor-not-allowed opcity-80 rounded-2xl text-white border border-slate-200 bg-slate-500/30 focus:bg-white focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition-all"
+                  class="w-[90%] px-4 py-2 pr-9 cursor-not-allowed opacity-80 rounded-2xl text-white border border-slate-200 bg-slate-500/30 focus:bg-white focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition-all"
                 />
               </div>
             } @else {
-              <p class="mt-1.5 font-bold">{{ user.nationalId }}</p>
+              <p class="mt-1.5 font-bold">{{ user().nationalId }}</p>
             }
           </div>
         </form>

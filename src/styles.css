@@ -8,16 +8,8 @@
   --font-cairo: 'Cairo', ui-sans-serif, system-ui, sans-serif;
 }
 
-.btn-primary {
-  @apply px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition;
-}
-
 .gradent {
   @apply bg-linear-to-l  from-secondary via-accent to-primary text-white;
-}
-
-.btn-ai {
-  @apply px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition;
 }
 
 @layer utilities {

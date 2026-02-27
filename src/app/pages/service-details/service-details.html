@@ -1,1 +1,392 @@
-<p>service-details works!</p>
+<div class="min-h-screen bg-slate-50 font-cairo relative overflow-hidden">
+  @if (isLoading()) {
+    <div class="animate-pulse relative z-10">
+      <div class="bg-white/60 backdrop-blur-md border-b border-white h-16 mb-8">
+        <div class="container mx-auto px-4 h-full flex items-center justify-between">
+          <div class="h-4 bg-slate-200/80 rounded w-48"></div>
+          <div class="h-4 bg-slate-200/80 rounded w-24"></div>
+        </div>
+      </div>
+
+      <div class="container mx-auto px-4 pb-24">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+          <div class="lg:col-span-8 space-y-8">
+            <div
+              class="bg-white/60 rounded-[2.5rem] p-8 border border-white h-[300px] flex flex-col md:flex-row gap-6 shadow-sm"
+            >
+              <div class="w-full md:w-24 md:h-24 shrink-0 rounded-3xl bg-slate-200/80"></div>
+              <div class="flex-1 space-y-4 pt-2">
+                <div class="h-8 bg-slate-200/80 rounded-xl w-3/4"></div>
+                <div class="h-4 bg-slate-200/80 rounded-full w-full"></div>
+                <div class="h-4 bg-slate-200/80 rounded-full w-2/3"></div>
+                <div class="flex gap-2 mt-6">
+                  <div class="h-8 w-20 bg-slate-200/80 rounded-xl"></div>
+                  <div class="h-8 w-20 bg-slate-200/80 rounded-xl"></div>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <div class="h-6 bg-slate-200/80 rounded w-48 mb-5"></div>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div
+                  class="bg-white/60 p-5 rounded-3xl border border-white h-32 flex items-start gap-4"
+                >
+                  <div class="w-12 h-12 rounded-full bg-slate-200/80 shrink-0"></div>
+                  <div class="flex-1 space-y-2">
+                    <div class="h-4 bg-slate-200/80 rounded w-3/4"></div>
+                    <div class="h-3 bg-slate-200/80 rounded w-1/2"></div>
+                  </div>
+                </div>
+                <div
+                  class="bg-white/60 p-5 rounded-3xl border border-white h-32 flex items-start gap-4"
+                >
+                  <div class="w-12 h-12 rounded-full bg-slate-200/80 shrink-0"></div>
+                  <div class="flex-1 space-y-2">
+                    <div class="h-4 bg-slate-200/80 rounded w-3/4"></div>
+                    <div class="h-3 bg-slate-200/80 rounded w-1/2"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="lg:col-span-4 space-y-6">
+            <div
+              class="bg-white/60 rounded-[2.5rem] p-6 border border-white h-[400px] flex flex-col items-center"
+            >
+              <div class="h-4 bg-slate-200/80 rounded w-20 mb-4"></div>
+              <div class="h-10 bg-slate-200/80 rounded w-32 mb-8"></div>
+              <div class="grid grid-cols-2 gap-3 w-full mb-6">
+                <div class="h-24 bg-slate-100/50 rounded-2xl border border-white"></div>
+                <div class="h-24 bg-slate-100/50 rounded-2xl border border-white"></div>
+              </div>
+              <div class="w-full h-14 bg-slate-200/80 rounded-2xl mt-auto"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  } @else if (service(); as s) {
+    <header
+      class="bg-white/70 border-b mt-17.5 border-white sticky top-0 z-30 backdrop-blur-xl shadow-sm"
+    >
+      <div class="container mx-auto px-4 h-20 flex items-center justify-between">
+        <div class="flex items-center gap-2 text-sm font-medium text-slate-500">
+          <a href="#" class="hover:text-primary transition-colors">الرئيسية</a>
+          <i class="fa-solid fa-chevron-left text-[10px] opacity-40"></i>
+          <span>{{ s.coreInfo.category }}</span>
+          <i class="fa-solid fa-chevron-left text-[10px] opacity-40"></i>
+          <span class="text-secondary font-bold">{{ s.coreInfo.name }}</span>
+        </div>
+
+        <div
+          class="flex items-center gap-2 bg-white/50 px-3 py-1.5 rounded-full border border-white shadow-sm"
+        >
+          @if (s.isOnline) {
+            <span class="flex h-2.5 w-2.5 relative">
+              <span
+                class="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent opacity-75"
+              ></span>
+              <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-accent"></span>
+            </span>
+            <span class="text-xs font-bold text-secondary">الخدمة متاحة</span>
+          } @else {
+            <span class="w-2.5 h-2.5 rounded-full bg-slate-300"></span>
+            <span class="text-xs font-bold text-slate-400">غير متاحة حالياً</span>
+          }
+        </div>
+      </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-8 pb-24 relative z-10">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        <div class="lg:col-span-8 space-y-8">
+          <section
+            class="relative bg-white/70 backdrop-blur-xl rounded-[2.5rem] p-8 border border-white shadow-[0_10px_40px_rgba(0,0,0,0.03)] overflow-hidden group"
+          >
+            <div
+              class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-secondary via-accent to-primary"
+            ></div>
+
+            <div class="flex flex-col md:flex-row gap-8 items-start relative z-10">
+              <div
+                class="w-full md:w-28 md:h-28 shrink-0 rounded-[1.5rem] overflow-hidden border-2 border-white shadow-lg shadow-slate-200/50"
+              >
+                <img
+                  [src]="s.coreInfo.image.url"
+                  class="w-full h-full object-cover transform group-hover:scale-110 transition duration-700"
+                  [alt]="s.coreInfo.name"
+                />
+              </div>
+              <div class="flex-1">
+                <h1 class="text-3xl md:text-4xl font-black text-secondary mb-4 leading-tight">
+                  {{ s.coreInfo.name }}
+                </h1>
+                <p class="text-slate-600 text-lg leading-relaxed font-medium">
+                  {{ s.coreInfo.description }}
+                </p>
+                <div class="flex flex-wrap gap-2 mt-6">
+                  @for (tag of s.tags; track tag) {
+                    <span
+                      class="px-4 py-1.5 rounded-xl bg-accent/5 text-accent text-xs font-bold border border-accent/10"
+                    >
+                      # {{ tag }}
+                    </span>
+                  }
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section>
+            <h2 class="text-xl font-extrabold text-secondary mb-6 flex items-center gap-3">
+              <span
+                class="w-10 h-10 rounded-xl bg-secondary/5 flex items-center justify-center text-secondary"
+              >
+                <i class="fa-solid fa-file-shield"></i>
+              </span>
+              المستندات والمتطلبات
+            </h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              @for (doc of s.requiredDocuments; track doc._id) {
+                <div
+                  class="group bg-white/60 backdrop-blur-md p-6 rounded-[2rem] border border-white shadow-sm hover:border-accent/30 hover:shadow-lg hover:shadow-accent/5 hover:-translate-y-1 transition-all duration-300 relative overflow-hidden"
+                >
+                  <div class="flex items-start gap-4">
+                    <div
+                      class="w-12 h-12 rounded-2xl bg-linear-to-br from-slate-50 to-white border border-white text-accent flex items-center justify-center shrink-0 group-hover:bg-accent group-hover:text-primary transition-colors shadow-sm"
+                    >
+                      <i class="fa-regular fa-file-lines text-xl"></i>
+                    </div>
+                    <div>
+                      <h3 class="font-bold text-secondary text-base mb-1">{{ doc.name }}</h3>
+                      <p class="text-xs text-slate-500 mb-3 leading-relaxed font-medium">
+                        {{ doc.description }}
+                      </p>
+
+                      <div class="flex items-center justify-between gap-2">
+                        <div class="flex gap-1 flex-wrap">
+                          @for (format of doc.acceptedFormats; track format) {
+                            <span
+                              class="text-[10px] uppercase font-bold text-slate-400 bg-white px-2 py-1 rounded-lg border border-slate-100"
+                            >
+                              {{ format }}
+                            </span>
+                          }
+                        </div>
+                        @if (doc.isMandatory) {
+                          <span
+                            class="text-[10px] text-rose-500 bg-rose-50 px-2.5 py-1 rounded-full font-bold border border-rose-100"
+                          >
+                            إجباري
+                          </span>
+                        }
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              }
+            </div>
+          </section>
+
+          <section
+            class="bg-white/70 backdrop-blur-xl rounded-[2.5rem] p-8 border border-white shadow-sm"
+          >
+            <div class="flex items-center justify-between mb-10">
+              <h2 class="text-xl font-extrabold text-secondary flex items-center gap-3">
+                <span
+                  class="w-10 h-10 rounded-xl bg-accent/10 flex items-center justify-center text-accent"
+                >
+                  <i class="fa-solid fa-shoe-prints"></i>
+                </span>
+                رحلة الحصول على الخدمة
+              </h2>
+              <span
+                class="text-xs font-bold text-white bg-secondary px-4 py-1.5 rounded-full shadow-lg shadow-secondary/20"
+              >
+                {{ s.procedures.length }} خطوات
+              </span>
+            </div>
+
+            <div class="relative">
+              <div
+                class="absolute right-[27px] top-4 bottom-10 w-0.5 bg-gradient-to-b from-secondary via-accent to-slate-200/0"
+              ></div>
+
+              <div class="space-y-8">
+                @for (step of s.procedures; track step._id) {
+                  <div class="relative pr-20 group">
+                    <div
+                      class="absolute right-0 top-0 w-14 h-14 rounded-2xl bg-white border border-slate-100 text-secondary font-black text-xl flex items-center justify-center shadow-[0_4px_20px_rgba(0,0,0,0.05)] z-10 group-hover:bg-accent group-hover:text-white group-hover:border-accent transition-all duration-300 group-hover:scale-110"
+                    >
+                      {{ step.stepNumber }}
+                    </div>
+
+                    <div class="pt-1">
+                      <h3
+                        class="text-lg font-bold text-secondary mb-2 group-hover:text-accent transition-colors"
+                      >
+                        {{ step.title }}
+                      </h3>
+                      <p class="text-slate-600 text-sm leading-relaxed mb-3 font-medium">
+                        {{ step.description }}
+                      </p>
+                      <div
+                        class="flex items-center gap-2 text-xs font-bold text-slate-400 bg-slate-50 inline-flex px-3 py-1 rounded-lg border border-slate-100"
+                      >
+                        <i class="fa-regular fa-clock text-primary"></i>
+                        <span>{{ step.estimatedTime }}</span>
+                      </div>
+                    </div>
+                  </div>
+                }
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <div class="lg:col-span-4 relative">
+          <div class="sticky top-24 space-y-6">
+            <div
+              class="bg-white/80 backdrop-blur-xl rounded-[2.5rem] p-6 border border-white shadow-[0_20px_40px_rgba(0,0,0,0.05)]"
+            >
+              <div class="text-center mb-8 pt-2">
+                <p class="text-slate-400 text-xs font-bold mb-2 uppercase tracking-wider">
+                  تكلفة الخدمة
+                </p>
+                <div class="flex items-center justify-center gap-1 text-secondary">
+                  <span class="text-5xl font-black tracking-tight">{{ s.coreInfo.fees }}</span>
+                  <span class="text-sm font-bold mt-4 text-primary">{{ s.coreInfo.currency }}</span>
+                </div>
+              </div>
+
+              <div class="grid grid-cols-2 gap-3 mb-8">
+                <div
+                  class="bg-slate-50/80 p-4 rounded-2xl text-center border border-white shadow-sm hover:bg-white transition-colors"
+                >
+                  <i class="fa-regular fa-clock text-accent mb-2 text-lg"></i>
+                  <p class="text-[10px] text-slate-400 font-bold mb-1">المدة المتوقعة</p>
+                  <p class="font-bold text-secondary text-sm">{{ s.coreInfo.processingTime }}</p>
+                </div>
+                <div
+                  class="bg-slate-50/80 p-4 rounded-2xl text-center border border-white shadow-sm hover:bg-white transition-colors"
+                >
+                  <i class="fa-solid fa-building text-primary mb-2 text-lg"></i>
+                  <p class="text-[10px] text-slate-400 font-bold mb-1">الجهة</p>
+                  <p class="font-bold text-secondary text-sm truncate px-1">
+                    {{ s.coreInfo.responsibleDepartment }}
+                  </p>
+                </div>
+              </div>
+
+              <button
+                class="w-full bg-gradient-to-l from-secondary via-accent to-primary text-white font-bold py-4 rounded-2xl shadow-lg shadow-accent/20 hover:shadow-xl hover:shadow-accent/30 hover:-translate-y-1 hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 flex items-center justify-center gap-3 mb-4 cursor-pointer group"
+              >
+                <span class="text-lg">ابدأ الخدمة الآن</span>
+                <i
+                  class="fa-solid fa-arrow-left group-hover:-translate-x-1 transition-transform"
+                ></i>
+              </button>
+
+              <p class="text-center text-[10px] text-slate-400 font-medium">
+                تطبق الشروط والأحكام الخاصة بالبوابة
+              </p>
+            </div>
+
+            <div
+              class="bg-gradient-to-br from-secondary/5 to-primary/5 rounded-[2.5rem] p-6 border border-white relative overflow-hidden backdrop-blur-md"
+            >
+              <div class="relative z-10">
+                <div
+                  class="w-12 h-12 bg-white rounded-2xl flex items-center justify-center shadow-md text-primary text-xl mb-4 border border-white"
+                >
+                  <i class="fa-solid fa-robot"></i>
+                </div>
+                <h3 class="font-bold text-secondary text-lg mb-2">محتاج مساعدة؟</h3>
+                <p class="text-slate-600 text-sm mb-5 leading-relaxed font-medium">
+                  اسألني أي سؤال عن هذه الخدمة وسأقوم بمساعدتك فوراً في التقديم.
+                </p>
+                <button
+                  class="bg-white text-secondary px-6 py-3 rounded-xl text-sm font-bold shadow-sm hover:bg-secondary hover:text-white transition-all duration-300 w-full border border-slate-100 cursor-pointer"
+                >
+                  محادثة المساعد الذكي
+                </button>
+              </div>
+
+              <div
+                class="absolute -right-6 -top-6 w-32 h-32 bg-accent/10 rounded-full blur-2xl"
+              ></div>
+              <div
+                class="absolute -left-6 -bottom-6 w-32 h-32 bg-primary/10 rounded-full blur-2xl"
+              ></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  }
+</div>
+
+<style>
+  /* Import Cairo if not loaded elsewhere */
+  @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@200..1000&display=swap');
+
+  /* Define CSS variables for the palette */
+  :root {
+    --color-primary: #b29848; /* Gold */
+    --color-secondary: #1c3f61; /* Deep Blue */
+    --color-accent: #3b9185; /* Teal */
+  }
+
+  .font-cairo {
+    font-family: 'Cairo', ui-sans-serif, system-ui, sans-serif;
+  }
+
+  .min-h-screen {
+    position: relative;
+    /* ensure content sits above blobs */
+  }
+
+  /* The Blue Blob */
+  .min-h-screen::before {
+    content: '';
+    position: absolute;
+    width: 600px;
+    height: 600px;
+    border-radius: 50%;
+    filter: blur(100px);
+    z-index: 0;
+    opacity: 0.4;
+    background: radial-gradient(circle, var(--color-secondary), transparent);
+    top: -15%;
+    left: -10%;
+    animation: blob-bounce 10s infinite alternate;
+  }
+
+  /* The Teal/Gold Blob */
+  .min-h-screen::after {
+    content: '';
+    position: absolute;
+    width: 500px;
+    height: 500px;
+    border-radius: 50%;
+    filter: blur(90px);
+    z-index: 0;
+    opacity: 0.3;
+    background: radial-gradient(circle, var(--color-accent), transparent);
+    bottom: -10%;
+    right: -10%;
+    animation: blob-bounce 12s infinite alternate-reverse;
+  }
+
+  @keyframes blob-bounce {
+    0% {
+      transform: translate(0, 0);
+    }
+    100% {
+      transform: translate(30px, 50px);
+    }
+  }
+</style>

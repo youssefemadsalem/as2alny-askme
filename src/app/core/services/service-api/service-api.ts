@@ -1,14 +1,22 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { Daum, IService } from '../../interfaces/service/iservice';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ServiceApi {
-  constructor(private _HttpClient: HttpClient) {}
+  private readonly _httpClient = inject(HttpClient);
+  private readonly baseUrl = 'https://isalny-backend.vercel.app/api/v1/services';
 
-  getAllSerivces(): Observable<any> {
-    return this._HttpClient.get('https://isalny-backend.vercel.app/api/v1/services');
+  // Get all services
+  getAllSerivces(): Observable<IService> {
+    return this._httpClient.get<IService>(this.baseUrl);
+  }
+
+  // Get single service by ID
+  getSerivceById(id: string): Observable<{ success: boolean; data: Daum }> {
+    return this._httpClient.get<{ success: boolean; data: Daum }>(`${this.baseUrl}/${id}`);
   }
 }

@@ -1,47 +1,137 @@
-<footer class="gradent py-4 font-cairo">
+<footer class="relative text-white pt-20 pb-10 overflow-hidden font-cairo">
+  <div class="absolute inset-0 gradent brightness-75 -z-10"></div>
+
   <div
-    class="grid-cols-2 max-w-7xl mx-auto px-6 grid md:grid-cols-3 lg:grid-cols-4 gap-2 text-center"
-  >
-    <div class="hidden lg:block">
-      <h3 class="font-bold mb-4">كريتات سريعة</h3>
-      <ul class="space-y-2 text-sm text-gray-300">
-        <li>حجز موعد</li>
-        <li>استعلامات</li>
-        <li>تجديد أوراق</li>
-        <li>خدمة العملاء</li>
-      </ul>
-    </div>
+    class="absolute top-0 left-1/4 w-96 h-96 bg-accent rounded-full mix-blend-overlay filter blur-[128px] opacity-20 animate-pulse"
+  ></div>
+  <div
+    class="absolute bottom-0 right-1/4 w-96 h-96 bg-accent rounded-full mix-blend-overlay filter blur-[128px] opacity-10"
+  ></div>
 
-    <div class="hidden md:block">
-      <h3 class="font-bold mb-4">خدماتنا</h3>
-      <ul class="space-y-2 text-sm text-gray-300">
-        <li>خدمات حكومية</li>
-        <li>خدمات مالية</li>
-        <li>خدمات المرور</li>
-        <li>خدمات رقمية</li>
-      </ul>
-    </div>
+  <div
+    class="absolute top-0 left-0 right-0 h-px bg-linear-to-r from-transparent via-white/20 to-transparent"
+  ></div>
 
-    <div class="hidden sm:block">
-      <h3 class="font-bold mb-4 text-right">سهولة التواصل</h3>
-      <p class="flex gap-2 text-gray-300"><i class="fa-solid fa-phone"></i> +97376235272</p>
-      <p class="flex gap-2 mt-2 text-gray-300">
-        <i class="fa-solid fa-envelope"></i> omnia@gmail.com
-      </p>
-    </div>
+  <div class="container mx-auto px-6 relative z-10">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
+      <div class="space-y-6">
+        <div class="flex items-center gap-3">
+          <div
+            class="w-10 h-10 rounded-xl bg-white flex items-center justify-center text-white shadow-lg shadow-primary/20"
+          >
+            <img src="/images/logoo.png" alt="" />
+          </div>
+          <span class="text-2xl font-black tracking-tight">اسالني</span>
+        </div>
+        <p class="text-slate-300 text-sm leading-relaxed font-medium">
+          المنصة الرقمية الأولى لتقديم الخدمات الحكومية والخاصة بسرعة وسهولة. نسهل عليك الإجراءات
+          المعقدة بضغطة زر.
+        </p>
+      </div>
 
-    <div>
-      <h3 class="font-bold mb-4 text-right">ادعم الاجتماعي</h3>
-      <div class="flex gap-4 text-xl">
-        <i class="fa-brands fa-facebook-f hover:text-gray-300 cursor-pointer"></i>
-        <i class="fa-brands fa-instagram hover:text-gray-300 cursor-pointer"></i>
-        <i class="fa-brands fa-youtube hover:text-gray-300 cursor-pointer"></i>
-        <i class="fa-brands fa-twitter hover:text-gray-300 cursor-pointer"></i>
+      <div>
+        <h3 class="text-lg font-bold text-white mb-6 relative inline-block">
+          روابط سريعة
+          <span class="absolute -bottom-2 right-0 w-8 h-1 bg-primary rounded-full"></span>
+        </h3>
+        <ul class="space-y-3">
+          @for (item of quickLinks; track item.name) {
+            <li>
+              <a
+                [routerLink]="item.link"
+                class="group flex items-center gap-2 text-slate-300 hover:text-primary transition-all duration-300 text-sm"
+              >
+                <span
+                  class="w-1.5 h-1.5 rounded-full bg-slate-500 group-hover:bg-accent transition-colors"
+                ></span>
+                <span class="group-hover:translate-x-1 transition-transform">{{ item.name }}</span>
+              </a>
+            </li>
+          }
+        </ul>
+      </div>
+
+      <div>
+        <h3 class="text-lg font-bold text-white mb-6 relative inline-block">
+          خدماتنا
+          <span class="absolute -bottom-2 right-0 w-8 h-1 bg-accent rounded-full"></span>
+        </h3>
+        <ul class="space-y-3">
+          @for (item of services; track item.name) {
+            <li>
+              <a
+                [routerLink]="item.link"
+                class="group flex items-center gap-2 text-slate-300 hover:text-accent transition-all duration-300 text-sm"
+              >
+                <i
+                  class="fa-solid fa-check text-[10px] opacity-0 group-hover:opacity-100 transition-opacity text-accent"
+                ></i>
+                <span class="group-hover:translate-x-1 transition-transform">{{ item.name }}</span>
+              </a>
+            </li>
+          }
+        </ul>
+      </div>
+
+      <div>
+        <h3 class="text-lg font-bold text-white mb-6 relative inline-block">
+          تواصل معنا
+          <span class="absolute -bottom-2 right-0 w-8 h-1 bg-white/20 rounded-full"></span>
+        </h3>
+        <div class="space-y-4">
+          <div class="flex items-start gap-4 group cursor-pointer">
+            <div
+              class="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-all duration-300 shrink-0"
+            >
+              <i class="fa-solid fa-phone-volume"></i>
+            </div>
+            <div>
+              <p class="text-xs text-slate-400 font-bold mb-1">اتصل بنا</p>
+              <p
+                class="text-sm font-bold dir-ltr text-right group-hover:text-white transition-colors"
+              >
+                +973 7623 5272
+              </p>
+            </div>
+          </div>
+
+          <div class="flex items-start gap-4 group cursor-pointer">
+            <div
+              class="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-accent group-hover:bg-accent group-hover:text-white transition-all duration-300 shrink-0"
+            >
+              <i class="fa-solid fa-envelope-open-text"></i>
+            </div>
+            <div>
+              <p class="text-xs text-slate-400 font-bold mb-1">البريد الإلكتروني</p>
+              <p class="text-sm font-bold group-hover:text-white transition-colors">
+                omnia@gmail.com
+              </p>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
 
-  <div class="text-center text-sm text-gray-200 mt-2 border-t border-white/30 pt-2">
-    جميع الحقوق محفوظة © 2026
+    <div class="h-px bg-linear-to-r from-transparent via-white/10 to-transparent mb-8"></div>
+
+    <div class="flex flex-col-reverse md:flex-row items-center justify-between gap-6">
+      <p class="text-slate-400 text-sm font-medium">
+        جميع الحقوق محفوظة © {{ currentYear }} <span class="text-white font-bold">اسالني</span>
+      </p>
+
+      <div class="flex gap-3">
+        @for (social of socials; track social.icon) {
+          <a
+            [href]="social.link"
+            [class]="
+              'w-9 h-9 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-slate-300 transition-all duration-300 hover:-translate-y-1 hover:text-white ' +
+              social.color
+            "
+          >
+            <i class="fa-brands" [ngClass]="social.icon"></i>
+          </a>
+        }
+      </div>
+    </div>
   </div>
 </footer>

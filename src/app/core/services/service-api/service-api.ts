@@ -19,4 +19,17 @@ export class ServiceApi {
   getSerivceById(id: string): Observable<{ success: boolean; data: Daum }> {
     return this._httpClient.get<{ success: boolean; data: Daum }>(`${this.baseUrl}/${id}`);
   }
+
+  postRating(serviceId: string, payload: object): Observable<any> {
+    return this._httpClient.post(
+      `https://isalny-backend.vercel.app/api/v1/ratings/service/${serviceId}`,
+      payload,
+    );
+  }
+
+  getServiceReviews(serviceId: any): Observable<any> {
+    return this._httpClient.get<any>(
+      `https://isalny-backend.vercel.app/api/v1/ratings/service/${serviceId}`,
+    );
+  }
 }

@@ -1,10 +1,18 @@
-import { inject } from '@angular/core';
+import { inject, PLATFORM_ID } from '@angular/core'; // Add PLATFORM_ID
+import { isPlatformBrowser } from '@angular/common'; // Add this
 import { CanActivateFn, Router } from '@angular/router';
-import { CookieService } from 'ngx-cookie-service'; // 1. Import this
+import { CookieService } from 'ngx-cookie-service';
 
 export const authGuard: CanActivateFn = (route, state) => {
   const _router = inject(Router);
-  const _cookieService = inject(CookieService); // 2. Inject the service
+  const _cookieService = inject(CookieService);
+  const platformId = inject(PLATFORM_ID);
+
+  // If we are on the server, assume "true" to let the page render,
+  // or handle server-side cookies properly.
+  if (!isPlatformBrowser(platformId)) {
+    return true;
+  }
 
   if (_cookieService.check('token')) {
     return true;

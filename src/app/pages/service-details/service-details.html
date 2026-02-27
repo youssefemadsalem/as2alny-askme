@@ -281,14 +281,14 @@
                 </div>
               </div>
 
-              <button
+              <!-- <button
                 class="w-full bg-gradient-to-l from-secondary via-accent to-primary text-white font-bold py-4 rounded-2xl shadow-lg shadow-accent/20 hover:shadow-xl hover:shadow-accent/30 hover:-translate-y-1 hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 flex items-center justify-center gap-3 mb-4 cursor-pointer group"
               >
                 <span class="text-lg">ابدأ الخدمة الآن</span>
                 <i
                   class="fa-solid fa-arrow-left group-hover:-translate-x-1 transition-transform"
                 ></i>
-              </button>
+              </button> -->
 
               <p class="text-center text-[10px] text-slate-400 font-medium">
                 تطبق الشروط والأحكام الخاصة بالبوابة
@@ -320,6 +320,129 @@
               ></div>
               <div
                 class="absolute -left-6 -bottom-6 w-32 h-32 bg-primary/10 rounded-full blur-2xl"
+              ></div>
+            </div>
+
+            @if (isLoading2()) {
+              <div class="p-6 text-center text-slate-500">Loading reviews...</div>
+            } @else {
+              <div
+                class="bg-white/70 backdrop-blur-xl rounded-[2.5rem] p-6 border border-white shadow-sm"
+              >
+                <div class="flex items-center justify-between mb-6">
+                  <h3 class="font-bold text-secondary text-lg flex items-center gap-2">
+                    <i class="fa-regular fa-star text-primary"></i>
+                    آراء المستفيدين
+                  </h3>
+                  <div
+                    class="flex items-center gap-1 bg-white px-2 py-1 rounded-lg border border-slate-100 shadow-sm"
+                  >
+                    <span class="text-sm font-black text-secondary">{{ averageRating() }}</span>
+                    <i class="fa-solid fa-star text-[10px] text-amber-400"></i>
+                  </div>
+                </div>
+
+                @for (review of reviews(); track review._id) {
+                  <div class="mb-5 pb-5 border-b border-slate-100/80 last:border-0 last:pb-0">
+                    <div class="flex items-center gap-3 mb-3">
+                      <div
+                        class="w-10 h-10 rounded-full bg-slate-200 border-2 border-white shadow-sm overflow-hidden"
+                      >
+                        <img
+                          [src]="
+                            'https://ui-avatars.com/api/?name=' +
+                            review.userId.name +
+                            '&background=random'
+                          "
+                          alt="User"
+                          class="w-full h-full object-cover"
+                        />
+                      </div>
+
+                      <div>
+                        <h4 class="text-sm font-bold text-secondary">{{ review.userId.name }}</h4>
+                        <div class="flex text-[10px] text-amber-400 gap-0.5">
+                          @for (isFilled of getStars(review.rating); track $index) {
+                            @if (isFilled) {
+                              <i class="fa-solid fa-star"></i>
+                            } @else {
+                              <i class="fa-regular fa-star text-slate-300"></i>
+                            }
+                          }
+                        </div>
+                      </div>
+
+                      <span class="mr-auto text-[10px] text-slate-400">
+                        {{ review.createdAt | date: 'mediumDate' }}
+                      </span>
+                    </div>
+
+                    <p
+                      class="text-slate-600 text-xs leading-relaxed font-medium bg-slate-50 p-3 rounded-xl border border-slate-100"
+                    >
+                      {{ review.comment }}
+                    </p>
+                  </div>
+                } @empty {
+                  <div class="text-center py-4 text-slate-400 text-sm">
+                    لا توجد تعليقات حتى الآن
+                  </div>
+                }
+
+                <button
+                  class="w-full py-2.5 rounded-xl border border-secondary/10 text-secondary text-xs font-bold hover:bg-secondary hover:text-white transition-all duration-300"
+                >
+                  عرض كل التعليقات ({{ totalReviews() }})
+                </button>
+              </div>
+            }
+
+            <div
+              class="bg-white/70 backdrop-blur-xl rounded-[2.5rem] p-6 border border-white shadow-sm relative overflow-hidden group"
+            >
+              <div class="relative z-10">
+                <h3 class="font-bold text-secondary text-lg mb-4 text-center">أضف تقييمك للخدمة</h3>
+
+                <div class="flex justify-center gap-2 mb-6" dir="ltr">
+                  @for (star of stars; track star) {
+                    <button
+                      type="button"
+                      (click)="setRating(star)"
+                      class="text-2xl transition-colors focus:outline-none"
+                      [class.text-amber-400]="star <= currentRating"
+                      [class.text-slate-300]="star > currentRating"
+                    >
+                      <i class="fa-solid fa-star"></i>
+                    </button>
+                  }
+                </div>
+
+                <div class="mb-4">
+                  <textarea
+                    [(ngModel)]="commentText"
+                    placeholder="اكتب تجربتك هنا..."
+                    class="w-full h-24 bg-slate-50/80 border border-white rounded-xl p-3 text-sm text-secondary placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-accent/20 focus:bg-white transition-all resize-none"
+                  ></textarea>
+                </div>
+
+                <button
+                  type="button"
+                  (click)="submitRating()"
+                  [disabled]="isSubmitting()"
+                  class="w-full bg-secondary text-white font-bold py-3 rounded-xl shadow-lg shadow-secondary/10 hover:bg-accent transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  @if (isSubmitting()) {
+                    <span>جاري الإرسال...</span>
+                    <i class="fa-solid fa-circle-notch fa-spin text-xs"></i>
+                  } @else {
+                    <span>إرسال التقييم</span>
+                    <i class="fa-solid fa-paper-plane text-xs"></i>
+                  }
+                </button>
+              </div>
+
+              <div
+                class="absolute bottom-0 right-0 w-full h-1 bg-gradient-to-r from-secondary via-accent to-primary opacity-50"
               ></div>
             </div>
           </div>

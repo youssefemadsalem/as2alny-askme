@@ -27,3 +27,36 @@
     animation: gradient-x 3s ease infinite;
   }
 }
+
+::view-transition-old(root) {
+  animation: fade-out 0.2s ease-out both;
+}
+
+/* 2. The New Page (Entering) */
+/* It fades in AND slides up slightly (15px) */
+::view-transition-new(root) {
+  animation: fade-in-up 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+/* 3. The Animation Keyframes */
+@keyframes fade-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(15px); /* Start slightly lower */
+    filter: blur(5px); /* Optional: Adds a soft focus effect */
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}

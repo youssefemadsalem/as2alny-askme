@@ -169,6 +169,57 @@
           </div>
         }
       </div>
+
+      @if (!isLoading() && servicedata().length > 0 && totalPages() > 1) {
+        <div
+          class="mt-16 flex flex-col items-center justify-center gap-4 animate-in fade-in slide-in-from-bottom-4 duration-500 relative z-50"
+        >
+          <div class="flex items-center gap-3" dir="ltr">
+            <button
+              (click)="changePage(currentPage() - 1)"
+              [disabled]="currentPage() === 1"
+              class="flex items-center justify-center w-11 h-11 rounded-full bg-white/60 backdrop-blur-md border border-white text-secondary hover:bg-white hover:text-accent disabled:opacity-50 disabled:hover:bg-white/60 disabled:hover:text-secondary transition-all shadow-sm cursor-pointer disabled:cursor-not-allowed group relative z-50"
+            >
+              <i
+                class="fa-solid fa-chevron-left group-hover:-translate-x-0.5 transition-transform"
+              ></i>
+            </button>
+
+            <div
+              class="flex gap-2 bg-white/40 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/50 shadow-sm relative z-50"
+            >
+              @for (page of pages(); track $index) {
+                <button
+                  (click)="changePage(page)"
+                  type="button"
+                  class="w-9 h-9 rounded-full text-sm font-bold flex items-center justify-center transition-all cursor-pointer relative z-50"
+                  [ngClass]="{
+                    'bg-secondary text-white shadow-md': currentPage() === page,
+                    'bg-transparent text-secondary hover:bg-secondary/10': currentPage() !== page,
+                  }"
+                >
+                  {{ page }}
+                </button>
+              }
+            </div>
+
+            <button
+              (click)="changePage(currentPage() + 1)"
+              [disabled]="currentPage() === totalPages()"
+              class="flex items-center justify-center w-11 h-11 rounded-full bg-white/60 backdrop-blur-md border border-white text-secondary hover:bg-white hover:text-accent disabled:opacity-50 disabled:hover:bg-white/60 disabled:hover:text-secondary transition-all shadow-sm cursor-pointer disabled:cursor-not-allowed group relative z-50"
+            >
+              <i
+                class="fa-solid fa-chevron-right group-hover:translate-x-0.5 transition-transform"
+              ></i>
+            </button>
+          </div>
+
+          <p class="text-slate-400 text-sm font-medium">
+            صفحة <span class="text-secondary font-bold">{{ currentPage() }}</span> من
+            {{ totalPages() }}
+          </p>
+        </div>
+      }
     </div>
   </div>
 </div>

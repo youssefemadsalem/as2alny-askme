@@ -1,1 +1,196 @@
-<p>all-comments works!</p>
+<div class="min-h-screen bg-slate-50 font-cairo relative overflow-hidden mt-17.5" dir="rtl">
+  <header
+    class="bg-white/70 border-b border-white sticky top-0 z-30 backdrop-blur-xl shadow-sm transition-all duration-300"
+  >
+    <div class="container mx-auto px-4 h-20 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <button
+          (click)="goBack()"
+          class="w-10 h-10 rounded-xl bg-white border border-slate-100 flex items-center justify-center text-slate-400 hover:bg-secondary hover:text-white hover:border-secondary transition-all duration-300 cursor-pointer shadow-sm active:scale-95"
+        >
+          <i class="fa-solid fa-arrow-right"></i>
+        </button>
+        <h1 class="text-xl font-black text-secondary">كل التقييمات</h1>
+      </div>
+
+      <div class="text-sm font-medium text-slate-500 hidden md:block opacity-70">
+        عرض جميع آراء المستفيدين للخدمة
+      </div>
+    </div>
+  </header>
+
+  <main class="container mx-auto px-4 py-8 pb-24 relative z-10">
+    @if (isLoading()) {
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start animate-pulse">
+        <div
+          class="lg:col-span-4 bg-white/60 rounded-[2.5rem] border border-white h-96 shadow-sm"
+        ></div>
+        <div class="lg:col-span-8 space-y-4">
+          <div class="h-44 bg-white/60 rounded-4xl border border-white shadow-sm"></div>
+          <div class="h-44 bg-white/60 rounded-4xl border border-white shadow-sm"></div>
+          <div class="h-44 bg-white/60 rounded-4xl border border-white shadow-sm"></div>
+        </div>
+      </div>
+    } @else {
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        <div class="lg:col-span-4 space-y-6 lg:sticky lg:top-24">
+          <div
+            class="bg-white/70 backdrop-blur-xl rounded-[2.5rem] p-8 border border-white shadow-sm overflow-hidden relative group hover:shadow-md transition-shadow duration-500"
+          >
+            <div
+              class="absolute top-0 left-0 w-full h-1 bg-linear-to-r from-secondary via-accent to-primary"
+            ></div>
+
+            <div class="text-center mb-8">
+              <h2 class="text-lg font-bold text-secondary mb-2">متوسط التقييم</h2>
+              <div class="flex items-center justify-center gap-2 mb-2 scale-110">
+                <span class="text-6xl font-black text-secondary tracking-tighter">{{
+                  averageRating()
+                }}</span>
+                <i class="fa-solid fa-star text-3xl text-amber-400 drop-shadow-sm"></i>
+              </div>
+              <p class="text-slate-400 text-sm font-medium">بناءً على {{ totalReviews() }} تقييم</p>
+            </div>
+
+            <div class="space-y-4">
+              @for (star of [5, 4, 3, 2, 1]; track star) {
+                <div class="flex items-center gap-3 text-xs font-bold text-slate-500">
+                  <span class="w-3 flex justify-center">{{ star }}</span>
+                  <i class="fa-solid fa-star text-[10px] text-slate-300"></i>
+
+                  <div class="flex-1 h-2.5 bg-slate-100 rounded-full overflow-hidden shadow-inner">
+                    <div
+                      class="h-full rounded-full transition-all duration-1000 ease-out relative overflow-hidden"
+                      [ngClass]="{
+                        'bg-emerald-500': star === 5,
+                        'bg-accent': star === 4,
+                        'bg-amber-400': star === 3,
+                        'bg-orange-400': star === 2,
+                        'bg-rose-500': star === 1,
+                      }"
+                      [style.width]="getPercentage(ratingDistribution()[star])"
+                    >
+                      <div class="absolute top-0 left-0 w-full h-full bg-white/20"></div>
+                    </div>
+                  </div>
+
+                  <span class="w-6 text-left opacity-70">{{ ratingDistribution()[star] }}</span>
+                </div>
+              }
+            </div>
+          </div>
+
+          <div
+            class="bg-linear-to-br from-secondary to-[#152e46] rounded-[2.5rem] p-8 text-white text-center relative overflow-hidden shadow-lg shadow-secondary/20 group"
+          >
+            <div class="relative z-10">
+              <div
+                class="w-14 h-14 bg-white/10 rounded-2xl flex items-center justify-center mx-auto mb-4 backdrop-blur-md border border-white/10 group-hover:scale-110 transition-transform duration-300"
+              >
+                <i class="fa-regular fa-comment-dots text-2xl"></i>
+              </div>
+              <h3 class="font-bold text-lg mb-2">شاركنا تجربتك</h3>
+              <p class="text-white/70 text-sm mb-6 font-light leading-relaxed">
+                رأيك يهمنا ويساعدنا في تحسين الخدمات المقدمة للمواطنين.
+              </p>
+              <button
+                (click)="goBack()"
+                class="w-full bg-white text-secondary py-3.5 rounded-xl font-bold hover:bg-accent hover:text-white transition-all duration-300 cursor-pointer shadow-lg shadow-black/10 active:scale-95"
+              >
+                أضف تقييمك الآن
+              </button>
+            </div>
+
+            <div
+              class="absolute -bottom-10 -left-10 w-40 h-40 bg-accent/20 rounded-full blur-2xl animate-pulse"
+            ></div>
+            <div
+              class="absolute top-10 -right-10 w-32 h-32 bg-primary/20 rounded-full blur-2xl opacity-50"
+            ></div>
+          </div>
+        </div>
+
+        <div class="lg:col-span-8 space-y-5">
+          @for (review of reviews(); track review._id) {
+            <div
+              class="group bg-white/70 backdrop-blur-xl rounded-4xl p-6 sm:p-8 border border-white shadow-sm hover:shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:border-accent/30 transition-all duration-300 relative overflow-hidden"
+            >
+              <div
+                class="absolute top-0 left-0 w-1 h-full bg-accent opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+              ></div>
+
+              <div class="flex items-start gap-5">
+                <div class="shrink-0 relative">
+                  <div
+                    class="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-slate-200 border-2 border-white shadow-sm overflow-hidden group-hover:scale-105 transition-transform duration-500"
+                  >
+                    <img
+                      [src]="
+                        'https://ui-avatars.com/api/?name=' +
+                        review.userId?.name +
+                        '&background=random&color=fff&bold=true&length=1'
+                      "
+                      [alt]="review.userId?.name"
+                      class="w-full h-full object-cover"
+                    />
+                  </div>
+                </div>
+
+                <div class="flex-1 min-w-0">
+                  <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3">
+                    <div>
+                      <h3 class="font-bold text-secondary text-lg truncate">
+                        {{ review.userId?.name || 'مستخدم' }}
+                      </h3>
+                      <span class="text-xs text-slate-400 font-medium flex items-center gap-1">
+                        <i class="fa-regular fa-clock text-[10px]"></i>
+                        {{ review.createdAt | date: 'mediumDate' }}
+                      </span>
+                    </div>
+
+                    <div
+                      class="flex gap-0.5 bg-white/80 backdrop-blur-sm px-3 py-1.5 rounded-xl border border-slate-100 shadow-sm self-start sm:self-auto"
+                    >
+                      @for (isFilled of getStars(review.rating); track $index) {
+                        @if (isFilled) {
+                          <i class="fa-solid fa-star text-amber-400 text-sm drop-shadow-sm"></i>
+                        } @else {
+                          <i class="fa-regular fa-star text-slate-200 text-sm"></i>
+                        }
+                      }
+                    </div>
+                  </div>
+
+                  <div
+                    class="relative bg-slate-50/50 rounded-2xl p-4 border border-white/50 group-hover:bg-white transition-colors duration-300"
+                  >
+                    <i
+                      class="fa-solid fa-quote-right absolute top-4 left-4 text-slate-200/50 text-4xl -z-10 group-hover:text-accent/10 transition-colors"
+                    ></i>
+                    <p
+                      class="text-slate-600 leading-relaxed font-medium text-sm sm:text-base relative z-10"
+                    >
+                      {{ review.comment }}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          } @empty {
+            <div
+              class="bg-white/60 rounded-[2.5rem] p-12 text-center border border-white flex flex-col items-center justify-center h-64"
+            >
+              <div
+                class="w-20 h-20 bg-slate-50 rounded-full flex items-center justify-center text-slate-300 text-3xl mb-4 shadow-inner"
+              >
+                <i class="fa-regular fa-comments"></i>
+              </div>
+              <h3 class="text-secondary font-bold text-xl mb-2">لا توجد تعليقات حتى الآن</h3>
+              <p class="text-slate-500 text-sm">كن أول من يشارك رأيه حول هذه الخدمة</p>
+            </div>
+          }
+        </div>
+      </div>
+    }
+  </main>
+</div>

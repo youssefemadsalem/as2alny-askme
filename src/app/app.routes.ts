@@ -73,7 +73,7 @@ export const routes: Routes = [
         canActivate: [authGuard],
       },
       {
-        path: 'all-comments',
+        path: 'all-comments/:id',
         loadComponent: () =>
           import('../app/pages/all-comments/all-comments').then((c) => c.AllComments),
         title: 'جميع التعليقات',

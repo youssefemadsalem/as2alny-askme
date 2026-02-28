@@ -1,5 +1,5 @@
 import { Component, computed, inject, NgModule, PLATFORM_ID, signal } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { ServiceApi } from '../../core/services/service-api/service-api';
 import { Daum } from '../../core/interfaces/service/iservice';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
@@ -7,7 +7,7 @@ import { DatePipe, isPlatformBrowser } from '@angular/common';
 
 @Component({
   selector: 'app-service-details',
-  imports: [ReactiveFormsModule, FormsModule, DatePipe],
+  imports: [ReactiveFormsModule, FormsModule, DatePipe, RouterLink],
   templateUrl: './service-details.html',
   styleUrl: './service-details.css',
 })

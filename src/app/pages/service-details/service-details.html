@@ -12,7 +12,7 @@
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
           <div class="lg:col-span-8 space-y-8">
             <div
-              class="bg-white/60 rounded-[2.5rem] p-8 border border-white h-[300px] flex flex-col md:flex-row gap-6 shadow-sm"
+              class="bg-white/60 rounded-[2.5rem] p-8 border border-white h-75 flex flex-col md:flex-row gap-6 shadow-sm"
             >
               <div class="w-full md:w-24 md:h-24 shrink-0 rounded-3xl bg-slate-200/80"></div>
               <div class="flex-1 space-y-4 pt-2">
@@ -53,7 +53,7 @@
 
           <div class="lg:col-span-4 space-y-6">
             <div
-              class="bg-white/60 rounded-[2.5rem] p-6 border border-white h-[400px] flex flex-col items-center"
+              class="bg-white/60 rounded-[2.5rem] p-6 border border-white h-100 flex flex-col items-center"
             >
               <div class="h-4 bg-slate-200/80 rounded w-20 mb-4"></div>
               <div class="h-10 bg-slate-200/80 rounded w-32 mb-8"></div>
@@ -106,12 +106,12 @@
             class="relative bg-white/70 backdrop-blur-xl rounded-[2.5rem] p-8 border border-white shadow-[0_10px_40px_rgba(0,0,0,0.03)] overflow-hidden group"
           >
             <div
-              class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-secondary via-accent to-primary"
+              class="absolute top-0 left-0 w-full h-1 bg-linear-to-r from-secondary via-accent to-primary"
             ></div>
 
             <div class="flex flex-col md:flex-row gap-8 items-start relative z-10">
               <div
-                class="w-full md:w-28 md:h-28 shrink-0 rounded-[1.5rem] overflow-hidden border-2 border-white shadow-lg shadow-slate-200/50"
+                class="w-full md:w-28 md:h-28 shrink-0 rounded-3xl overflow-hidden border-2 border-white shadow-lg shadow-slate-200/50"
               >
                 <img
                   [src]="s.coreInfo.image.url"
@@ -152,7 +152,7 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
               @for (doc of s.requiredDocuments; track doc._id) {
                 <div
-                  class="group bg-white/60 backdrop-blur-md p-6 rounded-[2rem] border border-white shadow-sm hover:border-accent/30 hover:shadow-lg hover:shadow-accent/5 hover:-translate-y-1 transition-all duration-300 relative overflow-hidden"
+                  class="group bg-white/60 backdrop-blur-md p-6 rounded-4xl border border-white shadow-sm hover:border-accent/30 hover:shadow-lg hover:shadow-accent/5 hover:-translate-y-1 transition-all duration-300 relative overflow-hidden"
                 >
                   <div class="flex items-start gap-4">
                     <div
@@ -212,7 +212,7 @@
 
             <div class="relative">
               <div
-                class="absolute right-[27px] top-4 bottom-10 w-0.5 bg-gradient-to-b from-secondary via-accent to-slate-200/0"
+                class="absolute right-6.75 top-4 bottom-10 w-0.5 bg-linear-to-b from-secondary via-accent to-slate-200/0"
               ></div>
 
               <div class="space-y-8">
@@ -234,7 +234,7 @@
                         {{ step.description }}
                       </p>
                       <div
-                        class="flex items-center gap-2 text-xs font-bold text-slate-400 bg-slate-50 inline-flex px-3 py-1 rounded-lg border border-slate-100"
+                        class="inline-flexflex items-center gap-2 text-xs font-bold text-slate-400 bg-slate-50 inline-flex px-3 py-1 rounded-lg border border-slate-100"
                       >
                         <i class="fa-regular fa-clock text-primary"></i>
                         <span>{{ step.estimatedTime }}</span>
@@ -296,7 +296,7 @@
             </div>
 
             <div
-              class="bg-gradient-to-br from-secondary/5 to-primary/5 rounded-[2.5rem] p-6 border border-white relative overflow-hidden backdrop-blur-md"
+              class="bg-linear-to-br from-secondary/5 to-primary/5 rounded-[2.5rem] p-6 border border-white relative overflow-hidden backdrop-blur-md"
             >
               <div class="relative z-10">
                 <div
@@ -442,7 +442,7 @@
               </div>
 
               <div
-                class="absolute bottom-0 right-0 w-full h-1 bg-gradient-to-r from-secondary via-accent to-primary opacity-50"
+                class="absolute bottom-0 right-0 w-full h-1 bg-linear-to-r from-secondary via-accent to-primary opacity-50"
               ></div>
             </div>
           </div>

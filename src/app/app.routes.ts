@@ -13,29 +13,29 @@ export const routes: Routes = [
       {
         path: 'login',
         loadComponent: () => import('../app/pages/login/login').then((c) => c.Login),
-        title: 'login',
+        title: 'تسجيل الدحول',
       },
       {
         path: 'forgetpassword',
         loadComponent: () =>
           import('../app/pages/forget-password/forget-password').then((c) => c.ForgetPassword),
-        title: 'forget',
+        title: 'نسيت كلمة المرور',
       },
       {
         path: 'register',
         loadComponent: () => import('../app/pages/register/register').then((c) => c.Register),
-        title: 'register',
+        title: 'تسجيل حساب جديد',
       },
       {
         path: 'submitconfirmationcode',
         loadComponent: () => import('../app/pages/otp/otp').then((c) => c.Otp),
-        title: 'submitcode',
+        title: 'تسجيل كلمة تحقق',
       },
       {
         path: 'resetpassword',
         loadComponent: () =>
           import('../app/pages/resetpassword/resetpassword').then((c) => c.Resetpassword),
-        title: 'resetpassword',
+        title: 'إعادة ضبط كلمة المرور',
       },
     ],
   },
@@ -49,25 +49,19 @@ export const routes: Routes = [
       {
         path: 'home',
         loadComponent: () => import('../app/pages/home/home').then((c) => c.Home),
-        title: 'Home',
+        title: 'الرئيسة',
       },
       {
         path: 'chatbot/:id',
         loadComponent: () => import('../app/pages/chat-bot/chat-bot').then((c) => c.ChatBot),
-        title: 'chatbot',
+        title: 'المساعد الشخصي',
         canActivate: [authGuard],
-      },
-      {
-        path: 'rateus',
-        loadComponent: () =>
-          import('../app/pages/rating-form/rating-form').then((c) => c.RatingForm),
-        title: 'rate-us',
       },
       {
         path: 'servicedetails/:id',
         loadComponent: () =>
           import('../app/pages/service-details/service-details').then((c) => c.ServiceDetails),
-        title: 'servicedetails',
+        title: 'تفاصيل الخدمة',
       },
       {
         path: 'requestnewservice',
@@ -75,13 +69,20 @@ export const routes: Routes = [
           import('../app/pages/request-service-form/request-service-form').then(
             (c) => c.RequestServiceForm,
           ),
-        title: 'requestnewservices',
+        title: 'طلب خدمة جديده',
+        canActivate: [authGuard],
+      },
+      {
+        path: 'all-comments',
+        loadComponent: () =>
+          import('../app/pages/all-comments/all-comments').then((c) => c.AllComments),
+        title: 'جميع التعليقات',
         canActivate: [authGuard],
       },
       {
         path: 'profile',
         loadComponent: () => import('../app/pages/profile/profile').then((c) => c.ProfileComponent),
-        title: 'profile',
+        title: 'الملف الشخصي',
         children: [
           { path: '', redirectTo: 'user-details', pathMatch: 'full' },
           {
@@ -90,7 +91,7 @@ export const routes: Routes = [
               import('../app/pages/user-requests-component/user-requests-component').then(
                 (c) => c.UserRequestsComponent,
               ),
-            title: 'user-requests',
+            title: 'طلباتك',
           },
           {
             path: 'user-details',
@@ -98,14 +99,14 @@ export const routes: Routes = [
               import('../app/pages/user-details-component/user-details-component').then(
                 (c) => c.UserDetailsComponent,
               ),
-            title: 'user-details',
+            title: 'تفاصيل المستخدم',
           },
         ],
       },
       {
         path: '**',
         loadComponent: () => import('../app/pages/wild/wild').then((c) => c.Wild),
-        title: 'wild',
+        title: 'الصفحة غير موجودة',
       },
     ],
   },

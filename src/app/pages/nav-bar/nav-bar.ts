@@ -2,6 +2,7 @@ import { Component, ElementRef, inject, signal, ViewChild } from '@angular/core'
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { Auth } from '../../core/services/auth/auth';
 import { UserDataService } from '../../core/services/user-api/user-data';
+import { UserImageService } from '../../core/services/user-api/user-image-preview';
 
 @Component({
   selector: 'app-nav-bar',
@@ -10,23 +11,29 @@ import { UserDataService } from '../../core/services/user-api/user-data';
   styleUrl: './nav-bar.css',
 })
 export class NavBar {
+  constructor(private _userImageService: UserImageService) {}
   readonly _auth = inject(Auth);
-  @ViewChild('imageIcon') imageIcon! : ElementRef<HTMLImageElement>;
-  // imageIcon : ElementRef<HTMLImageElement> = 
+
 
   _userDataService = inject(UserDataService);
 
-  userImage = signal<string | null>(null);
+  imageUrl = signal<string | null>(null);
 
   isLogin: boolean = false;
 
   ngOnInit(): void {
-    // load user image
+    // load user image on init
     this._userDataService.getUserData().subscribe({
       next: (res) => {
-        this.userImage.set(res.data.profileImage?.url || null);
+        this.imageUrl.set(res.data.profileImage?.url || null);
       },
     });
+
+    // update user Image when changing it from profile
+    this._userImageService.image$.subscribe((url) => {
+      this.imageUrl.set(url);;
+    });
+
 
     this._auth.userData.subscribe({
       next: (res) => {
@@ -39,8 +46,5 @@ export class NavBar {
     this._auth.logOut();
   }
 
-  notifyDataUpdated(data: string): void {
-    this.userImage.set(data);
-    this.imageIcon.nativeElement.src = data;
-  }
+
 }

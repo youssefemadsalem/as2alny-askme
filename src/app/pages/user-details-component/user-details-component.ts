@@ -5,59 +5,26 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { CommonModule } from '@angular/common';
 import { UserDataService } from '../../core/services/user-api/user-data';
 import { CookieService } from 'ngx-cookie-service';
+import { UserImageService } from '../../core/services/user-api/user-image-preview';
 
 @Component({
   selector: 'app-user-details-component',
   standalone: true,
-  providers:[NavBar],
+  providers: [NavBar],
   imports: [ReactiveFormsModule, CommonModule],
   templateUrl: './user-details-component.html',
   styleUrl: './user-details-component.css',
 })
 export class UserDetailsComponent implements OnInit {
-  private _userDataService = inject(UserDataService);
-
-  constructor(private _cookieService: CookieService , private nav : NavBar) {
-    this.userNameHome = this._cookieService.get('userNameHome');
+  
+  
+  constructor(
+    private _cookieService: CookieService,
+    private nav: NavBar,
+    private _userImageService: UserImageService,
+  ) {
+    this.userName = this._cookieService.get('userName');
   }
-
-  // Signals
-  isLoadingData = signal<boolean>(true);
-  isSaving = signal<boolean>(false);
-  user = signal<UserDataInterface>({
-    name: '',
-    email: '',
-    phoneNumber: '',
-  });
-
-  // Variables
-  isEditing: boolean = false;
-  alreadyExist: string = '';
-  userNameHome!: string;
-
-  // File upload variables
-  selectedImage: File | null = null;
-  imagePreview: string | null = null; // Holds the preview URL/Base64
-  showImageMenu: boolean = false;
-
-
-  updateProfileForm: FormGroup = new FormGroup({
-    name: new FormControl(null, [
-      Validators.required,
-      Validators.pattern(/^([\u0600-\u06FF]+\s){3}[\u0600-\u06FF]+.*$/),
-    ]),
-    phoneNumber: new FormControl(null, [
-      Validators.required,
-      Validators.pattern(/^01[0125][0-9]{8}$/),
-    ]),
-    nationalId: new FormControl({ value: '', disabled: true }, [
-      Validators.required,
-      Validators.pattern(/^[0-9]{14}$/),
-    ]),
-    email: new FormControl(null, [Validators.required, Validators.email]),
-    // Note: profileImage is removed from here because file inputs cannot be bound to form controls securely.
-  });
-
   ngOnInit(): void {
     this.isLoadingData.set(true);
 
@@ -85,6 +52,60 @@ export class UserDetailsComponent implements OnInit {
     });
   }
 
+  // Injections
+  private _userDataService = inject(UserDataService);
+
+  // Signals
+  isLoadingData = signal<boolean>(true);
+  isSaving = signal<boolean>(false);
+  user = signal<UserDataInterface>({
+    name: '',
+    email: '',
+    phoneNumber: '',
+  });
+
+  // Variables
+  isEditing: boolean = false;
+  alreadyExist: string = '';
+  userName: string = '';
+  updateProfileForm: FormGroup = new FormGroup({
+    name: new FormControl(null, [
+      Validators.required,
+      Validators.pattern(/^([\u0600-\u06FF]+\s){3}[\u0600-\u06FF]+.*$/),
+    ]),
+    phoneNumber: new FormControl(null, [
+      Validators.required,
+      Validators.pattern(/^01[0125][0-9]{8}$/),
+    ]),
+    nationalId: new FormControl({ value: '', disabled: true }, [
+      Validators.required,
+      Validators.pattern(/^[0-9]{14}$/),
+    ]),
+    email: new FormControl(null, [Validators.required, Validators.email]),
+    // Note: profileImage is removed from here because file inputs cannot be bound to form controls securely.
+  });
+
+  // File upload variables
+  selectedImage: File | null = null;
+  imagePreview: string | null = null; // Holds the preview URL/Base64
+  showImageMenu: boolean = false;
+
+  // Functions
+
+  onFileSelected(e: Event) {
+    const fileInput = e.target as HTMLInputElement;
+
+    if (fileInput.files && fileInput.files.length > 0) {
+      const file = fileInput.files[0];
+      this.selectedImage = file;
+
+      this.imagePreview = URL.createObjectURL(file);
+      console.log('New image selected:', this.imagePreview);
+      this.showImageMenu = false;
+    }
+  }
+
+
   updateProfile(): void {
     if (this.updateProfileForm.invalid) {
       this.updateProfileForm.markAllAsTouched();
@@ -92,11 +113,11 @@ export class UserDetailsComponent implements OnInit {
       this.alreadyExist = '';
       this.isSaving.set(true);
 
+      // create a form data to allow sending a file in the request
       const formData = new FormData();
       formData.append('name', this.updateProfileForm.get('name')?.value);
       formData.append('email', this.updateProfileForm.get('email')?.value);
       formData.append('phoneNumber', this.updateProfileForm.get('phoneNumber')?.value);
-
       if (this.selectedImage) {
         formData.append('profileImage', this.selectedImage);
       }
@@ -113,10 +134,14 @@ export class UserDetailsComponent implements OnInit {
             profileImage: res.data.profileImage,
           });
           this.imagePreview = res.data.profileImage?.url || null;
+          if (this.imagePreview) {
+            this._userImageService.setImage(this.imagePreview);
+          }
 
           this.selectedImage = null; // Clear the selected file after successful upload
           this.toggleFlagMode();
-          this._cookieService.set('userNameHome', this.updateProfileForm.get('name')?.value);
+          // update cookie to edit the name in the home page
+          this._cookieService.set('userName', this.updateProfileForm.get('name')?.value);
         },
         error: (err: any) => {
           console.error(err);
@@ -126,25 +151,6 @@ export class UserDetailsComponent implements OnInit {
       });
     }
   }
-  
-  
-
-  onFileSelected(e: Event) {
-    const fileInput = e.target as HTMLInputElement;
-
-    if (fileInput.files && fileInput.files.length > 0) {
-      const file = fileInput.files[0];
-      this.selectedImage = file;
-
-      this.imagePreview = URL.createObjectURL(file);
-
-      // console.log('New image selected:', this.imagePreview);
-      this.showImageMenu = false;
-      this.nav.notifyDataUpdated(this.imagePreview);
-    }
-  }
-
-
 
   // ...existing methods...
 

@@ -42,20 +42,24 @@
       } @else {
         <button
           routerLink="/profile"
-          class="group relative flex items-center justify-center rounded-full bg-slate-100 p-1.5 transition-colors hover:bg-slate-200"
+          class="group relative cursor-pointer overflow-hidden flex items-center justify-center rounded-full bg-slate-200/80 p-1.5 transition-colors hover:bg-slate-300/90 duration-300"
         >
-          <svg
-            class="size-6 text-slate-600 transition-colors group-hover:text-slate-900 dark:text-slate-400 dark:group-hover:text-white"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          >
-            <circle cx="12" cy="7" r="4" fill="currentColor" fill-opacity="0.1" />
-            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
-          </svg>
+          @if (imageUrl()) {
+            <img #imageIcon [src]="imageUrl()" alt="userAvatar" class="size-8 rounded-full " />
+          } @else {
+            <svg
+              class="size-6 text-slate-600 transition-colors group-hover:text-slate-900 dark:text-slate-400 dark:group-hover:text-white"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <circle cx="12" cy="7" r="4" fill="currentColor" fill-opacity="0.1" />
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+            </svg>
+          }
         </button>
       }
     </div>

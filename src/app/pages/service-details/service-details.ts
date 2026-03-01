@@ -26,7 +26,6 @@ export class ServiceDetails {
   reviews = signal<any[]>([]);
   isLoading2 = signal<boolean>(true);
   totalReviews = signal<number>(0);
-  // Form State
   currentRating = 0;
   commentText = '';
   isSubmitting = signal<boolean>(false);

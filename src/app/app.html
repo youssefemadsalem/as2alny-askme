@@ -6,7 +6,6 @@
   </div>
 }
 
-
-<div class="main-content">
+<div class="main-content" [style.visibility]="isFading || !isLoading ? 'visible' : 'hidden'">
   <router-outlet></router-outlet>
 </div>

@@ -40,9 +40,7 @@
           أهلا {{ userName().split(' ').splice(0, 2).join(' ') }}
         </h1>
       } @else {
-        <h1 class="text-4xl md:text-5xl font-extrabold text-secondary mt-14">
-          أهلا بكم
-        </h1>
+        <h1 class="text-4xl md:text-5xl font-extrabold text-secondary mt-14">أهلا بكم</h1>
       }
       <p class="text-slate-500 text-lg font-medium max-w-lg">
         جميع الخدمات الحكومية المصرية الان بين ايدك
@@ -55,6 +53,7 @@
           <i class="fa-solid fa-magnifying-glass"></i>
         </span>
         <input
+          [formControl]="searchControl"
           type="text"
           placeholder="ابحث عن خدمة عامة..."
           class="w-full pl-14 pr-8 py-5 rounded-full border border-white/60 bg-white/60 backdrop-blur-xl shadow-[0_10px_30px_rgba(0,0,0,0.05)] focus:bg-white focus:ring-4 focus:ring-accent/10 focus:border-accent outline-none transition-all placeholder:text-slate-400 text-secondary text-lg font-bold text-center"
@@ -176,7 +175,7 @@
         }
       </div>
 
-      @if (!isLoading() && servicedata().length > 0 && totalPages() > 1) {
+      @if (!isLoading() && servicedata().length > 0 && totalPages() > 1 && !isSearching()) {
         <div
           class="mt-16 flex flex-col items-center justify-center gap-4 animate-in fade-in slide-in-from-bottom-4 duration-500 relative z-50"
         >

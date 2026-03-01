@@ -10,7 +10,7 @@ export class ServiceApi {
   private readonly _httpClient = inject(HttpClient);
   private readonly baseUrl = 'https://isalny-backend.vercel.app/api/v1/services';
 
-  getAllSerivces(page: number = 2, limit: number = 6): Observable<IService> {
+  getAllSerivces(page: number = 2, limit: number = 8): Observable<IService> {
     let params = new HttpParams().set('page', page.toString()).set('limit', limit.toString());
 
     return this._httpClient.get<IService>(this.baseUrl, { params });
@@ -31,5 +31,12 @@ export class ServiceApi {
     return this._httpClient.get<any>(
       `https://isalny-backend.vercel.app/api/v1/ratings/service/${serviceId}`,
     );
+  }
+
+  searchServices(term: string): Observable<{ success: boolean; data: Daum[] }> {
+    const params = new HttpParams().set('search', term);
+    return this._httpClient.get<{ success: boolean; data: Daum[] }>(`${this.baseUrl}/search`, {
+      params,
+    });
   }
 }

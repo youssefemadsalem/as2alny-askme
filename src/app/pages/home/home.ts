@@ -23,7 +23,7 @@ export class Home implements OnInit {
   currentPage = signal<number>(1);
   totalPages = signal<number>(2);
 
-  itemsPerPage = 4; // This matches your backend default
+  itemsPerPage = 6; // This matches your backend default
   pages = signal<number[]>([]);
 
   skeletonItems = Array(8).fill(0);
@@ -73,7 +73,6 @@ export class Home implements OnInit {
       this.currentPage.set(newPage);
       this.loadServices();
 
-      // Optional: Scroll to top of grid smoothly
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   }

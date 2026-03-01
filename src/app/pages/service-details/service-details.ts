@@ -4,6 +4,7 @@ import { ServiceApi } from '../../core/services/service-api/service-api';
 import { Daum } from '../../core/interfaces/service/iservice';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { DatePipe, isPlatformBrowser } from '@angular/common';
+import { HotToastService } from '@ngxpert/hot-toast';
 
 @Component({
   selector: 'app-service-details',
@@ -15,6 +16,7 @@ export class ServiceDetails {
   private readonly _route = inject(ActivatedRoute);
   private readonly _serviceApi = inject(ServiceApi);
   private _platformId = inject(PLATFORM_ID);
+  private toast = inject(HotToastService);
 
   service = signal<Daum | null>(null);
   isLoading = signal<boolean>(true);
@@ -40,13 +42,10 @@ export class ServiceDetails {
   ngOnInit() {
     this.id = this._route.snapshot.paramMap.get('id');
 
-    // Check if we are in the browser BEFORE calling the APIs
     if (this.id && isPlatformBrowser(this._platformId)) {
       this.fetchServiceDetails(this.id);
       this.fetchReviews();
     } else {
-      // If we are on the server, stop the loaders immediately
-      // to prevent the 9-second "Application did not stabilize" timeout.
       this.isLoading.set(false);
       this.isLoading2.set(false);
     }
@@ -54,7 +53,7 @@ export class ServiceDetails {
 
   fetchServiceDetails(id: string) {
     this.isLoading.set(true);
-    // Assuming you have a getServiceById method in your ServiceApi
+
     this._serviceApi.getSerivceById(id).subscribe({
       next: (res) => {
         this.service.set(res.data);
@@ -69,7 +68,6 @@ export class ServiceDetails {
   }
 
   fetchReviews() {
-    // ONLY run this if we are in the browser
     if (isPlatformBrowser(this._platformId)) {
       this._serviceApi.getServiceReviews(this.id).subscribe({
         next: (res) => {
@@ -84,7 +82,6 @@ export class ServiceDetails {
         },
       });
     } else {
-      // If on server, just stop loading immediately
       this.isLoading2.set(false);
     }
   }
@@ -112,27 +109,37 @@ export class ServiceDetails {
 
     console.log('Sending payload:', payload); // Debugging line
     this.isSubmitting.set(true);
-    this._serviceApi.postRating(this.id, payload).subscribe({
-      next: (res) => {
-        console.log('Success:', res);
-        alert('تم تقييم الخدمة بنجاح'); // Success message in Arabic
-        this.resetForm();
-        this.isLoading.set(false);
-        this.fetchReviews();
-      },
-      error: (err) => {
-        console.error('Full Error Object:', err);
-        this.isSubmitting.set(false);
+    this._serviceApi
+      .postRating(this.id, payload)
+      .pipe(
+        // THIS IS THE TOAST LOGIC
+        this.toast.observe({
+          success: 'تم تقييم الخدمة بنجاح',
 
-        if (err.status === 401) {
-          alert('You must be logged in to rate.');
-        } else if (err.status === 400) {
-          alert('Invalid data sent.');
-        } else {
-          alert('Something went wrong.');
-        }
-      },
-    });
+          error: (err) => 'حاول مره اخره',
+        }),
+      )
+
+      .subscribe({
+        next: (res) => {
+          console.log('Success:', res);
+          this.resetForm();
+          this.isLoading.set(false);
+          this.fetchReviews();
+        },
+        error: (err) => {
+          console.error('Full Error Object:', err);
+          this.isSubmitting.set(false);
+
+          if (err.status === 401) {
+            alert('You must be logged in to rate.');
+          } else if (err.status === 400) {
+            alert('Invalid data sent.');
+          } else {
+            alert('Something went wrong.');
+          }
+        },
+      });
   }
 
   getStars(rating: number): number[] {

@@ -6,6 +6,7 @@ import { CommonModule } from '@angular/common';
 import { UserDataService } from '../../core/services/user-api/user-data';
 import { CookieService } from 'ngx-cookie-service';
 import { UserImageService } from '../../core/services/user-api/user-image-preview';
+import { HotToastService } from '@ngxpert/hot-toast';
 
 @Component({
   selector: 'app-user-details-component',
@@ -16,11 +17,8 @@ import { UserImageService } from '../../core/services/user-api/user-image-previe
   styleUrl: './user-details-component.css',
 })
 export class UserDetailsComponent implements OnInit {
-  
-  
   constructor(
     private _cookieService: CookieService,
-    private nav: NavBar,
     private _userImageService: UserImageService,
   ) {
     this.userName = this._cookieService.get('userName');
@@ -54,6 +52,7 @@ export class UserDetailsComponent implements OnInit {
 
   // Injections
   private _userDataService = inject(UserDataService);
+  private toast = inject(HotToastService);
 
   // Signals
   isLoadingData = signal<boolean>(true);
@@ -105,7 +104,6 @@ export class UserDetailsComponent implements OnInit {
     }
   }
 
-
   updateProfile(): void {
     if (this.updateProfileForm.invalid) {
       this.updateProfileForm.markAllAsTouched();
@@ -122,33 +120,44 @@ export class UserDetailsComponent implements OnInit {
         formData.append('profileImage', this.selectedImage);
       }
 
-      this._userDataService.updateUserData(formData).subscribe({
-        next: (res) => {
-          console.log('Sent ', res);
-          this.isSaving.set(false);
+      this._userDataService
+        .updateUserData(formData)
+        .pipe(
+          // THIS IS THE TOAST LOGIC
+          this.toast.observe({
+            success: 'تم تحديث البيانات بنجاح',
 
-          // Update local user object and image preview so UI reflects changes immediately
-          this.user.set({
-            ...this.user(),
-            ...this.updateProfileForm.value,
-            profileImage: res.data.profileImage,
-          });
-          this.imagePreview = res.data.profileImage?.url || null;
-          if (this.imagePreview) {
-            this._userImageService.setImage(this.imagePreview);
-          }
+            error: (err) => 'حاول مره اخره',
+          }),
+        )
 
-          this.selectedImage = null; // Clear the selected file after successful upload
-          this.toggleFlagMode();
-          // update cookie to edit the name in the home page
-          this._cookieService.set('userName', this.updateProfileForm.get('name')?.value);
-        },
-        error: (err: any) => {
-          console.error(err);
-          this.alreadyExist = err.error?.message || 'Error: Account might already exist';
-          this.isSaving.set(false);
-        },
-      });
+        .subscribe({
+          next: (res) => {
+            console.log('Sent ', res);
+            this.isSaving.set(false);
+
+            // Update local user object and image preview so UI reflects changes immediately
+            this.user.set({
+              ...this.user(),
+              ...this.updateProfileForm.value,
+              profileImage: res.data.profileImage,
+            });
+            this.imagePreview = res.data.profileImage?.url || null;
+            if (this.imagePreview) {
+              this._userImageService.setImage(this.imagePreview);
+            }
+
+            this.selectedImage = null; // Clear the selected file after successful upload
+            this.toggleFlagMode();
+            // update cookie to edit the name in the home page
+            this._cookieService.set('userName', this.updateProfileForm.get('name')?.value);
+          },
+          error: (err: any) => {
+            console.error(err);
+            this.alreadyExist = err.error?.message || 'Error: Account might already exist';
+            this.isSaving.set(false);
+          },
+        });
     }
   }
 

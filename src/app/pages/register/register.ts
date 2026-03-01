@@ -8,6 +8,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import { HotToastService } from '@ngxpert/hot-toast';
 
 @Component({
   selector: 'app-register',
@@ -19,6 +20,7 @@ export class Register {
   constructor(private _Auth: Auth) {}
   private readonly _Router = inject(Router);
   private readonly cdr = inject(ChangeDetectorRef);
+  private toast = inject(HotToastService);
   alreadyexist: string = '';
   isLoading = signal(false);
   isavail = signal(false);
@@ -53,26 +55,37 @@ export class Register {
       this.alreadyexist = '';
       this.isLoading.set(true);
 
-      this._Auth.sighup(this.registerForm.value).subscribe({
-        next: (res) => {
-          console.log(res);
-          this.isLoading.set(false);
-          this._Router.navigate(['/login']);
-        },
-        error: (err) => {
-          console.log(err);
+      this._Auth
+        .sighup(this.registerForm.value)
+        .pipe(
+          // THIS IS THE TOAST LOGIC
+          this.toast.observe({
+            success: 'تم انشاءالحساب بنجاح',
 
-          // 2. Assign the value FIRST
-          // We use optional chaining (?.) just in case err.error is null
-          this.alreadyexist = err.error?.message || 'Error: Account might already exist';
+            error: (err) => 'حاول مره اخره',
+          }),
+        )
 
-          // 3. Stop loading
-          this.isLoading.set(false);
+        .subscribe({
+          next: (res) => {
+            console.log(res);
+            this.isLoading.set(false);
+            this._Router.navigate(['/login']);
+          },
+          error: (err) => {
+            console.log(err);
 
-          // 4. Trigger change detection LAST (after data is updated)
-          this.cdr.detectChanges();
-        },
-      });
+            // 2. Assign the value FIRST
+            // We use optional chaining (?.) just in case err.error is null
+            this.alreadyexist = err.error?.message || 'Error: Account might already exist';
+
+            // 3. Stop loading
+            this.isLoading.set(false);
+
+            // 4. Trigger change detection LAST (after data is updated)
+            this.cdr.detectChanges();
+          },
+        });
     }
   }
 

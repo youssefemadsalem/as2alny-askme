@@ -10,7 +10,7 @@ export class ServiceApi {
   private readonly _httpClient = inject(HttpClient);
   private readonly baseUrl = 'https://isalny-backend.vercel.app/api/v1/services';
 
-  getAllSerivces(page: number = 2, limit: number = 4): Observable<IService> {
+  getAllSerivces(page: number = 2, limit: number = 6): Observable<IService> {
     let params = new HttpParams().set('page', page.toString()).set('limit', limit.toString());
 
     return this._httpClient.get<IService>(this.baseUrl, { params });

@@ -476,21 +476,24 @@
                 </button>
               </div>
             }
-
             <div
               class="bg-white/70 backdrop-blur-xl rounded-[2.5rem] p-6 border border-white shadow-sm relative overflow-hidden group"
             >
               <div class="relative z-10">
                 <h3 class="font-bold text-secondary text-lg mb-4 text-center">أضف تقييمك للخدمة</h3>
 
-                <div class="flex justify-center gap-2 mb-6" dir="ltr">
+                <div class="flex justify-center gap-2 mb-6" dir="ltr" (mouseleave)="clearHover()">
                   @for (star of stars; track star) {
                     <button
                       type="button"
                       (click)="setRating(star)"
-                      class="text-2xl transition-colors focus:outline-none"
-                      [class.text-amber-400]="star <= currentRating"
-                      [class.text-slate-300]="star > currentRating"
+                      (mouseenter)="setHover(star)"
+                      class="text-3xl transition-all duration-200 focus:outline-none hover:scale-110 active:scale-95 cursor-pointer"
+                      [ngClass]="{
+                        'text-amber-400 drop-shadow-[0_0_8px_rgba(251,191,36,0.5)]':
+                          star <= (hoverRating() || currentRating()),
+                        'text-slate-300': star > (hoverRating() || currentRating()),
+                      }"
                     >
                       <i class="fa-solid fa-star"></i>
                     </button>
@@ -509,7 +512,7 @@
                   type="button"
                   (click)="submitRating()"
                   [disabled]="isSubmitting()"
-                  class="w-full bg-secondary text-white font-bold py-3 rounded-xl shadow-lg shadow-secondary/10 hover:bg-accent transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                  class="w-full bg-secondary text-white font-bold py-3 rounded-xl shadow-lg shadow-secondary/10 hover:bg-accent transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
                 >
                   @if (isSubmitting()) {
                     <span>جاري الإرسال...</span>
@@ -533,11 +536,10 @@
 </div>
 
 <style>
-  /* Define CSS variables for the palette */
   :root {
-    --color-primary: #b29848; /* Gold */
-    --color-secondary: #1c3f61; /* Deep Blue */
-    --color-accent: #3b9185; /* Teal */
+    --color-primary: #b29848;
+    --color-secondary: #1c3f61;
+    --color-accent: #3b9185;
   }
 
   .font-cairo {
@@ -546,10 +548,8 @@
 
   .min-h-screen {
     position: relative;
-    /* ensure content sits above blobs */
   }
 
-  /* The Blue Blob */
   .min-h-screen::before {
     content: '';
     position: absolute;
@@ -565,7 +565,6 @@
     animation: blob-bounce 10s infinite alternate;
   }
 
-  /* The Teal/Gold Blob */
   .min-h-screen::after {
     content: '';
     position: absolute;

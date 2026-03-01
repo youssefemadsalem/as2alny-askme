@@ -1,14 +1,15 @@
-import { Component, computed, inject, NgModule, PLATFORM_ID, signal } from '@angular/core';
+import { Component, computed, inject, PLATFORM_ID, signal } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { ServiceApi } from '../../core/services/service-api/service-api';
 import { Daum } from '../../core/interfaces/service/iservice';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { DatePipe, isPlatformBrowser } from '@angular/common';
+import { DatePipe, isPlatformBrowser, CommonModule } from '@angular/common'; // Added CommonModule for ngClass
 import { HotToastService } from '@ngxpert/hot-toast';
 
 @Component({
   selector: 'app-service-details',
-  imports: [ReactiveFormsModule, FormsModule, DatePipe, RouterLink],
+  standalone: true, // Ensure standalone is true if you are using imports
+  imports: [ReactiveFormsModule, FormsModule, DatePipe, RouterLink, CommonModule],
   templateUrl: './service-details.html',
   styleUrl: './service-details.css',
 })
@@ -22,25 +23,27 @@ export class ServiceDetails {
   isLoading = signal<boolean>(true);
   error = signal<string | null>(null);
   id: string | null = null;
+
+  // Stars Logic
   stars = [1, 2, 3, 4, 5];
+  currentRating = signal(0);
+  hoverRating = signal(0);
+
   reviews = signal<any[]>([]);
   isLoading2 = signal<boolean>(true);
   totalReviews = signal<number>(0);
-  currentRating = 0;
   commentText = '';
   isSubmitting = signal<boolean>(false);
 
   averageRating = computed(() => {
     const currentReviews = this.reviews();
     if (currentReviews.length === 0) return 0;
-
     const sum = currentReviews.reduce((acc, review) => acc + review.rating, 0);
     return (sum / currentReviews.length).toFixed(1);
   });
 
   ngOnInit() {
     this.id = this._route.snapshot.paramMap.get('id');
-
     if (this.id && isPlatformBrowser(this._platformId)) {
       this.fetchServiceDetails(this.id);
       this.fetchReviews();
@@ -52,7 +55,6 @@ export class ServiceDetails {
 
   fetchServiceDetails(id: string) {
     this.isLoading.set(true);
-
     this._serviceApi.getSerivceById(id).subscribe({
       next: (res) => {
         this.service.set(res.data);
@@ -61,14 +63,83 @@ export class ServiceDetails {
       error: (err) => {
         this.error.set('فشل في تحميل بيانات الخدمة');
         this.isLoading.set(false);
-        console.error(err);
       },
     });
   }
 
+  // --- STAR RATINGS LOGIC ---
+
+  setHover(star: number) {
+    this.hoverRating.set(star);
+  }
+
+  clearHover() {
+    this.hoverRating.set(0);
+  }
+
+  setRating(star: number) {
+    this.currentRating.set(star);
+  }
+
+  submitRating() {
+    if (!this.id) {
+      console.error('No ID found');
+      return;
+    }
+
+    // 1. Get the value from the Signal
+    const ratingValue = this.currentRating();
+
+    // 2. Validate and RETURN if invalid (Stop execution)
+    if (ratingValue === 0) {
+      this.toast.error('عليك ان تقيم من خلال النجوم'); // Using .error directly is cleaner
+      return;
+    }
+
+    // 3. Construct Payload with the VALUE, not the Signal
+    const payload = {
+      rating: ratingValue,
+      comment: this.commentText,
+    };
+
+    this.isSubmitting.set(true);
+
+    this._serviceApi
+      .postRating(this.id, payload)
+      .pipe(
+        this.toast.observe({
+          loading: 'جاري الإرسال...',
+          success: 'تم تقييم الخدمة بنجاح',
+          error: 'حدث خطأ أثناء الإرسال',
+        }),
+      )
+      .subscribe({
+        next: (res) => {
+          this.resetForm();
+          this.fetchReviews();
+        },
+        error: (err) => {
+          this.isSubmitting.set(false);
+          console.error(err);
+        },
+        complete: () => {
+          this.isSubmitting.set(false);
+        },
+      });
+  }
+
+  resetForm() {
+    this.commentText = '';
+    this.currentRating.set(0); // Reset the stars visually
+    this.isSubmitting.set(false);
+  }
+
+  // --- REVIEWS LOGIC ---
+
   fetchReviews() {
     if (isPlatformBrowser(this._platformId)) {
-      this._serviceApi.getServiceReviews(this.id).subscribe({
+      // Assuming ID is not null here
+      this._serviceApi.getServiceReviews(this.id!).subscribe({
         next: (res) => {
           if (res.success) {
             this.reviews.set(res.data);
@@ -85,71 +156,9 @@ export class ServiceDetails {
     }
   }
 
-  setRating(star: number) {
-    this.currentRating = star;
-  }
-
-  submitRating() {
-    if (!this.id) {
-      console.error('No ID found');
-      return;
-    }
-
-    if (this.currentRating === 0) {
-      alert('Please select a star rating first');
-      return;
-    }
-
-    // Verify the exact payload structure your backend expects
-    const payload = {
-      rating: this.currentRating,
-      comment: this.commentText,
-    };
-
-    console.log('Sending payload:', payload); // Debugging line
-    this.isSubmitting.set(true);
-    this._serviceApi
-      .postRating(this.id, payload)
-      .pipe(
-        // THIS IS THE TOAST LOGIC
-        this.toast.observe({
-          success: 'تم تقييم الخدمة بنجاح',
-
-          error: (err) => 'حاول مره اخره',
-        }),
-      )
-
-      .subscribe({
-        next: (res) => {
-          console.log('Success:', res);
-          this.resetForm();
-          this.isLoading.set(false);
-          this.fetchReviews();
-        },
-        error: (err) => {
-          console.error('Full Error Object:', err);
-          this.isSubmitting.set(false);
-
-          if (err.status === 401) {
-            alert('You must be logged in to rate.');
-          } else if (err.status === 400) {
-            alert('Invalid data sent.');
-          } else {
-            alert('Something went wrong.');
-          }
-        },
-      });
-  }
-
   getStars(rating: number): number[] {
     return Array(5)
       .fill(0)
       .map((_, i) => (i < rating ? 1 : 0));
-  }
-
-  resetForm() {
-    this.currentRating = 0;
-    this.commentText = '';
-    this.isSubmitting.set(false);
   }
 }

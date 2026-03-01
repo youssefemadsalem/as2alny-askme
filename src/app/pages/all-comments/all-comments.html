@@ -125,11 +125,7 @@
                     class="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-slate-200 border-2 border-white shadow-sm overflow-hidden group-hover:scale-105 transition-transform duration-500"
                   >
                     <img
-                      [src]="
-                        'https://ui-avatars.com/api/?name=' +
-                        review.userId?.name +
-                        '&background=random&color=fff&bold=true&length=1'
-                      "
+                      [src]="review.userId.profileImage.url"
                       [alt]="review.userId?.name"
                       class="w-full h-full object-cover"
                     />

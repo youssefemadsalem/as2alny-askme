@@ -2,7 +2,10 @@ import { Component, ElementRef, inject, signal, ViewChild } from '@angular/core'
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { AI } from '../../core/services/AI/ai';
 import { FormsModule } from '@angular/forms';
-import { CommonModule, DatePipe, NgClass } from '@angular/common';
+import { CommonModule, DatePipe, Location, NgClass } from '@angular/common';
+import { UserDataService } from '../../core/services/user-api/user-data';
+import { ServiceApi } from '../../core/services/service-api/service-api';
+import { Daum } from '../../core/interfaces/service/iservice';
 
 interface ChatMessage {
   text: string;
@@ -11,20 +14,27 @@ interface ChatMessage {
 }
 @Component({
   selector: 'app-chat-bot',
-  imports: [FormsModule, DatePipe, NgClass, CommonModule, RouterLink],
+  imports: [FormsModule, DatePipe, NgClass, CommonModule],
   templateUrl: './chat-bot.html',
   styleUrl: './chat-bot.css',
 })
 export class ChatBot {
   private route = inject(ActivatedRoute);
   private aiService = inject(AI);
+  _userDataService = inject(UserDataService);
+  private _location = inject(Location);
+  private readonly _serviceApi = inject(ServiceApi);
 
   // State
+  imageUrl = signal<string | null>(null);
   isChatLoading = signal<boolean>(false);
   userMessage = signal<string>('');
   messages = signal<ChatMessage[]>([]);
   serviceId: string | null = null;
-  serviceName: string = 'جاري التحميل...'; // Placeholder until you fetch details
+  serviceName: string = 'جاري التحميل...';
+  isLoading = signal<boolean>(true);
+  error = signal<string | null>(null);
+  service = signal<Daum | null>(null);
 
   @ViewChild('scrollContainer') private scrollContainer!: ElementRef;
 
@@ -41,6 +51,16 @@ export class ChatBot {
         },
       ]);
     });
+
+    this._userDataService.getUserData().subscribe({
+      next: (res) => {
+        this.imageUrl.set(res.data.profileImage?.url || null);
+      },
+    });
+
+    if (this.serviceId) {
+      this.fetchServiceDetails(this.serviceId);
+    }
   }
 
   sendMessage() {
@@ -83,6 +103,24 @@ export class ChatBot {
         this.scrollToBottom();
       },
     });
+  }
+
+  fetchServiceDetails(id: string) {
+    this.isLoading.set(true);
+    this._serviceApi.getSerivceById(id).subscribe({
+      next: (res) => {
+        this.service.set(res.data);
+        this.isLoading.set(false);
+      },
+      error: (err) => {
+        this.error.set('فشل في تحميل بيانات الخدمة');
+        this.isLoading.set(false);
+      },
+    });
+  }
+
+  goBack() {
+    this._location.back();
   }
 
   handleKeydown(event: KeyboardEvent) {

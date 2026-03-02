@@ -13,7 +13,7 @@ export class AllComments {
   // --- Injections ---
   private _location = inject(Location);
   private _route = inject(ActivatedRoute);
-  private _service = inject(ServiceApi); // Use your actual service name
+  private _service = inject(ServiceApi);
 
   // --- Signals ---
   isLoading = signal<boolean>(true);
@@ -56,9 +56,6 @@ export class AllComments {
   fetchReviews(id: string) {
     this._service.getServiceReviews(id).subscribe({
       next: (response: any) => {
-        // 👇 Check your API response structure.
-        // If the API returns { data: [...] }, change this to response.data
-        // If it returns [...] directly, keep it as response.
         const data = Array.isArray(response) ? response : response.data || [];
 
         this.reviews.set(data);

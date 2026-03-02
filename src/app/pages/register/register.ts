@@ -41,7 +41,10 @@ export class Register {
 
       email: new FormControl(null, [Validators.required, Validators.email]),
 
-      password: new FormControl(null, [Validators.required, Validators.pattern(/^\w{6,}$/)]),
+      password: new FormControl(null, [
+        Validators.required,
+        Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/),
+      ]),
 
       confirmPassword: new FormControl(null),
     },
@@ -75,14 +78,10 @@ export class Register {
           error: (err) => {
             console.log(err);
 
-            // 2. Assign the value FIRST
-            // We use optional chaining (?.) just in case err.error is null
             this.alreadyexist = err.error?.message || 'Error: Account might already exist';
 
-            // 3. Stop loading
             this.isLoading.set(false);
 
-            // 4. Trigger change detection LAST (after data is updated)
             this.cdr.detectChanges();
           },
         });
@@ -91,7 +90,7 @@ export class Register {
 
   compare(fgroup: AbstractControl) {
     if (fgroup.get('password')?.value === fgroup.get('confirmPassword')?.value) {
-      return null; // no error
+      return null;
     } else {
       return { missmatch: true };
     }

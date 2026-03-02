@@ -7,6 +7,7 @@ import { ServiceApi } from '../../core/services/service-api/service-api';
 import { CookieService } from 'ngx-cookie-service';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { catchError, debounceTime, distinctUntilChanged, map, of, switchMap, tap } from 'rxjs';
+import { HotToastService } from '@ngxpert/hot-toast';
 
 @Component({
   selector: 'app-home',
@@ -35,6 +36,7 @@ export class Home implements OnInit {
   readonly _router = inject(Router);
   private readonly _ServiceApi = inject(ServiceApi);
   private _CookieService = inject(CookieService);
+  private toast = inject(HotToastService);
 
   pagesArray = computed(() => {
     return Array.from({ length: this.totalPages() }, (_, i) => i + 1);
@@ -135,6 +137,7 @@ export class Home implements OnInit {
       const fullPath = id ? path.replace(':id', id) : path;
       this._router.navigate([fullPath]);
     } else {
+      this.toast.error('عليك الدخول اولا');
       this._router.navigate(['/login']);
     }
   }

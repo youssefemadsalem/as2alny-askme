@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { tap } from 'rxjs/operators';
 import { isPlatformBrowser } from '@angular/common';
+import { HotToastService } from '@ngxpert/hot-toast';
 
 @Injectable({
   providedIn: 'root',
@@ -15,6 +16,7 @@ export class Auth {
   private readonly _router = inject(Router);
   private readonly _cookieService = inject(CookieService);
   private readonly platformId = inject(PLATFORM_ID);
+  private toast = inject(HotToastService);
 
   otpCode: string = '';
   userData = new BehaviorSubject<any>(null);
@@ -69,6 +71,7 @@ export class Auth {
       this._cookieService.delete('userName', '/');
     }
     this.userData.next(null);
+
     this._router.navigate(['/home']);
   }
 

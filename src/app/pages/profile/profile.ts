@@ -1,8 +1,8 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Auth } from '../../core/services/auth/auth';
-import { RouterOutlet, RouterLink, Router, RouterLinkActive } from '@angular/router'; 
-
+import { RouterOutlet, RouterLink, Router, RouterLinkActive } from '@angular/router';
+import { HotToastService } from '@ngxpert/hot-toast';
 
 @Component({
   selector: 'app-profile',
@@ -11,31 +11,16 @@ import { RouterOutlet, RouterLink, Router, RouterLinkActive } from '@angular/rou
   templateUrl: './profile.html',
 })
 export class ProfileComponent implements OnInit {
-
-  // Injections 
+  // Injections
   readonly _auth = inject(Auth);
   router = inject(Router);
+  private toast = inject(HotToastService);
 
+  ngOnInit() {}
 
-  // Variables
-  // user: UserData = {
-  //   name: 'يوسف محمد أحمد',
-  //   email: 'yousef@example.com',
-  //   nationalId: 1234567890,
-  //   phoneNumber: '0123456789',
-  // };
-
-  //Class functions
-  ngOnInit() {
-
-  }
-
-
-  // user Functions
-
-  // function that edit t
   logout() {
+    this.toast.success('تم الخروج بنجاح');
+
     this._auth.logOut();
   }
 }
-

@@ -1,5 +1,5 @@
 import { NavBar } from './../nav-bar/nav-bar';
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, ElementRef, inject, OnInit, signal, TemplateRef } from '@angular/core';
 import { UserDataInterface } from '../../core/interfaces/user-data';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -65,6 +65,7 @@ export class UserDetailsComponent implements OnInit {
   });
 
   // Variables
+  isOpeningImage : boolean = false
   isEditing: boolean = false;
   alreadyExist: string = '';
   userName: string = '';
@@ -155,10 +156,26 @@ export class UserDetailsComponent implements OnInit {
   // ...existing methods...
 
   deleteImage(): void {
+    this._userDataService.deleteUserImage().subscribe({
+      next:(res)=>{
+        console.log(res.data);
+      },
+      error:(err)=>{
+        console.log(err);
+      },
+    })
     this.selectedImage = null;
     this.imagePreview = null;
     this.showImageMenu = false;
   }
+
+
+  openImage(openingImage:HTMLElement){
+    console.log(this.imagePreview);
+    console.log(openingImage);
+    // openingImage.style.display = 'flex'
+  }
+
 
   cancelEdit() {
     this.toggleFlagMode();
@@ -174,5 +191,19 @@ export class UserDetailsComponent implements OnInit {
 
   toggleFlagMode() {
     this.isEditing = !this.isEditing;
+  }
+  toggleOpenningImage(){
+        this.isOpeningImage = !this.isOpeningImage;
+
+    if(this.isOpeningImage == true){
+      const nav  = document.querySelector(".navbar") as HTMLElement;
+      console.log(document.querySelector(".navbar"));
+      nav.style.cssText = 'z-index: 10'
+    }
+    else{
+      const nav  = document.querySelector(".navbar") as HTMLElement;
+      console.log(document.querySelector(".navbar"));
+      nav.style.cssText = 'z-index: 100'
+    }
   }
 }

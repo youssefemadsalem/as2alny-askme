@@ -21,24 +21,28 @@ export class UserDataService {
     }
   }
 
-  getUserData():Observable<any>{
+  getUserData(): Observable<any> {
     return this._httpClient.get('https://isalny-backend.vercel.app/api/v1/user/profile', {
       headers: new HttpHeaders({
         Authorization: `Bearer ${this.userToken.token}`,
       }),
     });
   }
-  updateUserData(data:any):Observable<any>{
-    return this._httpClient.patch('https://isalny-backend.vercel.app/api/v1/user/profile', data , {
+  updateUserData(data: any): Observable<any> {
+    return this._httpClient.patch('https://isalny-backend.vercel.app/api/v1/user/profile', data, {
       headers: new HttpHeaders({
         Authorization: `Bearer ${this.userToken.token}`,
       }),
-    })
+    });
   }
 
-  
-  // constructor(private _httpClient: HttpClient) {}
-  // getUserData(): Observable<any> {
-  //   return this._httpClient.get('http://localhost:3000/services');
-  // }
+  deleteUserImage(): Observable<any> {
+    return this._httpClient.delete('https://isalny-backend.vercel.app/api/v1/user/profile/image', {
+      headers: new HttpHeaders({
+        Authorization: `Bearer ${this.userToken.token}`,
+      }),
+    });
+  }
+
+
 }

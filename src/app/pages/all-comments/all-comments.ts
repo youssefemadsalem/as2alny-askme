@@ -28,11 +28,9 @@ export class AllComments {
   });
 
   ratingDistribution = computed(() => {
-    // Initialize counters
     const dist: any = { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 };
 
     this.reviews().forEach((r) => {
-      // Ensure rating is valid (1-5)
       const rounded = Math.round(r.rating || 0);
       if (rounded >= 1 && rounded <= 5) {
         dist[rounded]++;
@@ -42,7 +40,6 @@ export class AllComments {
   });
 
   ngOnInit() {
-    // 1. Get 'id' from the route parameters (e.g., /comments/:id)
     const serviceId = this._route.snapshot.paramMap.get('id');
 
     if (serviceId) {
@@ -71,8 +68,6 @@ export class AllComments {
   goBack() {
     this._location.back();
   }
-
-  // --- Helpers ---
 
   getStars(rating: number): boolean[] {
     const stars = [];

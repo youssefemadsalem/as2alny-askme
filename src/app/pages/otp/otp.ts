@@ -8,7 +8,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
-import { Auth } from '../../core/services/auth/auth'; // Ensure this path is correct
+import { Auth } from '../../core/services/auth/auth';
 
 @Component({
   selector: 'app-otp',
@@ -20,12 +20,11 @@ import { Auth } from '../../core/services/auth/auth'; // Ensure this path is cor
 export class Otp {
   private fb = inject(FormBuilder);
   private router = inject(Router);
-  private _Auth = inject(Auth); // Injected via inject() for consistency
+  private _Auth = inject(Auth);
 
-  alreadyexist = signal(false); // Changed to signal for better reactivity
+  alreadyexist = signal(false);
   isLoading = signal(false);
 
-  // Queries all elements with #otpInput
   inputs = viewChildren<ElementRef<HTMLInputElement>>('otpInput');
 
   otpForm: FormGroup = this.fb.group({
@@ -44,28 +43,24 @@ export class Otp {
     if (this.otpForm.invalid) return;
 
     this.isLoading.set(true);
-    this.alreadyexist.set(false); // Clear previous errors
+    this.alreadyexist.set(false);
 
-    // Join array to string "123456"
     const otpValue = this.otpForm.value.otp.join('');
 
-    // Check if your backend expects { "otp": "..." } or { "code": "..." }
     const payload = { otp: otpValue };
 
     this._Auth.validateotp(payload).subscribe({
       next: (res: any) => {
         this.isLoading.set(false);
-        console.log('Server Response:', res); // Debugging
-        this._Auth.otpCode = this.otpForm.value.otp.join(''); // Save OTP in service for later use
-        // 1. Save Token (Handle various response structures)
+        console.log('Server Response:', res);
+        this._Auth.otpCode = this.otpForm.value.otp.join('');
+
         const token = res.token || res.accessToken || res.data?.accessToken || res.data?.token;
 
         if (token) {
           localStorage.setItem('userToken', token);
         }
 
-        // 2. Navigate
-        // We navigate because we reached 'next' (Success), regardless of specific token structure
         this.router.navigate(['/resetpassword']);
       },
       error: (err) => {
@@ -80,14 +75,12 @@ export class Otp {
     const input = event.target as HTMLInputElement;
     let value = input.value;
 
-    // Ensure only numbers
     if (!/^\d+$/.test(value)) {
-      input.value = value.replace(/\D/g, ''); // Update UI immediately
+      input.value = value.replace(/\D/g, '');
       this.otpControls[index].setValue(input.value);
       return;
     }
 
-    // Move to next input if value exists and we aren't at the end
     if (input.value && index < 5) {
       const nextInput = this.inputs()[index + 1]?.nativeElement;
       if (nextInput) {
@@ -99,9 +92,7 @@ export class Otp {
   handleKeyDown(index: number, event: KeyboardEvent): void {
     const key = event.key;
 
-    // Allow navigation and deletion keys
     if (['Backspace', 'Tab', 'ArrowLeft', 'ArrowRight', 'Delete', 'Enter'].includes(key)) {
-      // Special Logic for Backspace: Move back if current is empty
       if (key === 'Backspace') {
         const currentVal = this.otpControls[index].value;
         if (!currentVal && index > 0) {

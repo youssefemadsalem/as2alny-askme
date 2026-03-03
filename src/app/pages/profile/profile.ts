@@ -11,7 +11,6 @@ import { HotToastService } from '@ngxpert/hot-toast';
   templateUrl: './profile.html',
 })
 export class ProfileComponent implements OnInit {
-  // Injections
   readonly _auth = inject(Auth);
   router = inject(Router);
   private toast = inject(HotToastService);

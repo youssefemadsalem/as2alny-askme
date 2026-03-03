@@ -1,17 +1,15 @@
 <style>
   .min-h-screen {
     position: relative;
-    /* overflow: hidden is handled by tailwind class below, but kept here for safety */
   }
 
-  /* The Blue Blob */
   .min-h-screen::before {
     content: '';
     position: absolute;
     width: 400px;
     height: 400px;
     border-radius: 50%;
-    filter: blur(80px); /* Increased blur slightly for smoother look */
+    filter: blur(80px);
     z-index: 0;
     opacity: 0.4;
     background: radial-gradient(circle, var(--color-primary, #3b82f6), transparent);
@@ -19,7 +17,6 @@
     left: -10%;
   }
 
-  /* The Green/Accent Blob */
   .min-h-screen::after {
     content: '';
     position: absolute;
@@ -38,20 +35,25 @@
 <div
   class="min-h-screen relative overflow-hidden lg:h-screen flex items-center bg-slate-50 pt-25 pb-3 w-full lg:px-37.5 md:px-32.5"
 >
-  <div  
+  <div
     class="relative z-10 px-10 md:px-0 w-full mx-auto grid grid-cols-1 lg:grid-cols-7 items-start justify-center gap-x-10 gap-y-3 font-cairo"
   >
     <aside class="lg:col-span-2 mb-5 lg:m-0 h-fit shadow-lg rounded-2xl bg-white p-1 lg:p-3">
       <div id="profile-navigation" class="">
         <div class="nav-content p-1 text-secondary font-medium">
-          <ul class="flex flex-row lg:flex-col text-center lg:text-right items-center lg:items-stretch justify-center lg:justify-start gap-1 overflow-x-auto lg:overflow-visible scrollbar-hide">
+          <ul
+            class="flex flex-row lg:flex-col text-center lg:text-right items-center lg:items-stretch justify-center lg:justify-start gap-1 overflow-x-auto lg:overflow-visible scrollbar-hide"
+          >
             <li class="cursor-pointer hover:bg-slate-200 rounded-lg mt-2">
               <a
                 routerLink="user-details"
                 routerLinkActive="bg-slate-200 w-full text-secondary"
-                class="block rounded-lg py-3 px-3 text-sm lg:text-base font-semibold lg:font-normal "
+                class="block rounded-lg py-3 px-3 text-sm lg:text-base font-semibold lg:font-normal"
               >
-                <span><i class="fa-solid fa-user text-sm lg:text-base text-primary ml-2"></i> الملف الشخصي</span></a
+                <span
+                  ><i class="fa-solid fa-user text-sm lg:text-base text-primary ml-2"></i> الملف
+                  الشخصي</span
+                ></a
               >
             </li>
             <li class="cursor-pointer hover:bg-slate-200 rounded-lg mt-2">
@@ -63,9 +65,12 @@
                 <span> <i class="fa-solid fa-rectangle-list text-primary ml-2"></i> طلباتي</span>
               </a>
             </li>
-            <li class="cursor-pointer hover:bg-slate-200 py-3 px-3 rounded-lg mt-2 lg:border-t lg:border-slate-200">
+            <li
+              class="cursor-pointer hover:bg-slate-200 py-3 px-3 rounded-lg mt-2 lg:border-t lg:border-slate-200"
+            >
               <button (click)="logout()">
-                <span class="text-red-600 cursor-pointer hover:bg-slate-200 text-sm lg:text-base font-semibold lg:font-normal"
+                <span
+                  class="text-red-600 cursor-pointer hover:bg-slate-200 text-sm lg:text-base font-semibold lg:font-normal"
                   ><i class="fa-solid fa-arrow-right-from-bracket ml-2"></i> تسجيل الخروج</span
                 >
               </button>

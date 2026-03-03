@@ -1,4 +1,3 @@
-/* You can add global styles to this file, and also import other style files */
 @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@200..1000&display=swap');
 @import 'tailwindcss';
 @theme {
@@ -33,13 +32,10 @@
   animation: fade-out 0.2s ease-out both;
 }
 
-/* 2. The New Page (Entering) */
-/* It fades in AND slides up slightly (15px) */
 ::view-transition-new(root) {
   animation: fade-in-up 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) both;
 }
 
-/* 3. The Animation Keyframes */
 @keyframes fade-out {
   from {
     opacity: 1;
@@ -52,8 +48,8 @@
 @keyframes fade-in-up {
   from {
     opacity: 0;
-    transform: translateY(15px); /* Start slightly lower */
-    filter: blur(5px); /* Optional: Adds a soft focus effect */
+    transform: translateY(15px);
+    filter: blur(5px);
   }
   to {
     opacity: 1;

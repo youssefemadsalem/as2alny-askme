@@ -1,4 +1,25 @@
-<div class="gradent pt-27 rounded-2xl min-h-100" [class.animate-gradient-x]="isLoadingData()">
+<div
+  class="gradent relative pt-27 rounded-2xl min-h-100"
+  [class.animate-gradient-x]="isLoadingData()"
+>
+  <!-- open Image  -->
+  @if (isOpeningImage) {
+    <div
+      (click)="$event.stopPropagation(); toggleOpenningImage()"
+      #openingImage
+      class="fixed flex inset-0 z-[9999] justify-center  items-center overflow-clip bg-black/80"
+    >
+      <div class="w-75 rounded-full overflow-clip border-4">
+        <img
+          (click)="$event.stopPropagation()"
+          [src]="imagePreview"
+          class="w-full "
+          alt=""
+        />
+      </div>
+    </div>
+  }
+
   @if (isLoadingData()) {
     <div class="relative p-7 bg-white text-secondary flex flex-wrap justify-center animate-pulse">
       <div
@@ -22,28 +43,53 @@
   } @else {
     <div class="user-details relative p-7 bg-white text-secondary flx flex-wrap justify-center">
       <div
-        class="absolute top-0 translate-y-[-50%] right-7 group user-img size-22 border-4 border-primary rounded-full bg-slate-100"
+        class="absolute top-0 translate-y-[-50%] right-7 group transition-all duration-300 user-img size-22 border-4 border-primary rounded-full bg-[#D9DCE1]"
       >
         @if (imagePreview) {
-          <div class="overflow-hidden size-20 relative rounded-full">
+          <div
+            class="overflow-hidden size-20 relative rounded-full group/parent transition-all duration-300"
+          >
             <img
               #profileImage
               [src]="imagePreview"
               class="size-full object-cover absolute inset-0 z-10"
             />
+            <!-- Open Image -->
+            @if (
+              !isEditing &&
+              imagePreview !=
+                'https://res.cloudinary.com/dodvtbpwq/image/upload/v1771993712/default-avatar.jpg'
+            ) {
+              <div
+                (click)="toggleOpenningImage()"
+                class="size-full rounded-full hidden bg-black/40 transition-all duration-300 group-hover/parent:flex justify-center items-center absolute z-20 inset-0 cursor-pointer"
+              >
+                <i class="fa-regular fa-eye text-white/70 text-lg"></i>
+              </div>
+            }
           </div>
         } @else {
           <svg
-            class="text-secondary size-20 p-2 pb-0 rounded-full top-0 bottom-0 relative bg-slate-100"
+            width="100%"
+            height="100%"
             viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
+            fill="#70777F"
+            xmlns="http://www.w3.org/2000/svg"
           >
-            <circle cx="12" cy="7" r="4" fill="currentColor" fill-opacity="0.1" />
-            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+            <path
+              d="M12 15C8.8299 15 6.01077 16.5306 4.21597 18.906C3.82968 19.4172 3.63653 19.6728 3.64285 20.0183C3.64773 20.2852 3.81533 20.6219 4.02534 20.7867C4.29716 21 4.67384 21 5.4272 21H18.5727C19.3261 21 19.7028 21 19.9746 20.7867C20.1846 20.6219 20.3522 20.2852 20.3571 20.0183C20.3634 19.6728 20.1703 19.4172 19.784 18.906C17.9892 16.5306 15.17 15 12 15Z"
+              stroke="#70777F"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M12 12C14.4853 12 16.5 9.98528 16.5 7.5C16.5 5.01472 14.4853 3 12 3C9.51469 3 7.49997 5.01472 7.49997 7.5C7.49997 9.98528 9.51469 12 12 12Z"
+              stroke="#70777F"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
           </svg>
         }
         @if (isEditing) {

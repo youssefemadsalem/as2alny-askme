@@ -35,7 +35,7 @@ export class UserRequestsComponent implements OnInit {
 
   getStatusClass(status: string): string {
     const classes: Record<string, string> = {
-      completed: 'bg-green-100 border border-green-200 text-green-700',
+      approved: 'bg-green-100 border border-green-200 text-green-700',
       pending: 'bg-yellow-100 border border-yellow-200 text-yellow-700',
       rejected: 'bg-red-100 border border-red-200 text-red-700',
     };
@@ -44,7 +44,7 @@ export class UserRequestsComponent implements OnInit {
 
   getStatusLabel(status: string): string {
     const labels: Record<string, string> = {
-      completed: 'مكتمل',
+      approved: 'مكتمل',
       pending: 'قيد المراجعة',
       rejected: 'مرفوض',
     };

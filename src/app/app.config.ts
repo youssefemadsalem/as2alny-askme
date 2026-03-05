@@ -22,6 +22,7 @@ export const appConfig: ApplicationConfig = {
       withInMemoryScrolling({
         scrollPositionRestoration: 'enabled',
       }),
+      withHashLocation(),
     ),
 
     provideClientHydration(withEventReplay()),

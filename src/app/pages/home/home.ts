@@ -17,17 +17,15 @@ import { HotToastService } from '@ngxpert/hot-toast';
   styleUrl: './home.css',
 })
 export class Home implements OnInit {
-  // Signals for state management
   servicedata = signal<Daum[]>([]);
   isLoading = signal<boolean>(true);
   userName = signal<string>('');
   isSearching = signal<boolean>(false);
 
-  // Pagination Signals
   currentPage = signal<number>(1);
   totalPages = signal<number>(2);
 
-  itemsPerPage = 8; // This matches your backend default
+  itemsPerPage = 8;
   pages = signal<number[]>([]);
 
   skeletonItems = Array(8).fill(0);
@@ -51,24 +49,22 @@ export class Home implements OnInit {
   setupSearch() {
     this.searchControl.valueChanges
       .pipe(
-        debounceTime(500), // Wait 500ms after user stops typing
-        distinctUntilChanged(), // Only if value changed
+        debounceTime(500),
+        distinctUntilChanged(),
         tap((term) => {
           this.isLoading.set(true);
-          // If term exists, we are in search mode, otherwise normal mode
+
           this.isSearching.set(!!term);
         }),
         switchMap((term) => {
           if (!term) {
-            // If empty, load default page 1
             this.currentPage.set(1);
             return this._ServiceApi
               .getAllSerivces(1, this.itemsPerPage)
               .pipe(map((res) => ({ data: res.data, pagination: res.pagination })));
           } else {
-            // If has text, call search endpoint
             return this._ServiceApi.searchServices(term).pipe(
-              map((res) => ({ data: res.data, pagination: null })), // Map to unify structure
+              map((res) => ({ data: res.data, pagination: null })),
               catchError((err) => {
                 console.error(err);
                 return of({ data: [], pagination: null });
@@ -81,7 +77,6 @@ export class Home implements OnInit {
         next: (res) => {
           this.servicedata.set(res.data);
 
-          // Only update pagination if we are NOT searching
           if (res.pagination && !this.isSearching()) {
             this.totalPages.set(res.pagination.totalPages);
             const pagesArray = Array.from({ length: res.pagination.totalPages }, (_, i) => i + 1);
@@ -100,12 +95,11 @@ export class Home implements OnInit {
   loadServices() {
     this.isLoading.set(true);
     if (this.isSearching()) return;
-    // Pass the current page and limit
+
     this._ServiceApi.getAllSerivces(this.currentPage(), this.itemsPerPage).subscribe({
       next: (res) => {
         this.servicedata.set(res.data);
 
-        // Update pagination signals from response
         if (res.pagination) {
           this.currentPage.set(res.pagination.page);
           this.totalPages.set(res.pagination.totalPages);
@@ -122,7 +116,6 @@ export class Home implements OnInit {
     });
   }
 
-  // Handle Page Changes
   changePage(newPage: number) {
     if (newPage >= 1 && newPage <= this.totalPages()) {
       this.currentPage.set(newPage);

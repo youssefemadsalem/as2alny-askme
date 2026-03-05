@@ -1,11 +1,11 @@
 @if (isLoading) {
   <div class="loading-screen" [class.fade-out]="isFading">
-    <video autoplay muted loop playsinline class="logo-loader">
+    <video #splashVideo autoplay [muted]="true" loop playsinline class="logo-loader">
       <source src="videos/logo.mp4" type="video/mp4" />
     </video>
   </div>
 }
 
-<div class="main-content" [style.visibility]="isFading || !isLoading ? 'visible' : 'hidden'">
+<div class="main-content" [hidden]="!isFading && isLoading">
   <router-outlet></router-outlet>
 </div>

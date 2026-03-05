@@ -30,10 +30,8 @@ export class UserDetailsComponent implements OnInit {
       next: (res) => {
         this.user.set(res.data);
 
-        // Set initial image preview
         this.imagePreview = this.user().profileImage?.url || null;
 
-        // Patch form (text fields only)
         this.updateProfileForm.patchValue({
           name: this.user().name,
           email: this.user().email,
@@ -50,11 +48,9 @@ export class UserDetailsComponent implements OnInit {
     });
   }
 
-  // Injections
   private _userDataService = inject(UserDataService);
   private toast = inject(HotToastService);
 
-  // Signals
   isLoadingData = signal<boolean>(true);
   isSaving = signal<boolean>(false);
   user = signal<UserDataInterface>({
@@ -63,8 +59,7 @@ export class UserDetailsComponent implements OnInit {
     phoneNumber: '',
   });
 
-  // Variables
-  isOpeningImage : boolean = false
+  isOpeningImage: boolean = false;
   isEditing: boolean = false;
   alreadyExist: string = '';
   userName: string = '';
@@ -82,15 +77,11 @@ export class UserDetailsComponent implements OnInit {
       Validators.pattern(/^[0-9]{14}$/),
     ]),
     email: new FormControl(null, [Validators.required, Validators.email]),
-    // Note: profileImage is removed from here because file inputs cannot be bound to form controls securely.
   });
 
-  // File upload variables
   selectedImage: File | null = null;
-  imagePreview: string | null = null; // Holds the preview URL/Base64
+  imagePreview: string | null = null;
   showImageMenu: boolean = false;
-
-  // Functions
 
   onFileSelected(e: Event) {
     const fileInput = e.target as HTMLInputElement;
@@ -112,7 +103,6 @@ export class UserDetailsComponent implements OnInit {
       this.alreadyExist = '';
       this.isSaving.set(true);
 
-      // create a form data to allow sending a file in the request
       const formData = new FormData();
       formData.append('name', this.updateProfileForm.get('name')?.value);
       formData.append('email', this.updateProfileForm.get('email')?.value);
@@ -124,7 +114,6 @@ export class UserDetailsComponent implements OnInit {
       this._userDataService
         .updateUserData(formData)
         .pipe(
-          // THIS IS THE TOAST LOGIC
           this.toast.observe({
             success: 'تم تحديث البيانات بنجاح',
 
@@ -137,7 +126,6 @@ export class UserDetailsComponent implements OnInit {
             console.log('Sent ', res);
             this.isSaving.set(false);
 
-            // Update local user object and image preview so UI reflects changes immediately
             this.user.set({
               ...this.user(),
               ...this.updateProfileForm.value,
@@ -148,9 +136,8 @@ export class UserDetailsComponent implements OnInit {
               this._userImageService.setImage(this.imagePreview);
             }
 
-            this.selectedImage = null; // Clear the selected file after successful upload
+            this.selectedImage = null;
             this.toggleFlagMode();
-            // update cookie to edit the name in the home page
             this._cookieService.set('userName', this.updateProfileForm.get('name')?.value);
           },
           error: (err: any) => {
@@ -162,38 +149,32 @@ export class UserDetailsComponent implements OnInit {
     }
   }
 
-  // ...existing methods...
-
   deleteImage(): void {
     this._userDataService.deleteUserImage().subscribe({
-      next:(res)=>{
+      next: (res) => {
         console.log(res.data);
       },
-      error:(err)=>{
+      error: (err) => {
         console.log(err);
       },
-    })
+    });
     this.selectedImage = null;
     this.imagePreview = null;
     this.showImageMenu = false;
   }
 
-
-  openImage(openingImage:HTMLElement){
+  openImage(openingImage: HTMLElement) {
     console.log(this.imagePreview);
     console.log(openingImage);
-    // openingImage.style.display = 'flex'
   }
-
 
   cancelEdit() {
     this.toggleFlagMode();
-    // Reset form to original values
+
     this.updateProfileForm.get('name')?.setValue(this.user().name);
     this.updateProfileForm.get('email')?.setValue(this.user().email);
     this.updateProfileForm.get('phoneNumber')?.setValue(this.user().phoneNumber);
 
-    // Reset image preview to the original URL and clear selected file
     this.imagePreview = this.user().profileImage?.url || null;
     this.selectedImage = null;
   }
@@ -201,18 +182,17 @@ export class UserDetailsComponent implements OnInit {
   toggleFlagMode() {
     this.isEditing = !this.isEditing;
   }
-  toggleOpenningImage(){
-        this.isOpeningImage = !this.isOpeningImage;
+  toggleOpenningImage() {
+    this.isOpeningImage = !this.isOpeningImage;
 
-    if(this.isOpeningImage == true){
-      const nav  = document.querySelector(".navbar") as HTMLElement;
-      console.log(document.querySelector(".navbar"));
-      nav.style.cssText = 'z-index: 10'
-    }
-    else{
-      const nav  = document.querySelector(".navbar") as HTMLElement;
-      console.log(document.querySelector(".navbar"));
-      nav.style.cssText = 'z-index: 100'
+    if (this.isOpeningImage == true) {
+      const nav = document.querySelector('.navbar') as HTMLElement;
+      console.log(document.querySelector('.navbar'));
+      nav.style.cssText = 'z-index: 10';
+    } else {
+      const nav = document.querySelector('.navbar') as HTMLElement;
+      console.log(document.querySelector('.navbar'));
+      nav.style.cssText = 'z-index: 100';
     }
   }
 }

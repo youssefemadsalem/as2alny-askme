@@ -19,7 +19,6 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const authService = inject(Auth);
   const platformId = inject(PLATFORM_ID);
 
-  // 1. Skip SSR - only run in browser
   if (!isPlatformBrowser(platformId)) {
     return next(req);
   }
@@ -27,16 +26,13 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const token = authService.getToken;
   let authReq = req;
 
-  // Attach token if it exists
   if (token) {
     authReq = addTokenHeader(req, token);
   }
 
   return next(authReq).pipe(
     catchError((error) => {
-      // 2. Handle 401 Errors
       if (error instanceof HttpErrorResponse && error.status === 401) {
-        // Stop if we are already on login or refresh to prevent infinite loops
         if (req.url.includes('login') || req.url.includes('refresh-token')) {
           return throwError(() => error);
         }
@@ -60,20 +56,17 @@ function handle401Error(
       switchMap((response: any) => {
         isRefreshing = false;
 
-        // 1. Get the new token from the "tokens" box
         const newToken = response?.tokens?.accessToken;
 
-        console.log('Successfully got NEW token:', newToken); // Check your console for this!
+        console.log('Successfully got NEW token:', newToken);
 
         if (!newToken) {
           authService.logOut();
           return throwError(() => new Error('No token found in response'));
         }
 
-        // 2. Tell the app we have a new token
         refreshTokenSubject.next(newToken);
 
-        // 3. RETRY the failed request with the NEW key
         return next(addTokenHeader(request, newToken));
       }),
       catchError((err) => {

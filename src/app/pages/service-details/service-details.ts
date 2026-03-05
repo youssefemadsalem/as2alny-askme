@@ -3,12 +3,12 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 import { ServiceApi } from '../../core/services/service-api/service-api';
 import { Daum } from '../../core/interfaces/service/iservice';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { DatePipe, isPlatformBrowser, CommonModule } from '@angular/common'; // Added CommonModule for ngClass
+import { DatePipe, isPlatformBrowser, CommonModule } from '@angular/common';
 import { HotToastService } from '@ngxpert/hot-toast';
 
 @Component({
   selector: 'app-service-details',
-  standalone: true, // Ensure standalone is true if you are using imports
+  standalone: true,
   imports: [ReactiveFormsModule, FormsModule, DatePipe, RouterLink, CommonModule],
   templateUrl: './service-details.html',
   styleUrl: './service-details.css',
@@ -24,7 +24,6 @@ export class ServiceDetails {
   error = signal<string | null>(null);
   id: string | null = null;
 
-  // Stars Logic
   stars = [1, 2, 3, 4, 5];
   currentRating = signal(0);
   hoverRating = signal(0);
@@ -67,8 +66,6 @@ export class ServiceDetails {
     });
   }
 
-  // --- STAR RATINGS LOGIC ---
-
   setHover(star: number) {
     this.hoverRating.set(star);
   }
@@ -87,16 +84,13 @@ export class ServiceDetails {
       return;
     }
 
-    // 1. Get the value from the Signal
     const ratingValue = this.currentRating();
 
-    // 2. Validate and RETURN if invalid (Stop execution)
     if (ratingValue === 0) {
-      this.toast.error('عليك ان تقيم من خلال النجوم'); // Using .error directly is cleaner
+      this.toast.error('عليك ان تقيم من خلال النجوم');
       return;
     }
 
-    // 3. Construct Payload with the VALUE, not the Signal
     const payload = {
       rating: ratingValue,
       comment: this.commentText,
@@ -130,15 +124,12 @@ export class ServiceDetails {
 
   resetForm() {
     this.commentText = '';
-    this.currentRating.set(0); // Reset the stars visually
+    this.currentRating.set(0);
     this.isSubmitting.set(false);
   }
 
-  // --- REVIEWS LOGIC ---
-
   fetchReviews() {
     if (isPlatformBrowser(this._platformId)) {
-      // Assuming ID is not null here
       this._serviceApi.getServiceReviews(this.id!).subscribe({
         next: (res) => {
           if (res.success) {

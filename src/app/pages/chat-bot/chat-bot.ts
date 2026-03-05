@@ -13,7 +13,7 @@ interface ChatMessage {
   isUser: boolean;
   time: Date;
   locationData?: LocationResponse['data']['nearestLocation'];
-  safeMapUrl?: SafeResourceUrl; // New field for the iframe URL
+  safeMapUrl?: SafeResourceUrl;
 }
 
 @Component({
@@ -31,7 +31,6 @@ export class ChatBot implements OnInit {
   private readonly _serviceApi = inject(ServiceApi);
   private sanitizer = inject(DomSanitizer);
 
-  // State
   imageUrl = signal<string | null>(null);
   isChatLoading = signal<boolean>(false);
   userMessage = signal<string>('');
@@ -71,7 +70,6 @@ export class ChatBot implements OnInit {
     const text = this.userMessage().trim();
     if (!text || !this.serviceId || this.isChatLoading()) return;
 
-    // 1. Push User Message
     this.messages.update((msgs) => [...msgs, { text, isUser: true, time: new Date() }]);
     this.userMessage.set('');
     this.isChatLoading.set(true);

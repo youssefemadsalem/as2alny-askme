@@ -38,7 +38,6 @@
         } @else {
           @for (req of requestList(); track req._id; let i = $index) {
             <tr class="border-b border-gray-100 text-gray-700 hover:bg-gray-200 group">
-              <!-- Request Name -->
               <td
                 class="py-2.5 px-2 pr-2 border-2 border-transparent rounded-r-lg"
                 [ngClass]="{ 'bg-gray-100 group-hover:bg-gray-200': i % 2 === 1 }"
@@ -47,7 +46,6 @@
                   {{ req.serviceName }}
                 </p>
               </td>
-              <!-- Request ID -->
               <td
                 class="py-2.5 px-2 text-sm"
                 [ngClass]="{ 'bg-gray-100 group-hover:bg-gray-200': i % 2 === 1 }"
@@ -55,19 +53,16 @@
               >
                 {{ req._id.substring(0, 8) }}
               </td>
-              <!-- Request Date -->
               <td
                 class="py-2.5 px-2 text-sm"
                 [ngClass]="{ 'bg-gray-100 group-hover:bg-gray-200  ': i % 2 === 1 }"
               >
                 {{ req.createdAt.substring(0, 10) }}
               </td>
-              <!-- Request Status Badge -->
               <td
                 class="py-2.5 px-2 border-4 border-transparent rounded-l-lg"
                 [ngClass]="{ 'bg-gray-100 group-hover:bg-gray-200 ': i % 2 === 1 }"
               >
-                <!-- get Status from the list and edit it's style according to the return of getStatusClass function    -->
                 <span
                   class="inline-flex items-center text-center lg:text-right px-3 py-1.5 rounded-full text-xs font-bold"
                   [ngClass]="getStatusClass(req.status)"

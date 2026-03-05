@@ -10,16 +10,13 @@ import { ActivatedRoute } from '@angular/router';
   styleUrl: './all-comments.css',
 })
 export class AllComments {
-  // --- Injections ---
   private _location = inject(Location);
   private _route = inject(ActivatedRoute);
   private _service = inject(ServiceApi);
 
-  // --- Signals ---
   isLoading = signal<boolean>(true);
   reviews = signal<any[]>([]);
 
-  // --- Computed Analytics ---
   totalReviews = computed(() => this.reviews().length);
 
   averageRating = computed(() => {

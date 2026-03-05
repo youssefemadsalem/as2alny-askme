@@ -3,19 +3,18 @@
   --color-primary: #b29848;
   --color-secondary: #1c3f61;
   --color-accent: #3b9185;
-  display: block; /* Ensures correct layout within router-outlet */
+  display: block;
 }
 
 .font-cairo {
   font-family: 'Cairo', sans-serif;
 }
 
-/* Background Blobs Configuration */
 .blob {
   position: absolute;
   border-radius: 50%;
   z-index: 0;
-  pointer-events: none; /* Allows clicking through them */
+  pointer-events: none;
 }
 
 .blob-blue {
@@ -49,7 +48,6 @@
   }
 }
 
-/* Scrollbar styling for this specific page if needed */
 ::-webkit-scrollbar {
   width: 8px;
 }

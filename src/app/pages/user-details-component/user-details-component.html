@@ -2,20 +2,14 @@
   class="gradent relative pt-27 rounded-2xl min-h-100"
   [class.animate-gradient-x]="isLoadingData()"
 >
-  <!-- open Image  -->
   @if (isOpeningImage) {
     <div
       (click)="$event.stopPropagation(); toggleOpenningImage()"
       #openingImage
-      class="fixed flex inset-0 z-[9999] justify-center  items-center overflow-clip bg-black/80"
+      class="fixed flex inset-0 z-9999 justify-center items-center overflow-clip bg-black/80"
     >
       <div class="w-75 rounded-full overflow-clip border-4">
-        <img
-          (click)="$event.stopPropagation()"
-          [src]="imagePreview"
-          class="w-full "
-          alt=""
-        />
+        <img (click)="$event.stopPropagation()" [src]="imagePreview" class="w-full" alt="" />
       </div>
     </div>
   }
@@ -54,7 +48,6 @@
               [src]="imagePreview"
               class="size-full object-cover absolute inset-0 z-10"
             />
-            <!-- Open Image -->
             @if (
               !isEditing &&
               imagePreview !=
@@ -94,7 +87,6 @@
         }
         @if (isEditing) {
           <div class="absolute -bottom-1.5 right-0 z-100">
-            <!-- Trigger button -->
             <div
               (click)="showImageMenu = !showImageMenu"
               class="rounded-full p-1.5 text-xs bg-secondary text-white flex items-center justify-center cursor-pointer"
@@ -102,9 +94,7 @@
               <i class="fa-solid fa-pen"></i>
             </div>
 
-            <!-- Dropdown menu -->
             @if (showImageMenu) {
-              <!-- Backdrop to close on outside click -->
               <div class="fixed inset-0 z-90" (click)="showImageMenu = false"></div>
 
               <div

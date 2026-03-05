@@ -8,8 +8,6 @@ export const authGuard: CanActivateFn = (route, state) => {
   const _cookieService = inject(CookieService);
   const platformId = inject(PLATFORM_ID);
 
-  // If we are on the server, assume "true" to let the page render,
-  // or handle server-side cookies properly.
   if (!isPlatformBrowser(platformId)) {
     return true;
   }

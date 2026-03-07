@@ -211,12 +211,28 @@
 
         <div class="space-y-1.5">
           <label class="block text-sm font-bold text-secondary pr-2">كلمة المرور</label>
-          <input
-            type="password"
-            formControlName="password"
-            placeholder="********"
-            class="w-full px-5 py-3.5 rounded-2xl border border-slate-200 bg-white/50 focus:bg-white focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition-all placeholder:text-slate-300"
-          />
+          <div
+            class="flex items-center w-full px-5 py-3.5 rounded-2xl border border-slate-200 bg-white/50 focus-within:bg-white focus-within:ring-4 focus-within:ring-primary/10 focus-within:border-primary transition-all"
+          >
+            <input
+              [type]="isPasswordVisible() ? 'text' : 'password'"
+              formControlName="password"
+              placeholder="********"
+              class="flex-1 bg-transparent outline-none placeholder:text-slate-300 text-right"
+            />
+            <button
+              type="button"
+              (click)="togglePasswordVisibility()"
+              class="mr-3 text-slate-400 hover:text-secondary transition-colors cursor-pointer flex items-center justify-center"
+            >
+              @if (isPasswordVisible()) {
+                <i class="fa-solid fa-eye-slash text-lg"></i>
+              } @else {
+                <i class="fa-solid fa-eye text-lg"></i>
+              }
+            </button>
+          </div>
+
           @if (registerForm.get('password')?.invalid && registerForm.get('password')?.touched) {
             <p class="text-rose-500 text-xs font-bold pr-2 flex items-center gap-1">
               <i class="fa-solid fa-circle-exclamation"></i>
@@ -232,8 +248,7 @@
               @if (registerForm.get('password')?.getError('pattern')) {
                 <p class="text-rose-500 text-xs font-bold pr-2 flex items-center gap-1">
                   <i class="fa-solid"></i>
-                  يجب أن تتضمن كلمة المرور مزيجاً من الأحرف الكبيرة (A-Z)، والأحرف الصغيرة (a-z)،
-                  والأرقام (0-9)، والرموز الخاصة (@$!%*?&)
+                  باسورد عليه ان يكون اكثر من 6 حروف ويحتوي على رموز وأرقام
                 </p>
               }
             </ul>
@@ -242,13 +257,31 @@
 
         <div class="space-y-1.5">
           <label class="block text-sm font-bold text-secondary pr-2">تأكيد كلمة المرور</label>
-          <input
-            type="password"
-            formControlName="confirmPassword"
-            placeholder="********"
-            class="w-full px-5 py-3.5 rounded-2xl border border-slate-200 bg-white/50 focus:bg-white focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition-all placeholder:text-slate-300"
-          />
-          @if (registerForm.errors && registerForm.get('confirmPassword')?.touched) {
+
+          <div
+            class="flex items-center w-full px-5 py-3.5 rounded-2xl border border-slate-200 bg-white/50 focus-within:bg-white focus-within:ring-4 focus-within:ring-primary/10 focus-within:border-primary transition-all"
+          >
+            <input
+              [type]="isConfirmPasswordVisible() ? 'text' : 'password'"
+              formControlName="confirmPassword"
+              placeholder="********"
+              class="flex-1 bg-transparent outline-none placeholder:text-slate-300 text-right"
+            />
+
+            <button
+              type="button"
+              (click)="toggleConfirmPasswordVisibility()"
+              class="mr-3 text-slate-400 hover:text-secondary transition-colors cursor-pointer flex items-center justify-center"
+            >
+              @if (isConfirmPasswordVisible()) {
+                <i class="fa-solid fa-eye-slash text-lg"></i>
+              } @else {
+                <i class="fa-solid fa-eye text-lg"></i>
+              }
+            </button>
+          </div>
+
+          @if (registerForm.hasError('missmatch') && registerForm.get('confirmPassword')?.touched) {
             <p class="text-rose-500 text-xs font-bold pr-2 flex items-center gap-1">
               <i class="fa-solid fa-circle-exclamation"></i>
               كلمة المرور غير متطابقة
@@ -258,9 +291,9 @@
 
         <div class="md:col-span-2 pt-4">
           <button
+            type="submit"
             [disabled]="registerForm.invalid"
             [class.animate-gradient-x]="isLoading()"
-            (click)="(registerForm)"
             class="w-full py-4 mt-4 text-white font-bold text-lg rounded-2xl shadow-xl bg-linear-to-l from-secondary via-accent to-primary hover:shadow-accent/30 hover:scale-[1.01] active:scale-[0.98] transition-all cursor-pointer disabled:grayscale-75 disabled:pointer-events-none"
           >
             @if (isLoading()) {
@@ -285,7 +318,6 @@
                     d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                   ></path>
                 </svg>
-
                 جاري التحميل...
               </span>
             } @else {
@@ -295,7 +327,7 @@
           @if (alreadyexist) {
             <div class="flex justify-center items-center">
               <p class="text-rose-500 text-s font-bold pr-2 flex items-center gap-1 mt-5">
-                الايمل موجود بالفعل
+                {{ alreadyexist }}
               </p>
             </div>
           }

@@ -15,11 +15,19 @@ export class Login {
   alreadyexist!: string;
   isLoading = signal(false);
   isavail = signal(false);
+  isPasswordVisible = signal(false);
 
   loginform: FormGroup = new FormGroup({
     email: new FormControl(null, [Validators.required, Validators.email]),
-    password: new FormControl(null, [Validators.required, Validators.pattern(/^\w{6,}$/)]),
+    password: new FormControl(null, [
+      Validators.required,
+      Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/),
+    ]),
   });
+
+  togglePasswordVisibility() {
+    this.isPasswordVisible.update((v) => !v);
+  }
 
   login() {
     this.alreadyexist = '';

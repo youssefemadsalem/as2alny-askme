@@ -21,9 +21,13 @@ export class Register {
   private readonly _Router = inject(Router);
   private readonly cdr = inject(ChangeDetectorRef);
   private toast = inject(HotToastService);
+
   alreadyexist: string = '';
   isLoading = signal(false);
   isavail = signal(false);
+
+  isPasswordVisible = signal(false);
+  isConfirmPasswordVisible = signal(false);
 
   registerForm: FormGroup = new FormGroup(
     {
@@ -31,24 +35,19 @@ export class Register {
         Validators.required,
         Validators.pattern(/^([\u0600-\u06FF]+\s){3}[\u0600-\u06FF]+.*$/),
       ]),
-
       nationalId: new FormControl(null, [Validators.required, Validators.pattern(/^[0-9]{14}$/)]),
-
       phoneNumber: new FormControl(null, [
         Validators.required,
         Validators.pattern(/^01[0125][0-9]{8}$/),
       ]),
-
       email: new FormControl(null, [Validators.required, Validators.email]),
-
       password: new FormControl(null, [
         Validators.required,
         Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/),
       ]),
-
       confirmPassword: new FormControl(null),
     },
-    this.compare,
+    { validators: this.compare },
   );
 
   register(): void {
@@ -61,14 +60,11 @@ export class Register {
       this._Auth
         .sighup(this.registerForm.value)
         .pipe(
-          // THIS IS THE TOAST LOGIC
           this.toast.observe({
-            success: 'تم انشاءالحساب بنجاح',
-
+            success: 'تم انشاء الحساب بنجاح',
             error: (err) => 'حاول مره اخره',
           }),
         )
-
         .subscribe({
           next: (res) => {
             console.log(res);
@@ -77,11 +73,8 @@ export class Register {
           },
           error: (err) => {
             console.log(err);
-
             this.alreadyexist = err.error?.message || 'Error: Account might already exist';
-
             this.isLoading.set(false);
-
             this.cdr.detectChanges();
           },
         });
@@ -94,5 +87,13 @@ export class Register {
     } else {
       return { missmatch: true };
     }
+  }
+
+  togglePasswordVisibility() {
+    this.isPasswordVisible.update((v) => !v);
+  }
+
+  toggleConfirmPasswordVisibility() {
+    this.isConfirmPasswordVisible.update((v) => !v);
   }
 }

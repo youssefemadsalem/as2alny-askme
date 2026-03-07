@@ -116,13 +116,31 @@
               >نسيت كلمة المرور؟</a
             >
           </div>
-          <input
-            formControlName="password"
-            type="password"
-            name="password"
-            class="w-full px-5 py-4 rounded-2xl border border-slate-200 bg-white/50 focus:bg-white focus:ring-4 focus:ring-accent/10 focus:border-accent outline-none transition-all placeholder:text-slate-300 text-right"
-            placeholder="********"
-          />
+
+          <div
+            class="flex items-center w-full px-5 py-4 rounded-2xl border border-slate-200 bg-white/50 focus-within:bg-white focus-within:ring-4 focus-within:ring-accent/10 focus-within:border-accent transition-all"
+          >
+            <input
+              formControlName="password"
+              [type]="isPasswordVisible() ? 'text' : 'password'"
+              name="password"
+              class="flex-1 bg-transparent outline-none placeholder:text-slate-300 text-right"
+              placeholder="********"
+            />
+
+            <button
+              type="button"
+              (click)="togglePasswordVisibility()"
+              class="mr-3 text-slate-400 hover:text-accent transition-colors cursor-pointer flex items-center justify-center"
+            >
+              @if (isPasswordVisible()) {
+                <i class="fa-solid fa-eye-slash text-lg"></i>
+              } @else {
+                <i class="fa-solid fa-eye text-lg"></i>
+              }
+            </button>
+          </div>
+
           @if (loginform.get('password')?.invalid && loginform.get('password')?.touched) {
             <p class="text-rose-500 text-xs font-bold pr-2 flex items-center gap-1">
               <i class="fa-solid fa-circle-exclamation"></i>
@@ -138,7 +156,7 @@
               @if (loginform.get('password')?.getError('pattern')) {
                 <p class="text-rose-500 text-xs font-bold pr-2 flex items-center gap-1">
                   <i class="fa-solid"></i>
-                  باسورد عليه ان يكون اكثر من 6 حروف
+                  باسورد عليه ان يكون اكثر من 6 حروف ويحتوي على رموز وأرقام
                 </p>
               }
             </ul>

@@ -134,4 +134,15 @@ export class Home implements OnInit {
       this._router.navigate(['/login']);
     }
   }
+
+  handleSearchAccess(event: Event) {
+    if (!this._auth.isAuthenticated) {
+      const target = event.target as HTMLElement;
+      target.blur();
+
+      this.toast.error('عليك الدخول اولا لاستخدام البحث');
+
+      this._router.navigate(['/login']);
+    }
+  }
 }

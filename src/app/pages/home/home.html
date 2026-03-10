@@ -54,6 +54,7 @@
         </span>
         <input
           [formControl]="searchControl"
+          (focus)="handleSearchAccess($event)"
           type="text"
           placeholder="ابحث عن خدمة عامة..."
           class="w-full pl-14 pr-8 py-5 rounded-full border border-white/60 bg-white/60 backdrop-blur-xl shadow-[0_10px_30px_rgba(0,0,0,0.05)] focus:bg-white focus:ring-4 focus:ring-accent/10 focus:border-accent outline-none transition-all placeholder:text-slate-400 text-secondary text-lg font-bold text-center"

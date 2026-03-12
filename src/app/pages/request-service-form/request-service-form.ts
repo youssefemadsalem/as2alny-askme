@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 
 import { Router } from '@angular/router';
 import { UserRequests } from '../../core/services/user-api/user-requests';
+import { HotToastService } from '@ngxpert/hot-toast';
 
 @Component({
   selector: 'app-request-service-form',
@@ -17,6 +18,7 @@ export class RequestServiceForm {
   constructor(
     private fb: FormBuilder,
     private router: Router,
+    private toaster: HotToastService,
   ) {
     this.form = this.fb.group({
       serviceName: ['', [Validators.required, Validators.minLength(3)]],
@@ -37,12 +39,12 @@ export class RequestServiceForm {
           console.log('Request sent successfully', res);
           this.isLoading.set(false);
           this.form.reset();
-          alert('تم إرسال طلبك بنجاح');
+          this.toaster.success('تم ارسال الطلب بنجاح');
         },
         error: (err) => {
           console.error('Error sending request', err);
           this.isLoading.set(false);
-          alert('حدث خطأ أثناء إرسال الطلب');
+          this.toaster.error('حدث  خطأ في ارسال الطلب');
         },
       });
     } else {

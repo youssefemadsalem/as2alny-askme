@@ -197,7 +197,7 @@
                 class="w-full md:w-28 md:h-28 shrink-0 rounded-3xl overflow-hidden border-2 border-white shadow-lg shadow-slate-200/50"
               >
                 <img
-                  [src]="s.coreInfo.image.url"
+                  [src]="s.coreInfo.image?.url || '/images/logo.png'"
                   class="w-full h-full object-cover transform group-hover:scale-110 transition duration-700"
                   [alt]="s.coreInfo.name"
                 />
@@ -424,7 +424,7 @@
                         class="w-10 h-10 rounded-full bg-slate-200 border-2 border-white shadow-sm overflow-hidden"
                       >
                         <img
-                          [src]="review.userId.profileImage.url"
+                          [src]="review.userId?.profileImage?.url || '/images/camera-black-icon.png'"
                           alt="User"
                           class="w-full h-full object-cover"
                         />

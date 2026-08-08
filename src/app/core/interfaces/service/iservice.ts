@@ -25,7 +25,7 @@ export interface Daum {
 export interface CoreInfo {
   name: string
   description: string
-  image: Image
+  image?: Image
   category: string
   subCategory: string
   fees: number

@@ -1,7 +1,6 @@
-# Welcome to As2alny (اسألني) 🇪🇬
+# Welcome to As2alny (اسألني) 
 
 <div align="center">
-<img src="src/assets/images/logoo.png" alt="As2alny Logo" width="200" height="auto" />
 
 بلدك بين إيدك.. تكنولوجيا مصرية لخدمة المصريين
 

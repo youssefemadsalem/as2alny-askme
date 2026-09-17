@@ -1,5 +1,5 @@
 import { Component, inject, OnInit, signal, computed } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, NgOptimizedImage } from '@angular/common';
 import { Router } from '@angular/router';
 import { Auth } from '../../core/services/auth/auth';
 import { Daum } from '../../core/interfaces/service/iservice';
@@ -8,11 +8,12 @@ import { CookieService } from 'ngx-cookie-service';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { catchError, debounceTime, distinctUntilChanged, map, of, switchMap, tap } from 'rxjs';
 import { HotToastService } from '@ngxpert/hot-toast';
+import { Title, Meta } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, NgOptimizedImage],
   templateUrl: './home.html',
   styleUrl: './home.css',
 })
@@ -35,12 +36,16 @@ export class Home implements OnInit {
   private readonly _ServiceApi = inject(ServiceApi);
   private _CookieService = inject(CookieService);
   private toast = inject(HotToastService);
+  private titleService = inject(Title);
+  private metaService = inject(Meta);
 
   pagesArray = computed(() => {
     return Array.from({ length: this.totalPages() }, (_, i) => i + 1);
   });
 
   ngOnInit() {
+    this.titleService.setTitle('الرئيسية - As2alnyAskme');
+    this.metaService.updateTag({ name: 'description', content: 'جميع الخدمات الحكومية المصرية الان بين ايدك' });
     this.userName.set(this._CookieService.get('userName'));
     this.loadServices();
     this.setupSearch();

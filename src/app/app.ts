@@ -2,12 +2,9 @@ import { isPlatformBrowser } from '@angular/common';
 import {
   ChangeDetectorRef,
   Component,
-  ElementRef,
   Inject,
   PLATFORM_ID,
-  ViewChild,
   OnInit,
-  AfterViewInit,
 } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 
@@ -20,8 +17,7 @@ import { RouterOutlet } from '@angular/router';
     ngSkipHydration: 'true',
   },
 })
-export class App implements OnInit, AfterViewInit {
-  @ViewChild('splashVideo') videoElement!: ElementRef<HTMLVideoElement>;
+export class App implements OnInit {
   isLoading = true;
   isFading = false;
 
@@ -35,24 +31,12 @@ export class App implements OnInit, AfterViewInit {
       setTimeout(() => {
         this.isFading = true;
         this._changeDetectorRef.detectChanges();
-      }, 3000);
+      }, 500);
 
       setTimeout(() => {
         this.isLoading = false;
         this._changeDetectorRef.detectChanges();
-      }, 3500);
-    }
-  }
-
-  ngAfterViewInit() {
-    if (isPlatformBrowser(this.platformId)) {
-      if (this.videoElement) {
-        const video = this.videoElement.nativeElement;
-        video.muted = true;
-        video.play().catch(() => {
-          setTimeout(() => video.play(), 100);
-        });
-      }
+      }, 800);
     }
   }
 }

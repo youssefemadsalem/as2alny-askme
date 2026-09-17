@@ -12,6 +12,7 @@ import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/
 import { CookieService } from 'ngx-cookie-service';
 import { authInterceptor } from './core/interceptor/refresh-token-interceptor';
 import { provideHotToastConfig } from '@ngxpert/hot-toast';
+import { IMAGE_LOADER, ImageLoaderConfig } from '@angular/common';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -27,6 +28,12 @@ export const appConfig: ApplicationConfig = {
     provideClientHydration(withEventReplay()),
     provideHttpClient(withFetch(), withInterceptors([authInterceptor])),
     CookieService,
+    {
+      provide: IMAGE_LOADER,
+      useValue: (config: ImageLoaderConfig) => {
+        return config.src;
+      },
+    },
     provideHotToastConfig({
       position: 'top-center',
 

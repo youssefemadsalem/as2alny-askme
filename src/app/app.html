@@ -1,8 +1,6 @@
 @if (isLoading) {
-  <div class="loading-screen" [class.fade-out]="isFading">
-    <video #splashVideo autoplay [muted]="true" loop playsinline class="logo-loader">
-      <source src="videos/logo.mp4" type="video/mp4" />
-    </video>
+  <div class="loading-screen flex items-center justify-center bg-slate-50 min-h-screen" [class.fade-out]="isFading">
+    <div class="w-16 h-16 border-4 border-slate-200 border-t-primary rounded-full animate-spin"></div>
   </div>
 }
 

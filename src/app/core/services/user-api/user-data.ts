@@ -2,7 +2,7 @@ import { isPlatformBrowser } from '@angular/common';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
-import { Observable } from 'rxjs';
+import { Observable, EMPTY } from 'rxjs';
 @Injectable({
   providedIn: 'root',
 })
@@ -22,6 +22,9 @@ export class UserDataService {
   }
 
   getUserData(): Observable<any> {
+    if (!isPlatformBrowser(this._PLATFORM_ID) || !this.userToken.token) {
+      return EMPTY;
+    }
     return this._httpClient.get('https://isalny-backend.vercel.app/api/v1/user/profile', {
       headers: new HttpHeaders({
         Authorization: `Bearer ${this.userToken.token}`,
